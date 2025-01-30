@@ -1,6 +1,7 @@
 package com.io.github.abeatrizsc.auth_ms.controllers;
 
 import com.io.github.abeatrizsc.auth_ms.domain.User;
+import com.io.github.abeatrizsc.auth_ms.exceptions.UserNotFoundException;
 import com.io.github.abeatrizsc.auth_ms.services.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +17,6 @@ public class UserController {
 
     @GetMapping("/{id}")
     public User getUserById(@PathVariable String id) {
-        return service.findUserById(id).orElseThrow(() -> new RuntimeException("User not found"));
+        return service.findUserById(id).orElseThrow(() -> new UserNotFoundException());
     }
 }

@@ -1,6 +1,5 @@
 package com.io.github.abeatrizsc.auth_ms.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -22,11 +21,14 @@ public class User {
     @Column
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
-    @Column
+
+    @Column(nullable = false)
     private String name;
-    @Column
+
+    @Column(nullable = false, unique = true)
     private String email;
-    @Column
+
+    @Column(nullable = false)
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 }
