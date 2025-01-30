@@ -1,6 +1,7 @@
 package com.io.github.abeatrizsc.auth_ms.infra.security;
 
 import com.io.github.abeatrizsc.auth_ms.domain.User;
+import com.io.github.abeatrizsc.auth_ms.exceptions.UserNotFoundException;
 import com.io.github.abeatrizsc.auth_ms.repositories.UserRepository;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -28,9 +29,10 @@ public class SecurityFilter extends OncePerRequestFilter {
         var userEmail = tokenService.validateToken(token);
 
         if(userEmail != null){
-            User user = userRepository.findByEmail(userEmail).orElseThrow(() -> new RuntimeException("User Not Found"));
-/*            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));*/
+            User user = userRepository.findByEmail(userEmail).orElseThrow(UserNotFoundException::new);
+
             var authentication = new UsernamePasswordAuthenticationToken(user, null, List.of());
+
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
         filterChain.doFilter(request, response);
