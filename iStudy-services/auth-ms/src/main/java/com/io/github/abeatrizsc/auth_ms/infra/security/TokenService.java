@@ -23,7 +23,7 @@ public class TokenService {
 
         String token = JWT.create()
                 .withIssuer("auth-ms")
-                .withSubject(user.getEmail())
+                .withSubject(user.getId())
                 .withExpiresAt(this.generateExpirationDate())
                 .sign(algorithm);
         return token;
