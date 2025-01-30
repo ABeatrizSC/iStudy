@@ -1,6 +1,7 @@
 package com.io.github.abeatrizsc.auth_ms.infra.security;
 
 import com.io.github.abeatrizsc.auth_ms.domain.User;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -40,6 +41,12 @@ public class TokenService {
         } catch (JWTVerificationException exception) {
             return null;
         }
+    }
+
+    public String recoverToken(HttpServletRequest request){
+        var authHeader = request.getHeader("Authorization");
+        if(authHeader == null) return null;
+        return authHeader.replace("Bearer ", "");
     }
 
     private Instant generateExpirationDate(){
