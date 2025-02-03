@@ -15,7 +15,7 @@ spring:
           uri: lb://AUTH-MS
           predicates:
             - Path=/users/**
-          filter:
+          filters:
             - AuthenticationFilter
 
 eureka:
