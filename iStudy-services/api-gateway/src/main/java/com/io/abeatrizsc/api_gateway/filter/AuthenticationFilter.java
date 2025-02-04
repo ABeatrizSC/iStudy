@@ -6,15 +6,11 @@ import org.springframework.cloud.gateway.filter.GatewayFilter;
 import org.springframework.cloud.gateway.filter.factory.AbstractGatewayFilterFactory;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
 @Component
 public class AuthenticationFilter extends AbstractGatewayFilterFactory<AuthenticationFilter.Config> {
-
-    @Autowired
-    private RestTemplate template;
 
     @Autowired
     private JwtUtil jwtUtil;
@@ -34,7 +30,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 List<String> authHeaders = exchange.getRequest().getHeaders().get(HttpHeaders.AUTHORIZATION);
 
                 if (authHeaders == null || authHeaders.isEmpty()) {
-                    throw new RuntimeException("missing authorization header");
+                    throw new SecurityException("To access this resource, you must be authenticated.");
                 }
 
                 String authHeader = authHeaders.get(0);
@@ -43,7 +39,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                 }
 
                 if (jwtUtil.validateToken(authHeader) == null) {
-                    throw new RuntimeException("unauthorized access to application");
+                    throw new SecurityException("Invalid or expired token.");
                 }
             }
             return chain.filter(exchange);
