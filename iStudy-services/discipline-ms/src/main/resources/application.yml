@@ -1,0 +1,26 @@
+server:
+  port: 8082
+  
+spring:
+  application:
+    name: DISCIPLINE-MS
+  datasource:
+    driverClassName: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/discipline-ms-db
+    username: root
+    password:
+    jpa:
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQLDialect
+      hibernate:
+        ddl-auto: update
+      show-sql: true
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    instance:
+      prefer-ip-address: false
+      hostname: localhost
