@@ -17,6 +17,12 @@ spring:
             - Path=/users/**
           filters:
             - AuthenticationFilter
+        - id: discipline-ms
+          uri: lb://DISCIPLINE-MS
+          predicates:
+            - Path=/disciplines/**
+          filters:
+            - AuthenticationFilter
 
 eureka:
   client:
