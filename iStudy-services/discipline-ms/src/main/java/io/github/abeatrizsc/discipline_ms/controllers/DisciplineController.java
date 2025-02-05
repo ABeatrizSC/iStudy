@@ -3,7 +3,9 @@ package io.github.abeatrizsc.discipline_ms.controllers;
 import io.github.abeatrizsc.discipline_ms.dtos.DisciplineRequestDto;
 import io.github.abeatrizsc.discipline_ms.domain.Discipline;
 import io.github.abeatrizsc.discipline_ms.dtos.SuccessResponseDto;
+import io.github.abeatrizsc.discipline_ms.exceptions.DisciplineNameConflictException;
 import io.github.abeatrizsc.discipline_ms.services.DisciplineService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,14 +37,14 @@ public class DisciplineController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDto> insert(@RequestBody DisciplineRequestDto requestDto) {
+    public ResponseEntity<SuccessResponseDto> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws DisciplineNameConflictException {
         service.save(requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseDto("Discipline created successfully!"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Discipline> updateById(@PathVariable String id, @RequestBody DisciplineRequestDto requestDto) {
+    public ResponseEntity<Discipline> updateById(@PathVariable String id, @Valid @RequestBody DisciplineRequestDto requestDto) {
         Discipline discipline = service.update(id, requestDto);
 
         return ResponseEntity.ok(discipline);

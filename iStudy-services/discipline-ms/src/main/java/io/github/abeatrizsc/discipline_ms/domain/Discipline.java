@@ -34,6 +34,6 @@ public class Discipline {
 /*    @Column(nullable = false)
     private Time hours;*/
 
-    @Column(nullable = true,  name = "is_completed")
-    private Boolean isCompleted = false;
+    @Column(nullable = false,  name = "is_completed")
+    private Boolean isCompleted;
 }
