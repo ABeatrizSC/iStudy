@@ -1,6 +1,6 @@
 server:
   port: 8082
-  
+
 spring:
   application:
     name: DISCIPLINE-MS
@@ -9,13 +9,11 @@ spring:
     url: jdbc:mysql://localhost:3306/discipline-ms-db
     username: root
     password:
-    jpa:
-      properties:
-        hibernate:
-          dialect: org.hibernate.dialect.MySQLDialect
-      hibernate:
-        ddl-auto: update
-      show-sql: true
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQLDialect
+      ddl-auto: update
+    show-sql: true
 
 eureka:
   client:
