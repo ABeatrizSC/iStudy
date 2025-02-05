@@ -1,0 +1,33 @@
+jwt:
+  secret: ${JWT_KEY}
+
+spring:
+  application:
+    name: api-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: auth-ms
+          uri: lb://AUTH-MS
+          predicates:
+            - Path=/auth/**
+        - id: auth-ms-users
+          uri: lb://AUTH-MS
+          predicates:
+            - Path=/users/**
+          filters:
+            - AuthenticationFilter
+        - id: discipline-ms
+          uri: lb://DISCIPLINE-MS
+          predicates:
+            - Path=/disciplines/**
+          filters:
+            - AuthenticationFilter
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka
+    instance:
+      prefer-ip-address: false
+      hostname: localhost
