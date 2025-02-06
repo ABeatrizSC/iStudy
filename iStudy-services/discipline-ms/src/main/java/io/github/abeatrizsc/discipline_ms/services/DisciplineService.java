@@ -32,10 +32,11 @@ public class DisciplineService {
 
     @Transactional
     public Discipline update(String id, DisciplineRequestDto requestDto) {
-        Discipline discipline = repository.findById(id).orElseThrow(DisciplineNotFoundException::new);
+        Discipline discipline = findById(id);
 
         discipline.setName(requestDto.getName());
         discipline.setCategory(requestDto.getCategory());
+        discipline.setIsCompleted(requestDto.getIsCompleted());
 
         repository.save(discipline);
 
@@ -44,7 +45,7 @@ public class DisciplineService {
 
     @Transactional
     public void delete(String id) {
-        Discipline discipline = repository.findById(id).orElseThrow();
+        Discipline discipline = findById(id);
 
         repository.delete(discipline);
     }
@@ -57,11 +58,15 @@ public class DisciplineService {
         return repository.findById(id).orElseThrow(DisciplineNotFoundException::new);
     }
 
-    public Optional<List<Discipline>> findByCategory(DisciplineCategoryEnum category) {
-        return repository.findByCategory(category);
+    public List<Discipline> findAllByCategory(DisciplineCategoryEnum category) {
+        return repository.findAllByCategory(category);
     }
 
-    public Optional<List<Discipline>> findByNameLike(String query) {
-        return repository.findByNameLike(query);
+    public List<Discipline> findByNameContaining(String query) {
+        return repository.findByNameContaining(query);
+    }
+
+    public List<Discipline> findByIsCompletedTrue() {
+        return repository.findByIsCompletedTrue();
     }
 }

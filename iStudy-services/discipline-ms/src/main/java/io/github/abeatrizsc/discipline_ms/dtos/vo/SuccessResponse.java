@@ -1,10 +1,10 @@
-package io.github.abeatrizsc.discipline_ms.dtos;
+package io.github.abeatrizsc.discipline_ms.dtos.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class SuccessResponseDto {
+public class SuccessResponse {
     private String message;
 }

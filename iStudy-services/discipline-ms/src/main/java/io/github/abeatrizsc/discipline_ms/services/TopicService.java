@@ -34,10 +34,7 @@ public class TopicService {
         Topic topic = topicMapper.convertResponseDtoToEntity(findById(id));
 
         topic.setName(updateDto.getName());
-
-        if (updateDto.getIsCompleted() != null) {
-            topic.setIsCompleted(updateDto.getIsCompleted());
-        }
+        topic.setIsCompleted(updateDto.getIsCompleted());
 
         topicRepository.save(topic);
 

@@ -2,21 +2,15 @@ package io.github.abeatrizsc.discipline_ms.controllers;
 
 import io.github.abeatrizsc.discipline_ms.dtos.DisciplineRequestDto;
 import io.github.abeatrizsc.discipline_ms.domain.Discipline;
-import io.github.abeatrizsc.discipline_ms.dtos.SuccessResponseDto;
+import io.github.abeatrizsc.discipline_ms.dtos.vo.SuccessResponse;
+import io.github.abeatrizsc.discipline_ms.enums.DisciplineCategoryEnum;
 import io.github.abeatrizsc.discipline_ms.exceptions.DisciplineNameConflictException;
 import io.github.abeatrizsc.discipline_ms.services.DisciplineService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -37,10 +31,10 @@ public class DisciplineController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDto> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws DisciplineNameConflictException {
+    public ResponseEntity<SuccessResponse> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws DisciplineNameConflictException {
         service.save(requestDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseDto("Discipline created successfully!"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse("Discipline created successfully!"));
     }
 
     @PutMapping("/{id}")
@@ -51,9 +45,30 @@ public class DisciplineController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponseDto> deleteById(@PathVariable String id) {
+    public ResponseEntity<SuccessResponse> deleteById(@PathVariable String id) {
         service.delete(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponseDto("Discipline deleted successfully!"));
+        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Discipline deleted successfully!"));
+    }
+
+    @GetMapping("/category/{category}")
+    public ResponseEntity<List<Discipline>> getAllByDiscipline(@PathVariable String category) {
+        List<Discipline> disciplines = service.findAllByCategory(DisciplineCategoryEnum.valueOf(category));
+
+        return disciplines.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(disciplines);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<List<Discipline>> searchDisciplinesByName(@RequestParam String name) {
+        List<Discipline> disciplines = service.findByNameContaining(name);
+
+        return disciplines.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(disciplines);
+    }
+
+    @GetMapping("/completed")
+    public ResponseEntity<List<Discipline>> getAllByIsCompletedTrue() {
+        List<Discipline> disciplines = service.findByIsCompletedTrue();
+
+        return disciplines.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(disciplines);
     }
 }

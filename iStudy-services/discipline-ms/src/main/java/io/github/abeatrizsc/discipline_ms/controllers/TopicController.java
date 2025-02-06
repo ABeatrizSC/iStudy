@@ -1,7 +1,7 @@
 package io.github.abeatrizsc.discipline_ms.controllers;
 
 import io.github.abeatrizsc.discipline_ms.dtos.TopicRequestDto;
-import io.github.abeatrizsc.discipline_ms.dtos.SuccessResponseDto;
+import io.github.abeatrizsc.discipline_ms.dtos.vo.SuccessResponse;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicResponseDto;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicUpdateDto;
 import io.github.abeatrizsc.discipline_ms.services.TopicService;
@@ -36,10 +36,10 @@ public class TopicController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDto> insert(@RequestBody TopicRequestDto requestDto) {
+    public ResponseEntity<SuccessResponse> insert(@RequestBody TopicRequestDto requestDto) {
         topicService.save(requestDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseDto("Topic created successfully!"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse("Topic created successfully!"));
     }
 
     @PutMapping("/{id}")
@@ -50,9 +50,9 @@ public class TopicController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponseDto> deleteById(@PathVariable String id) {
+    public ResponseEntity<SuccessResponse> deleteById(@PathVariable String id) {
         topicService.delete(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponseDto("Topic deleted successfully!"));
+        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Topic deleted successfully!"));
     }
 }
