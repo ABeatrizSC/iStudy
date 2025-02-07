@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -29,7 +30,7 @@ public class DisciplineService {
 
         discipline.setCreatedBy(userCreator);
 
-        if (repository.findByName(discipline.getName()).isPresent()) {
+        if (findByNameAndCreatedBy(discipline.getName(), discipline.getCreatedBy()).isPresent()) {
             throw new DisciplineNameConflictException();
         }
 
@@ -88,6 +89,10 @@ public class DisciplineService {
                 .stream()
                 .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
                 .toList();
+    }
+
+    public Optional<Discipline> findByNameAndCreatedBy(String name, String userId) {
+        return repository.findByNameAndCreatedBy(name, userId);
     }
 
     public List<Discipline> findByNameContaining(String query) {

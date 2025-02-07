@@ -34,7 +34,7 @@ public class DisciplineController {
     public ResponseEntity<SuccessResponse> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws DisciplineNameConflictException {
         service.save(requestDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse("Discipline created successfully!"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse("Subject created successfully!"));
     }
 
     @PutMapping("/{id}")
@@ -48,7 +48,7 @@ public class DisciplineController {
     public ResponseEntity<SuccessResponse> deleteById(@PathVariable String id) {
         service.delete(id);
 
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Discipline deleted successfully!"));
+        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Subject deleted successfully!"));
     }
 
     @GetMapping("/category/{category}")

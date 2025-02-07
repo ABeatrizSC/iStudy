@@ -10,7 +10,7 @@ import java.util.Optional;
 
 @Repository
 public interface DisciplineRepository extends JpaRepository<Discipline, String> {
-    Optional<Discipline> findByName(String name);
+    Optional<Discipline> findByNameAndCreatedBy(String name, String userId);
     List<Discipline> findAllByCategory(DisciplineCategoryEnum category);
     List<Discipline> findByNameContaining(String query);
     List<Discipline> findByIsCompletedTrue();

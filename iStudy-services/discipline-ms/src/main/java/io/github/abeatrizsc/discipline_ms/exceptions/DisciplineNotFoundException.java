@@ -2,6 +2,6 @@ package io.github.abeatrizsc.discipline_ms.exceptions;
 
 public class DisciplineNotFoundException extends RuntimeException {
     public DisciplineNotFoundException() {
-        super("Discipline not found.");
+        super("Subject not found.");
     }
 }

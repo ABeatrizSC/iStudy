@@ -4,6 +4,6 @@ import java.sql.SQLIntegrityConstraintViolationException;
 
 public class DisciplineNameConflictException extends SQLIntegrityConstraintViolationException {
     public DisciplineNameConflictException() {
-        super("This discipline name already exists.");
+        super("This subject already exists.");
     }
 }
