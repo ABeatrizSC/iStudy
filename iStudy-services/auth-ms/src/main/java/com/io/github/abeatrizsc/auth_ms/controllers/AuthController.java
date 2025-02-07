@@ -6,17 +6,19 @@ import com.io.github.abeatrizsc.auth_ms.exceptions.InvalidPasswordException;
 import com.io.github.abeatrizsc.auth_ms.exceptions.UserNotFoundException;
 import com.io.github.abeatrizsc.auth_ms.infra.security.TokenService;
 import com.io.github.abeatrizsc.auth_ms.services.UserService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.Optional;
 
 @RestController
@@ -55,5 +57,12 @@ public class AuthController {
         }
 
         throw new EmailAlreadyInUseException();
+    }
+
+    @GetMapping("/authenticated-user")
+    public String getAuthenticatedUser(HttpServletRequest request) {
+        var token = tokenService.recoverToken(request);
+
+        return tokenService.validateToken(token);
     }
 }
