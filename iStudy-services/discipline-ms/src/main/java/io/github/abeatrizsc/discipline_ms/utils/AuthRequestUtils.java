@@ -1,5 +1,7 @@
 package io.github.abeatrizsc.discipline_ms.utils;
 
+import feign.FeignException;
+import io.github.abeatrizsc.discipline_ms.exceptions.FeignConnectionException;
 import io.github.abeatrizsc.discipline_ms.feign.AuthServiceClient;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -27,7 +29,12 @@ public class AuthRequestUtils {
 
     public String getRequestUserId() {
         String token = getAuthorizationToken();
-        return authServiceClient.getAuthenticatedUser(token);
+        try {
+            return authServiceClient.getAuthenticatedUser(token);
+
+        } catch (FeignException e) {
+            throw new FeignConnectionException();
+        }
     }
 
     public Boolean isRequestFromCreator(String creatorId) {
