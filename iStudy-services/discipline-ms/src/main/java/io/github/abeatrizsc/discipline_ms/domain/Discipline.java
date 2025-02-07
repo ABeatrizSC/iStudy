@@ -30,6 +30,9 @@ public class Discipline {
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
+    @Column(name = "created_by")
+    private String createdBy;
+
     @Column(nullable = false)
     private String name;
 

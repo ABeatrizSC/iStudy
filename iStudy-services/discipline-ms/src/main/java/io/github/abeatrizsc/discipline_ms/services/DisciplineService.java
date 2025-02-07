@@ -7,21 +7,27 @@ import io.github.abeatrizsc.discipline_ms.exceptions.DisciplineNameConflictExcep
 import io.github.abeatrizsc.discipline_ms.exceptions.DisciplineNotFoundException;
 import io.github.abeatrizsc.discipline_ms.mapper.DisciplineMapper;
 import io.github.abeatrizsc.discipline_ms.repositories.DisciplineRepository;
+import io.github.abeatrizsc.discipline_ms.utils.AuthRequestUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
 public class DisciplineService {
     private DisciplineRepository repository;
+    private AuthRequestUtils authRequestUtils;
 
     @Transactional
     public void save(DisciplineRequestDto requestDto) throws DisciplineNameConflictException {
         Discipline discipline = DisciplineMapper.INSTANCE.convertDtoToEntity(requestDto);
+
+        String userCreator = authRequestUtils.getRequestUserId();
+
+        discipline.setCreatedBy(userCreator);
 
         if (repository.findByName(discipline.getName()).isPresent()) {
             throw new DisciplineNameConflictException();
@@ -33,6 +39,10 @@ public class DisciplineService {
     @Transactional
     public Discipline update(String id, DisciplineRequestDto requestDto) {
         Discipline discipline = findById(id);
+
+        if (!authRequestUtils.isRequestFromCreator(discipline.getCreatedBy())) {
+            throw new SecurityException();
+        }
 
         discipline.setName(requestDto.getName());
         discipline.setCategory(requestDto.getCategory());
@@ -47,26 +57,52 @@ public class DisciplineService {
     public void delete(String id) {
         Discipline discipline = findById(id);
 
+        if (!authRequestUtils.isRequestFromCreator(discipline.getCreatedBy())) {
+            throw new SecurityException();
+        }
+
         repository.delete(discipline);
     }
 
     public List<Discipline> findAll() {
-        return repository.findAll();
+        return repository
+                .findAll()
+                .stream()
+                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .toList();
     }
 
     public Discipline findById(String id) {
-        return repository.findById(id).orElseThrow(DisciplineNotFoundException::new);
+        Discipline discipline = repository.findById(id).orElseThrow(DisciplineNotFoundException::new);
+
+        if (!authRequestUtils.isRequestFromCreator(discipline.getCreatedBy())) {
+            throw new SecurityException();
+        }
+
+        return discipline;
     }
 
     public List<Discipline> findAllByCategory(DisciplineCategoryEnum category) {
-        return repository.findAllByCategory(category);
+        return repository
+                .findAllByCategory(category)
+                .stream()
+                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .toList();
     }
 
     public List<Discipline> findByNameContaining(String query) {
-        return repository.findByNameContaining(query);
+        return repository
+                .findByNameContaining(query)
+                .stream()
+                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .toList();
     }
 
     public List<Discipline> findByIsCompletedTrue() {
-        return repository.findByIsCompletedTrue();
+        return repository
+                .findByIsCompletedTrue()
+                .stream()
+                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .toList();
     }
 }
