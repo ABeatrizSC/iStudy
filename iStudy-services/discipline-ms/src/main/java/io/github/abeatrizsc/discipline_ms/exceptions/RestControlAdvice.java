@@ -20,15 +20,27 @@ public class RestControlAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, errors.get(0)));
     }
 
-    @ExceptionHandler(DisciplineNameConflictException.class)
-    public ResponseEntity<RestErrorMessage> handleDisciplineNameConflictException(DisciplineNameConflictException e) {
+    @ExceptionHandler(NameConflictException.class)
+    public ResponseEntity<RestErrorMessage> handleNameConflictException(NameConflictException e) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
-    @ExceptionHandler(DisciplineNotFoundException.class)
-    public ResponseEntity<RestErrorMessage> handleDisciplineNotFoundException(DisciplineNotFoundException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<RestErrorMessage> handleNotFoundException(NotFoundException e) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RestErrorMessage(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, e.getMessage()));
+    }
+
+    @ExceptionHandler(SecurityException.class)
+    public ResponseEntity<RestErrorMessage> handleSecurityException(SecurityException e) {
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RestErrorMessage(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED, "You don't have permission to access this resource."));
+    }
+
+    @ExceptionHandler(FeignConnectionException.class)
+    public ResponseEntity<RestErrorMessage> handleFeignConnectionException(FeignConnectionException e) {
+
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 }

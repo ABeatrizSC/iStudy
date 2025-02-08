@@ -12,11 +12,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class DisciplineRequestDto {
-    @NotBlank(message = "Discipline name is required.")
-    @Size(min = 3, max = 35, message = "The discipline name must have 3 to 35 characters.")
+    @NotBlank(message = "Subject name is required.")
+    @Size(min = 3, max = 35, message = "The subject name must have 3 to 35 characters.")
     private String name;
 
-    @NotNull(message = "Category is required.")
+    @NotNull(message = "Subject category is required.")
     private DisciplineCategoryEnum category;
 
     private Boolean isCompleted = false;
