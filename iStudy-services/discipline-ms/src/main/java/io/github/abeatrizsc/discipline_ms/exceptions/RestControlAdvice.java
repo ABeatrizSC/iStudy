@@ -20,14 +20,14 @@ public class RestControlAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, errors.get(0)));
     }
 
-    @ExceptionHandler(DisciplineNameConflictException.class)
-    public ResponseEntity<RestErrorMessage> handleDisciplineNameConflictException(DisciplineNameConflictException e) {
+    @ExceptionHandler(NameConflictException.class)
+    public ResponseEntity<RestErrorMessage> handleNameConflictException(NameConflictException e) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
-    @ExceptionHandler(DisciplineNotFoundException.class)
-    public ResponseEntity<RestErrorMessage> handleDisciplineNotFoundException(DisciplineNotFoundException e) {
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<RestErrorMessage> handleNotFoundException(NotFoundException e) {
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(new RestErrorMessage(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, e.getMessage()));
     }

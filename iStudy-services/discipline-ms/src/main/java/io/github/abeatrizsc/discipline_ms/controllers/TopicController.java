@@ -4,7 +4,9 @@ import io.github.abeatrizsc.discipline_ms.dtos.TopicRequestDto;
 import io.github.abeatrizsc.discipline_ms.dtos.vo.SuccessResponse;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicResponseDto;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicUpdateDto;
+import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
 import io.github.abeatrizsc.discipline_ms.services.TopicService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -36,14 +38,14 @@ public class TopicController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse> insert(@RequestBody TopicRequestDto requestDto) {
+    public ResponseEntity<SuccessResponse> insert(@RequestBody @Valid TopicRequestDto requestDto) throws NameConflictException {
         topicService.save(requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse("Topic created successfully!"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicResponseDto> updateById(@PathVariable String id, @RequestBody TopicUpdateDto updateDto) {
+    public ResponseEntity<TopicResponseDto> updateById(@PathVariable @Valid String id, @RequestBody TopicUpdateDto updateDto) throws NameConflictException {
         TopicResponseDto topicResponse = topicService.update(id, updateDto);
 
         return ResponseEntity.ok(topicResponse);

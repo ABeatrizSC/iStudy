@@ -3,11 +3,11 @@ package io.github.abeatrizsc.discipline_ms.services;
 import io.github.abeatrizsc.discipline_ms.domain.Discipline;
 import io.github.abeatrizsc.discipline_ms.dtos.DisciplineRequestDto;
 import io.github.abeatrizsc.discipline_ms.enums.DisciplineCategoryEnum;
-import io.github.abeatrizsc.discipline_ms.exceptions.DisciplineNameConflictException;
-import io.github.abeatrizsc.discipline_ms.exceptions.DisciplineNotFoundException;
+import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
 import io.github.abeatrizsc.discipline_ms.mapper.DisciplineMapper;
 import io.github.abeatrizsc.discipline_ms.repositories.DisciplineRepository;
 import io.github.abeatrizsc.discipline_ms.utils.AuthRequestUtils;
+import jakarta.ws.rs.NotFoundException;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,26 +23,30 @@ public class DisciplineService {
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
-    public void save(DisciplineRequestDto requestDto) throws DisciplineNameConflictException {
+    public void save(DisciplineRequestDto requestDto) throws NameConflictException {
         Discipline discipline = DisciplineMapper.INSTANCE.convertDtoToEntity(requestDto);
 
         String userCreator = authRequestUtils.getRequestUserId();
 
         discipline.setCreatedBy(userCreator);
 
-        if (findByNameAndCreatedBy(discipline.getName(), discipline.getCreatedBy()).isPresent()) {
-            throw new DisciplineNameConflictException();
+        if (disciplineNameAlreadyExists(discipline.getName(), discipline.getCreatedBy())) {
+            throw new NameConflictException("subject");
         }
 
         repository.save(discipline);
     }
 
     @Transactional
-    public Discipline update(String id, DisciplineRequestDto requestDto) {
+    public Discipline update(String id, DisciplineRequestDto requestDto) throws NameConflictException {
         Discipline discipline = findById(id);
 
         if (!authRequestUtils.isRequestFromCreator(discipline.getCreatedBy())) {
             throw new SecurityException();
+        }
+
+        if (disciplineNameAlreadyExists(requestDto.getName(), discipline.getCreatedBy())) {
+            throw new NameConflictException("subject");
         }
 
         discipline.setName(requestDto.getName());
@@ -74,7 +78,7 @@ public class DisciplineService {
     }
 
     public Discipline findById(String id) {
-        Discipline discipline = repository.findById(id).orElseThrow(DisciplineNotFoundException::new);
+        Discipline discipline = repository.findById(id).orElseThrow(() -> new NotFoundException("Subject"));
 
         if (!authRequestUtils.isRequestFromCreator(discipline.getCreatedBy())) {
             throw new SecurityException();
@@ -109,5 +113,9 @@ public class DisciplineService {
                 .stream()
                 .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
                 .toList();
+    }
+
+    public Boolean disciplineNameAlreadyExists(String newName, String userId) {
+        return repository.findByNameAndCreatedBy(newName, userId).isPresent();
     }
 }
