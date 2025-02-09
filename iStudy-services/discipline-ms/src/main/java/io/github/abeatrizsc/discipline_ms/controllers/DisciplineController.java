@@ -52,14 +52,14 @@ public class DisciplineController {
     }
 
     @GetMapping("/category/{category}")
-    public ResponseEntity<List<Discipline>> getAllByDiscipline(@PathVariable String category) {
+    public ResponseEntity<List<Discipline>> getAllByCategory(@PathVariable String category) {
         List<Discipline> disciplines = service.findAllByCategory(DisciplineCategoryEnum.valueOf(category));
 
         return disciplines.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(disciplines);
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<Discipline>> searchDisciplinesByName(@RequestParam String name) {
+    public ResponseEntity<List<Discipline>> searchByName(@RequestParam String name) {
         List<Discipline> disciplines = service.findByNameContaining(name);
 
         return disciplines.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(disciplines);

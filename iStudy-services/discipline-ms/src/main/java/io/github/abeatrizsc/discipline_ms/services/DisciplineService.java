@@ -35,7 +35,7 @@ public class DisciplineService {
 
         discipline.setCreatedBy(userCreator);
 
-        if (disciplineNameAlreadyExists(discipline.getName(), discipline.getCreatedBy())) {
+        if (disciplineNameAlreadyExists(null, discipline.getName(), discipline.getCreatedBy())) {
             throw new NameConflictException("subject");
         }
 
@@ -50,7 +50,7 @@ public class DisciplineService {
             throw new SecurityException();
         }
 
-        if (disciplineNameAlreadyExists(requestDto.getName(), discipline.getCreatedBy())) {
+        if (disciplineNameAlreadyExists(discipline.getId(), requestDto.getName(), discipline.getCreatedBy())) {
             throw new NameConflictException("subject");
         }
 
@@ -100,10 +100,6 @@ public class DisciplineService {
                 .toList();
     }
 
-    public Optional<Discipline> findByNameAndCreatedBy(String name, String userId) {
-        return repository.findByNameAndCreatedBy(name, userId);
-    }
-
     public List<Discipline> findByNameContaining(String query) {
         return repository
                 .findByNameContaining(query)
@@ -120,12 +116,16 @@ public class DisciplineService {
                 .toList();
     }
 
-    public Boolean disciplineNameAlreadyExists(String newName, String userId) {
-        return repository.findByNameAndCreatedBy(newName, userId).isPresent();
+    public Boolean disciplineNameAlreadyExists(String id, String newName, String createdBy) {
+        return entityAlreadyExists(repository.findByNameAndCreatedBy(newName, createdBy), id);
     }
 
-    public Boolean topicAlreadyExistsInDiscipline(String topicName, String userId) {
-        return repository.findByTopicsNameAndCreatedBy(topicName, userId).isPresent();
+    public Boolean topicAlreadyExistsInDiscipline(String discId, String createdBy, String topicName) {
+        return entityAlreadyExists(repository.findByTopicsNameAndCreatedBy(topicName, createdBy), discId);
+    }
+
+    private Boolean entityAlreadyExists(Optional<Discipline> discipline, String id) {
+        return discipline.map(d -> id == null || !Objects.equals(d.getId(), id)).orElse(false);
     }
 
     public void updateTime(List<TopicResponseDto> completedTopics, String disciplineId) {

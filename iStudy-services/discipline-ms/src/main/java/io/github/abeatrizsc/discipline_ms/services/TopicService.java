@@ -28,7 +28,7 @@ public class TopicService {
     public void save(TopicRequestDto requestDto) throws NameConflictException {
         Topic topic = topicMapper.convertRequestDtoToEntity(requestDto);
 
-        if (disciplineService.topicAlreadyExistsInDiscipline(topic.getName(), topic.getDiscipline().getCreatedBy())) {
+        if (disciplineService.topicAlreadyExistsInDiscipline(null, topic.getDiscipline().getCreatedBy(), requestDto.getName())) {
             throw new NameConflictException("topic");
         }
 
@@ -47,7 +47,7 @@ public class TopicService {
             throw new SecurityException();
         }
 
-        if (disciplineService.topicAlreadyExistsInDiscipline(updateDto.getName(), topic.getDiscipline().getCreatedBy())) {
+        if (disciplineService.topicAlreadyExistsInDiscipline(topic.getDiscipline().getId(), topic.getDiscipline().getCreatedBy(), updateDto.getName())) {
             throw new NameConflictException("topic");
         }
 
