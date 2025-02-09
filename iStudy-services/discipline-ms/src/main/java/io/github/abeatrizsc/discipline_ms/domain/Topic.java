@@ -14,6 +14,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
+
 @Table(name = "topics")
 @Entity
 @Data
@@ -28,8 +30,11 @@ public class Topic {
     @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
+    private LocalTime time;
+
     @Column(nullable = false, name = "is_completed")
-    private Boolean isCompleted;
+    private Boolean isCompleted = false;
 
     @ManyToOne
     @JoinColumn(name = "discipline_id", nullable = false)

@@ -16,6 +16,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,8 +41,11 @@ public class Discipline {
     @Enumerated(EnumType.STRING)
     private DisciplineCategoryEnum category;
 
-/*    @Column(nullable = false)
-    private Time hours;*/
+    @Column(nullable = false, name = "total_time")
+    private LocalTime totalTime = LocalTime.of(0, 0);
+
+    @Column(nullable = false, name = "time_completed")
+    private LocalTime timeCompleted = LocalTime.of(0, 0);
 
     @Column(nullable = false,  name = "is_completed")
     private Boolean isCompleted;
