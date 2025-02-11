@@ -1,0 +1,88 @@
+services:
+  mysql-db:
+    image: mysql:8.0.34
+    container_name: mysql-db
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_DATABASE=auth_ms_db
+      - TZ=America/Sao_Paulo
+    volumes:
+      - ./init-scripts:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      retries: 5
+      timeout: 5s
+    networks:
+      - istudy-network
+
+  eureka-server:
+    build: ./iStudy-services/eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:8761" ]
+      interval: 10s
+      retries: 5
+      start_period: 10s
+    networks:
+      - istudy-network
+
+  api-gateway:
+    build: ./iStudy-services/api-gateway
+    container_name: api-gateway
+    env_file:
+      - .env
+    ports:
+      - "8080:8080"
+    environment:
+        - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      eureka-server:
+        condition: service_started
+    networks:
+      - istudy-network
+
+  auth-ms:
+    build: ./iStudy-services/auth-ms
+    container_name: auth-ms
+    env_file:
+      - .env
+    ports:
+      - "8081:8081"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    networks:
+      - istudy-network
+
+  discipline-ms:
+    build: ./iStudy-services/discipline-ms
+    container_name: discipline-ms
+    ports:
+      - "8082:8082"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    networks:
+      - istudy-network
+
+networks:
+  istudy-network:
+    driver: bridge
