@@ -23,6 +23,12 @@ spring:
             - Path=/disciplines/**
           filters:
             - AuthenticationFilter
+        - id: study-tracker-ms
+          uri: lb://STUDY-TRACKER-MS
+          predicates:
+            - Path=/studies/**
+          filters:
+            - AuthenticationFilter
 
 eureka:
   client:

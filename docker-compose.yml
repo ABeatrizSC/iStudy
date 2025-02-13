@@ -89,6 +89,26 @@ services:
     networks:
       - istudy-network
 
+  study-tracker-ms:
+    build: ./iStudy-services/study-tracker-ms
+    container_name: study-tracker-ms
+    ports:
+      - "8083:8083"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - DB_URL=jdbc:mysql://mysql-db:3306/study_tracker_ms_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    networks:
+      - istudy-network
+
 networks:
   istudy-network:
     driver: bridge

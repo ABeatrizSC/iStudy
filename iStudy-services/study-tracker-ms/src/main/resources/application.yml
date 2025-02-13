@@ -15,7 +15,7 @@ spring:
         ddl-auto: update
       show-sql: true
 
-  eureka:
-    client:
-      service-url:
-        defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
+eureka:
+  client:
+    service-url:
+      defaultZone: ${EUREKA_CLIENT_SERVICEURL_DEFAULTZONE}
