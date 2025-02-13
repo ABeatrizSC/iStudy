@@ -56,6 +56,9 @@ services:
       - "8081:8081"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - DB_URL=jdbc:mysql://mysql-db:3306/auth_ms_db
+      - DB_USER=root
+      - DB_PASSWORD=root
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -73,6 +76,9 @@ services:
       - "8082:8082"
     environment:
       - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - DB_URL=jdbc:mysql://mysql-db:3306/discipline_ms_db
+      - DB_USER=root
+      - DB_PASSWORD=root
     depends_on:
       mysql-db:
         condition: service_healthy
