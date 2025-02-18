@@ -92,6 +92,10 @@ public class DisciplineService {
         return discipline;
     }
 
+    public Discipline findByName(String name) {
+        return repository.findByNameAndCreatedBy(name, authRequestUtils.getRequestUserId()).orElseThrow(() -> new NotFoundException("Subject"));
+    }
+
     public List<Discipline> findAllByCategory(DisciplineCategoryEnum category) {
         return repository
                 .findAllByCategory(category)
