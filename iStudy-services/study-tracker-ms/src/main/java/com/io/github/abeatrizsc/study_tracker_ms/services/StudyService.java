@@ -10,7 +10,11 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
+import java.time.YearMonth;
+import java.time.temporal.WeekFields;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 @Service
@@ -49,11 +53,12 @@ public class StudyService {
         repository.deleteById(id);
     }
 
-    public List<Study> findAll() {
+    public List<StudyResponseDto> findAll() {
         return repository
                 .findAll()
                 .stream()
                 .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
                 .toList();
     }
 
@@ -61,11 +66,52 @@ public class StudyService {
         return repository.findById(id).orElseThrow(RuntimeException::new);
     }
 
-    /*
-    * - Find by name
-    * - Find by Discipline category
-    * - Find by Date
-    * - Find by Month
-    * - Find by is Completed = true
-    */
+    public List<StudyResponseDto> findByDate(LocalDate date) {
+        return repository.findByDate(date)
+                .stream()
+                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
+                .toList();
+    }
+
+    public List<StudyResponseDto> findByIsCompletedTrue() {
+        return repository.findByIsCompletedTrue()
+                .stream()
+                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
+                .toList();
+    }
+
+    public List<StudyResponseDto> findByMonth(Integer month, Integer year) {
+        LocalDate startDate = LocalDate.of(year, month, 1);
+        LocalDate endDate = YearMonth.of(year, month).atEndOfMonth();
+
+        return repository.findByDateBetween(startDate, endDate)
+                .stream()
+                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
+                .toList();
+    }
+
+    public List<StudyResponseDto> findByWeek(Integer year, Integer week) {
+        LocalDate startDate = LocalDate.of(year, 1, 1)
+                .with(WeekFields.of(Locale.getDefault()).weekOfYear(), week)
+                .with(WeekFields.of(Locale.getDefault()).dayOfWeek(), 1);
+
+        LocalDate endDate = startDate.plusDays(6);
+
+        return repository.findByDateBetween(startDate, endDate)
+                .stream()
+                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
+                .toList();
+    }
+
+    public List<StudyResponseDto> findByDisciplineCategory(String category) {
+        return findAll()
+                .stream()
+                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(s -> s.getDiscipline().getCategory().equals(category))
+                .toList();
+    }
 }
