@@ -18,25 +18,25 @@ public abstract class TopicMapper {
     private DisciplineService disciplineService;
 
     @Mapping(target = "time", source = "time", qualifiedByName = "localTimeToLocalTime")
-    @Mapping(target = "discipline", expression = "java(disciplineObjConverter(dto.getDisciplineId()))")
+    @Mapping(target = "discipline", expression = "java(disciplineConverterToObj(dto.getDisciplineId()))")
     public abstract Topic convertRequestDtoToEntity(TopicRequestDto dto);
 
     @Mapping(target = "time", source = "time", qualifiedByName = "localTimeToLocalTime")
-    @Mapping(target = "discipline", expression = "java(disciplineObjConverter(dto.getDisciplineId()))")
+    @Mapping(target = "discipline", expression = "java(disciplineConverterToObj(dto.getDisciplineId()))")
     public abstract Topic convertResponseDtoToEntity(TopicResponseDto dto);
 
     @Mapping(target = "time", source = "time", qualifiedByName = "localTimeToLocalTime")
-    @Mapping(target = "disciplineId", expression = "java(disciplineIdConverter(entity.getDiscipline()))")
+    @Mapping(target = "disciplineId", expression = "java(disciplineConverterToId(entity.getDiscipline()))")
     public abstract TopicResponseDto convertEntityToResponseDto(Topic entity);
 
-    String disciplineIdConverter(Discipline discipline) {
+    String disciplineConverterToId(Discipline discipline) {
         return discipline.getId();
     }
 
-    Discipline disciplineObjConverter(String id) {
+    Discipline disciplineConverterToObj(String id) {
         return disciplineService.findById(id);
     }
-    
+
     @Named("localTimeToLocalTime")
     LocalTime localTimeToLocalTime(LocalTime time) {
         return time != null ? time : LocalTime.MIDNIGHT;

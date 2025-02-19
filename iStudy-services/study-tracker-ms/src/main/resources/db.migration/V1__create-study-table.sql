@@ -1,0 +1,9 @@
+CREATE TABLE IF NOT EXISTS studies (
+  id VARCHAR(255) PRIMARY KEY NOT NULL,
+  created_by VARCHAR(255) NOT NULL,
+  date DATE NOT NULL,
+  time TIME NOT NULL,
+  is_completed BIT(1) NOT NULL,
+  discipline_id VARCHAR(255) NOT NULL,
+  topic_id VARCHAR(255) NOT NULL
+);

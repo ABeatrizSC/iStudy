@@ -21,6 +21,11 @@ public class DisciplineController {
     private DisciplineService service;
 
     @GetMapping
+    public Discipline getByName(@RequestParam String name) {
+        return service.findByName(name);
+    }
+
+    @GetMapping("/all")
     public List<Discipline> getAll() {
         return service.findAll();
     }
