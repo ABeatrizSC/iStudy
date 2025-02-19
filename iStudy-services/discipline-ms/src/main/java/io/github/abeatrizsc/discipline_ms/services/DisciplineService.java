@@ -46,10 +46,6 @@ public class DisciplineService {
     public Discipline update(String id, DisciplineRequestDto requestDto) throws NameConflictException {
         Discipline discipline = findById(id);
 
-        if (!authRequestUtils.isRequestFromCreator(discipline.getCreatedBy())) {
-            throw new SecurityException();
-        }
-
         if (disciplineNameAlreadyExists(discipline.getId(), requestDto.getName(), discipline.getCreatedBy())) {
             throw new NameConflictException("subject");
         }
@@ -66,10 +62,6 @@ public class DisciplineService {
     @Transactional
     public void delete(String id) {
         Discipline discipline = findById(id);
-
-        if (!authRequestUtils.isRequestFromCreator(discipline.getCreatedBy())) {
-            throw new SecurityException();
-        }
 
         repository.delete(discipline);
     }
