@@ -4,8 +4,10 @@ import com.io.github.abeatrizsc.study_tracker_ms.domain.Study;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyResponseDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.vo.SuccessResponseVo;
+import com.io.github.abeatrizsc.study_tracker_ms.exceptions.ConflictException;
 import com.io.github.abeatrizsc.study_tracker_ms.mapper.StudyMapper;
 import com.io.github.abeatrizsc.study_tracker_ms.services.StudyService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,14 +70,14 @@ public class StudyController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseVo> insert(@RequestBody StudyRequestDto requestDto) {
+    public ResponseEntity<SuccessResponseVo> insert(@RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
         service.save(requestDto);
 
         return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseVo("Study created successfully!"));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudyResponseDto> updateById(@PathVariable String id, @RequestBody StudyRequestDto requestDto) {
+    public ResponseEntity<StudyResponseDto> updateById(@PathVariable String id, @RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
         StudyResponseDto responseDto = service.update(id, requestDto);
 
         return ResponseEntity.ok(responseDto);

@@ -3,6 +3,8 @@ package com.io.github.abeatrizsc.study_tracker_ms.services;
 import com.io.github.abeatrizsc.study_tracker_ms.domain.Study;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyResponseDto;
+import com.io.github.abeatrizsc.study_tracker_ms.exceptions.ConflictException;
+import com.io.github.abeatrizsc.study_tracker_ms.exceptions.NotFoundException;
 import com.io.github.abeatrizsc.study_tracker_ms.mapper.StudyMapper;
 import com.io.github.abeatrizsc.study_tracker_ms.repositories.StudyRepository;
 import com.io.github.abeatrizsc.study_tracker_ms.utils.AuthRequestUtils;
@@ -25,15 +27,19 @@ public class StudyService {
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
-    public void save(StudyRequestDto requestDto) {
+    public void save(StudyRequestDto requestDto) throws ConflictException {
         Study study = studyMapper.convertRequestDtoToEntity(requestDto);
         study.setCreatedBy(authRequestUtils.getRequestUserId());
+
+        if (studyAlreadyExists(study)) {
+            throw new ConflictException("study");
+        }
 
         repository.save(study);
     }
 
     @Transactional
-    public StudyResponseDto update(String id, StudyRequestDto requestDto) {
+    public StudyResponseDto update(String id, StudyRequestDto requestDto) throws ConflictException {
         Study studyUpdated = studyMapper.convertRequestDtoToEntity(requestDto);
         Study study = findById(id);
 
@@ -43,6 +49,10 @@ public class StudyService {
         study.setDate(studyUpdated.getDate());
         study.setIsCompleted(studyUpdated.getIsCompleted());
 
+        if (studyAlreadyExists(study)) {
+            throw new ConflictException("study");
+        }
+
         repository.save(study);
 
         return studyMapper.convertEntityToResponseDto(study, study.getTopicId());
@@ -50,7 +60,9 @@ public class StudyService {
 
     @Transactional
     public void delete(String id) {
-        repository.deleteById(id);
+        Study study = findById(id);
+
+        repository.delete(study);
     }
 
     public List<StudyResponseDto> findAll() {
@@ -63,7 +75,13 @@ public class StudyService {
     }
 
     public Study findById(String id) {
-        return repository.findById(id).orElseThrow(RuntimeException::new);
+        Study study = repository.findById(id).orElseThrow(() -> new NotFoundException("Study"));
+
+        if (!authRequestUtils.isRequestFromCreator(study.getCreatedBy())) {
+            throw new SecurityException();
+        }
+
+        return study;
     }
 
     public List<StudyResponseDto> findByDate(LocalDate date) {
@@ -113,5 +131,9 @@ public class StudyService {
                 .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
                 .filter(s -> s.getDiscipline().getCategory().equals(category))
                 .toList();
+    }
+
+    public Boolean studyAlreadyExists(Study study) {
+        return repository.findByDisciplineIdAndTopicIdAndDateAndCreatedBy(study.getDisciplineId(), study.getTopicId(), study.getDate(), study.getCreatedBy()).isPresent();
     }
 }

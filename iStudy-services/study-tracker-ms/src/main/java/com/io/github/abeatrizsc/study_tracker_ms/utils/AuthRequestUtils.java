@@ -1,6 +1,7 @@
 package com.io.github.abeatrizsc.study_tracker_ms.utils;
 
 
+import com.io.github.abeatrizsc.study_tracker_ms.exceptions.FeignConnectionException;
 import com.io.github.abeatrizsc.study_tracker_ms.feign.AuthServiceClient;
 import feign.FeignException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -33,7 +34,7 @@ public class AuthRequestUtils {
             return authServiceClient.getAuthenticatedUser(token);
 
         } catch (FeignException e) {
-            throw new RuntimeException();
+            throw new FeignConnectionException();
         }
     }
 
