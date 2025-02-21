@@ -21,18 +21,18 @@ public class TopicController {
     private TopicService topicService;
 
     @GetMapping
-    public TopicResponseDto getByName(@RequestParam String name) {
-        return topicService.findByName(name);
+    public ResponseEntity<TopicResponseDto> getByName(@RequestParam String name) {
+        return ResponseEntity.ok(topicService.findByName(name));
     }
 
     @GetMapping("/all")
-    public List<TopicResponseDto> getAll() {
-        return topicService.findAll();
+    public ResponseEntity<List<TopicResponseDto>> getAll() {
+        return ResponseEntity.ok(topicService.findAll());
     }
 
     @GetMapping("/{id}")
-    public TopicResponseDto getById(@PathVariable String id) {
-        return topicService.findById(id);
+    public ResponseEntity<TopicResponseDto> getById(@PathVariable String id) {
+        return ResponseEntity.ok(topicService.findById(id));
     }
 
     @PostMapping

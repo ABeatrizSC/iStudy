@@ -1,6 +1,7 @@
 package com.io.github.abeatrizsc.study_tracker_ms.exceptions;
 
 import com.io.github.abeatrizsc.study_tracker_ms.exceptions.dto.ErrorMessageDto;
+import feign.FeignException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,7 +24,7 @@ public class RestControlAdvice {
     }
 
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ErrorMessageDto> handleNameConflictException(ConflictException e) {
+    public ResponseEntity<ErrorMessageDto> handleConflictException(ConflictException e) {
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
     }

@@ -5,8 +5,10 @@ import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyResponseDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.vo.DisciplineVo;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.vo.TopicVo;
+import com.io.github.abeatrizsc.study_tracker_ms.exceptions.NotFoundException;
 import com.io.github.abeatrizsc.study_tracker_ms.feign.DisciplineServiceClient;
 import com.io.github.abeatrizsc.study_tracker_ms.utils.AuthRequestUtils;
+import feign.FeignException;
 import org.mapstruct.Context;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -34,30 +36,46 @@ public abstract class StudyMapper {
     @Named("convertDisciplineNameToId")
     public String convertDisciplineNameToId(String disciplineName) {
         String token = authRequestUtils.getAuthorizationToken();
-        return disciplineServiceClient.getDisciplineByName(token, disciplineName).getId();
+        try {
+            return disciplineServiceClient.getDisciplineByName(token, disciplineName).getBody().getId();
+        } catch (FeignException e) {
+            throw new NotFoundException("Subject");
+        }
     }
 
     @Named("convertDisciplineIdToObj")
     public DisciplineVo convertDisciplineIdToObj(String disciplineId, @Context String topicId) {
         String token = authRequestUtils.getAuthorizationToken();
+        try {
+            DisciplineVo discipline = disciplineServiceClient.getDisciplineById(token, disciplineId).getBody();
+            discipline.setTopic(convertTopicIdToObj(topicId));
+            return discipline;
+        } catch (FeignException e) {
+            throw new NotFoundException("Subject");
+        }
 
-        DisciplineVo discipline = disciplineServiceClient.getDisciplineById(token, disciplineId);
-
-        discipline.setTopic(convertTopicIdToObj(topicId));
-
-        return discipline;
     }
 
     @Named("convertTopicNameToId")
     public String convertTopicNameToId(String topicName) {
         String token = authRequestUtils.getAuthorizationToken();
-        return disciplineServiceClient.getTopicByName(token, topicName).getId();
+
+        try {
+            return disciplineServiceClient.getTopicByName(token, topicName).getBody().getId();
+        } catch (FeignException e) {
+            throw new NotFoundException("Topic");
+        }
     }
 
     @Named("convertTopicIdToObj")
     public TopicVo convertTopicIdToObj(String topicId) {
         String token = authRequestUtils.getAuthorizationToken();
-        return disciplineServiceClient.getTopicById(token, topicId);
+
+        try {
+            return disciplineServiceClient.getTopicById(token, topicId).getBody();
+        } catch (FeignException e) {
+            throw new NotFoundException("Topic");
+        }
     }
 
     @Named("localTimeToLocalTime")
