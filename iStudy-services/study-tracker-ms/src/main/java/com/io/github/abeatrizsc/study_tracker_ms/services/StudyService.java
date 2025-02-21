@@ -21,8 +21,6 @@ import java.time.temporal.WeekFields;
 import java.util.*;
 import java.util.stream.Collectors;
 
-import static java.lang.System.in;
-
 @Service
 @AllArgsConstructor
 public class StudyService {
@@ -138,7 +136,13 @@ public class StudyService {
     }
 
     public Boolean studyAlreadyExists(Study study) {
-        return repository.findByDisciplineIdAndTopicIdAndDateAndCreatedBy(study.getDisciplineId(), study.getTopicId(), study.getDate(), study.getCreatedBy()).isPresent();
+        Optional<Study> newStudy = repository.findByDisciplineIdAndTopicIdAndDateAndCreatedBy(study.getDisciplineId(), study.getTopicId(), study.getDate(), study.getCreatedBy());
+
+        if (newStudy.isEmpty() || Objects.equals(newStudy.get().getId(), study.getId())) {
+            return false;
+        }
+
+        return true;
     }
 
     public LocalTime getTotalMonthlyStudyTime(Integer year, Integer month) {
