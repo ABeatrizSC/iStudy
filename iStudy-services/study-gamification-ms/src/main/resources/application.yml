@@ -9,11 +9,11 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
-    jpa:
-      hibernate:
-        dialect: org.hibernate.dialect.MySQLDialect
-        ddl-auto: update
-      show-sql: true
+  jpa:
+    hibernate:
+      dialect: org.hibernate.dialect.MySQLDialect
+      ddl-auto: update
+    show-sql: true
 
 eureka:
   client:
