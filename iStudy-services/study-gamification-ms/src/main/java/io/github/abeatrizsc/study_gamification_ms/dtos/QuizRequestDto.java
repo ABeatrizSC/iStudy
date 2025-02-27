@@ -1,4 +1,4 @@
-package io.github.abeatrizsc.study_gamification_ms.dto;
+package io.github.abeatrizsc.study_gamification_ms.dtos;
 
 import lombok.Data;
 

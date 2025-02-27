@@ -1,7 +1,7 @@
 package io.github.abeatrizsc.study_gamification_ms.controllers;
 
 import io.github.abeatrizsc.study_gamification_ms.domain.Quiz;
-import io.github.abeatrizsc.study_gamification_ms.dto.QuizRequestDto;
+import io.github.abeatrizsc.study_gamification_ms.dtos.QuizRequestDto;
 import io.github.abeatrizsc.study_gamification_ms.services.QuizService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -27,7 +28,7 @@ public class QuizController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Quiz> findByTitle(@RequestParam String title) {
+    public ResponseEntity<Optional<Quiz>> findByTitle(@RequestParam String title) {
         return ResponseEntity.ok(service.findByTitle(title));
     }
 

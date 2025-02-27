@@ -17,8 +17,13 @@ public class Quiz {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
+
     @Column
     private String title;
+
+    @Column(name = "created_by")
+    private String createdBy;
+
     @OneToMany(mappedBy = "quiz", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Question> questions;

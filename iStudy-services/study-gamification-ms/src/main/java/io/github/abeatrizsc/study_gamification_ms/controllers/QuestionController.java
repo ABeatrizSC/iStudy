@@ -7,6 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @AllArgsConstructor
 @RestController
@@ -25,7 +26,7 @@ public class QuestionController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<Question> findByQuestion(@RequestParam String question) {
+    public ResponseEntity<Optional<Question>> findByQuestion(@RequestParam String question) {
         return ResponseEntity.ok(service.findByQuestion(question));
     }
 }

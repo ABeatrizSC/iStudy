@@ -22,6 +22,9 @@ public class Question {
     @Column
     private String question;
 
+    @Column(name = "created_by")
+    private String createdBy;
+
     @Column(name = "option_chosen")
     private String optionChosen;
 

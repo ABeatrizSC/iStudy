@@ -19,6 +19,9 @@ public class Option {
     @Column(name = "option_text")
     private String option;
 
+    @Column(name = "created_by")
+    private String createdBy;
+
     @Column
     private Boolean isCorrect;
 
