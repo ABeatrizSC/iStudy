@@ -3,7 +3,12 @@ package io.github.abeatrizsc.study_gamification_ms.services;
 import io.github.abeatrizsc.study_gamification_ms.domain.Option;
 import io.github.abeatrizsc.study_gamification_ms.domain.Question;
 import io.github.abeatrizsc.study_gamification_ms.domain.Quiz;
+import io.github.abeatrizsc.study_gamification_ms.dtos.QuestionAnswerDto;
+import io.github.abeatrizsc.study_gamification_ms.dtos.QuizAnswerDto;
 import io.github.abeatrizsc.study_gamification_ms.dtos.QuizRequestDto;
+import io.github.abeatrizsc.study_gamification_ms.exceptions.NotFoundException;
+import io.github.abeatrizsc.study_gamification_ms.repositories.OptionRepository;
+import io.github.abeatrizsc.study_gamification_ms.repositories.QuestionRepository;
 import io.github.abeatrizsc.study_gamification_ms.repositories.QuizRepository;
 import io.github.abeatrizsc.study_gamification_ms.utils.AuthRequestUtils;
 import lombok.AllArgsConstructor;
@@ -12,12 +17,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class QuizService {
     private QuizRepository repository;
+    private QuestionRepository questionRepository;
+    private OptionRepository optionRepository;
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
@@ -29,7 +35,6 @@ public class QuizService {
         List<Question> questions = requestDto.getQuestions().stream().map(qDto -> {
             Question question = new Question();
             question.setQuestion(qDto.getQuestion());
-            question.setOptionChosen(qDto.getOptionChosen());
             question.setQuiz(quiz);
             question.setCreatedBy(quiz.getCreatedBy());
 
@@ -40,11 +45,11 @@ public class QuizService {
                 option.setQuestion(question);
                 option.setCreatedBy(quiz.getCreatedBy());
                 return option;
-            }).collect(Collectors.toList());
+            }).toList();
 
             question.setOptions(options);
             return question;
-        }).collect(Collectors.toList());
+        }).toList();
 
         quiz.setQuestions(questions);
         repository.save(quiz);
@@ -55,11 +60,6 @@ public class QuizService {
     @Transactional
     public List<Quiz> update(String id, QuizRequestDto requestDto) {
         Quiz quiz = findById(id);
-
-        if (!authRequestUtils.isRequestFromCreator(quiz.getCreatedBy())) {
-            throw new SecurityException();
-        }
-
         quiz.setTitle(requestDto.getTitle());
 
         quiz.getQuestions().clear();
@@ -67,7 +67,6 @@ public class QuizService {
         requestDto.getQuestions().forEach(qDto -> {
             Question question = new Question();
             question.setQuestion(qDto.getQuestion());
-            question.setOptionChosen(qDto.getOptionChosen());
             question.setQuiz(quiz);
 
             List<Option> options = qDto.getOptions().stream().map(oDto -> {
@@ -76,7 +75,7 @@ public class QuizService {
                 option.setIsCorrect(oDto.getIsCorrect());
                 option.setQuestion(question);
                 return option;
-            }).collect(Collectors.toList());
+            }).toList();
 
             question.setOptions(options);
             quiz.getQuestions().add(question);
@@ -87,12 +86,28 @@ public class QuizService {
     }
 
     @Transactional
-    public List<Quiz> delete(String id) {
+    public List<Question> answer(String id, QuizAnswerDto answerDto) {
         Quiz quiz = findById(id);
 
-        if (!authRequestUtils.isRequestFromCreator(quiz.getCreatedBy())) {
-            throw new SecurityException();
+        for (Question question : quiz.getQuestions()) {
+            for (QuestionAnswerDto questionAnswer : answerDto.getQuestions()) {
+                if (question.getId().equals(questionAnswer.getId())) {
+                    question.setOptionChosen(questionAnswer.getOptionChosen());
+                    question.setCorrectAnswer(optionRepository.findById(question.getOptionChosen()).get().getIsCorrect());
+
+                    break;
+                }
+            }
         }
+
+        repository.save(quiz);
+
+        return questionRepository.findByCorrectAnswerAndQuizId(false, quiz.getId());
+    }
+
+    @Transactional
+    public List<Quiz> delete(String id) {
+        Quiz quiz = findById(id);
 
         repository.delete(quiz);
 
@@ -108,10 +123,10 @@ public class QuizService {
     }
 
     public Quiz findById(String id) {
-        Quiz quiz = repository.findById(id).orElseThrow();
+        Quiz quiz = repository.findById(id).orElseThrow(() -> new NotFoundException("Quiz"));
 
         if (!authRequestUtils.isRequestFromCreator(quiz.getCreatedBy())) {
-            throw new RuntimeException(); //not found
+            throw new NotFoundException("Quiz");
         }
 
         return quiz;
@@ -121,7 +136,7 @@ public class QuizService {
         Optional<Quiz> quiz = repository.findByTitle(title);
 
         if (quiz.isEmpty() || !authRequestUtils.isRequestFromCreator(quiz.get().getCreatedBy())) {
-            throw new RuntimeException(); //not found
+            throw new NotFoundException("Quiz");
         }
 
         return quiz;

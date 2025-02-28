@@ -1,6 +1,7 @@
 package io.github.abeatrizsc.study_gamification_ms.services;
 
 import io.github.abeatrizsc.study_gamification_ms.domain.Question;
+import io.github.abeatrizsc.study_gamification_ms.exceptions.NotFoundException;
 import io.github.abeatrizsc.study_gamification_ms.repositories.QuestionRepository;
 import io.github.abeatrizsc.study_gamification_ms.utils.AuthRequestUtils;
 import lombok.AllArgsConstructor;
@@ -27,7 +28,7 @@ public class QuestionService {
         Question question = repository.findById(id).orElseThrow();
 
         if (!authRequestUtils.isRequestFromCreator(question.getCreatedBy())) {
-            throw new RuntimeException(); //not found
+            throw new NotFoundException("Question");
         }
 
         return question;
@@ -37,7 +38,7 @@ public class QuestionService {
         Optional<Question> q = repository.findByQuestion(question);
 
         if (q.isEmpty() || !authRequestUtils.isRequestFromCreator(q.get().getCreatedBy())) {
-            throw new RuntimeException(); //not found
+            throw new NotFoundException("Question");
         }
 
         return q;

@@ -1,6 +1,7 @@
 package io.github.abeatrizsc.study_gamification_ms.services;
 
 import io.github.abeatrizsc.study_gamification_ms.domain.Option;
+import io.github.abeatrizsc.study_gamification_ms.exceptions.NotFoundException;
 import io.github.abeatrizsc.study_gamification_ms.repositories.OptionRepository;
 import io.github.abeatrizsc.study_gamification_ms.utils.AuthRequestUtils;
 import lombok.AllArgsConstructor;
@@ -26,7 +27,7 @@ public class OptionService {
         Option option = repository.findById(id).orElseThrow();
 
         if (!authRequestUtils.isRequestFromCreator(option.getCreatedBy())) {
-            throw new RuntimeException(); //not found
+            throw new NotFoundException("Option");
         }
 
         return option;

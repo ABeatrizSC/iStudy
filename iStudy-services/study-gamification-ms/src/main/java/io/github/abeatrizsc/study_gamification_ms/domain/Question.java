@@ -26,7 +26,10 @@ public class Question {
     private String createdBy;
 
     @Column(name = "option_chosen")
-    private String optionChosen;
+    private String optionChosen = null;
+
+    @Column(name = "correct_answer")
+    private Boolean correctAnswer = false;
 
     @ManyToOne
     @JoinColumn(name = "quiz_id")
@@ -36,5 +39,4 @@ public class Question {
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JsonManagedReference
     private List<Option> options;
-
 }

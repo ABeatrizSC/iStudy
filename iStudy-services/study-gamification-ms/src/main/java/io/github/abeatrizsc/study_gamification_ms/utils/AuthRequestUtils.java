@@ -1,6 +1,7 @@
 package io.github.abeatrizsc.study_gamification_ms.utils;
 
 import feign.FeignException;
+import io.github.abeatrizsc.study_gamification_ms.exceptions.FeignConnectionException;
 import io.github.abeatrizsc.study_gamification_ms.feign.AuthServiceClient;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -32,7 +33,7 @@ public class AuthRequestUtils {
             return authServiceClient.getAuthenticatedUser(token);
 
         } catch (FeignException e) {
-            throw new RuntimeException();
+            throw new FeignConnectionException();
         }
     }
 
