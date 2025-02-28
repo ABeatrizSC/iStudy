@@ -4,6 +4,7 @@ import io.github.abeatrizsc.study_gamification_ms.domain.Question;
 import io.github.abeatrizsc.study_gamification_ms.domain.Quiz;
 import io.github.abeatrizsc.study_gamification_ms.dtos.QuizAnswerDto;
 import io.github.abeatrizsc.study_gamification_ms.dtos.QuizRequestDto;
+import io.github.abeatrizsc.study_gamification_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.study_gamification_ms.services.QuizService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -36,14 +37,14 @@ public class QuizController {
     }
 
     @PostMapping
-    public ResponseEntity<List<Quiz>> create(@RequestBody @Valid QuizRequestDto dto) {
+    public ResponseEntity<List<Quiz>> create(@RequestBody @Valid QuizRequestDto dto) throws ConflictException {
         List<Quiz> quizzes = service.create(dto);
 
         return  ResponseEntity.status(HttpStatus.CREATED).body(quizzes);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<List<Quiz>> updateById(@PathVariable String id, @RequestBody @Valid QuizRequestDto dto) {
+    public ResponseEntity<List<Quiz>> updateById(@PathVariable String id, @RequestBody @Valid QuizRequestDto dto) throws ConflictException {
         List<Quiz> quizzes = service.update(id, dto);
 
         return ResponseEntity.ok(quizzes);

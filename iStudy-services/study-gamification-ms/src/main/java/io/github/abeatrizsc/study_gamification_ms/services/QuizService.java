@@ -6,6 +6,7 @@ import io.github.abeatrizsc.study_gamification_ms.domain.Quiz;
 import io.github.abeatrizsc.study_gamification_ms.dtos.QuestionAnswerDto;
 import io.github.abeatrizsc.study_gamification_ms.dtos.QuizAnswerDto;
 import io.github.abeatrizsc.study_gamification_ms.dtos.QuizRequestDto;
+import io.github.abeatrizsc.study_gamification_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.study_gamification_ms.exceptions.NotFoundException;
 import io.github.abeatrizsc.study_gamification_ms.repositories.OptionRepository;
 import io.github.abeatrizsc.study_gamification_ms.repositories.QuestionRepository;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -27,7 +29,11 @@ public class QuizService {
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
-    public List<Quiz> create(QuizRequestDto requestDto) {
+    public List<Quiz> create(QuizRequestDto requestDto) throws ConflictException {
+        if (quizAlreadyExists(requestDto.getTitle(), null)) {
+            throw new ConflictException("quiz name");
+        }
+
         Quiz quiz = new Quiz();
         quiz.setTitle(requestDto.getTitle());
         quiz.setCreatedBy(authRequestUtils.getRequestUserId());
@@ -58,8 +64,13 @@ public class QuizService {
     }
 
     @Transactional
-    public List<Quiz> update(String id, QuizRequestDto requestDto) {
+    public List<Quiz> update(String id, QuizRequestDto requestDto) throws ConflictException {
         Quiz quiz = findById(id);
+
+        if (quizAlreadyExists(requestDto.getTitle(), quiz.getId())) {
+            throw new ConflictException("quiz name");
+        }
+
         quiz.setTitle(requestDto.getTitle());
 
         quiz.getQuestions().clear();
@@ -140,5 +151,16 @@ public class QuizService {
         }
 
         return quiz;
+    }
+
+    public Boolean quizAlreadyExists(String title, String quizId) {
+        String userId = authRequestUtils.getRequestUserId();
+        Optional<Quiz> quiz = repository.findByTitleAndCreatedBy(title, userId);
+
+        if (quiz.isEmpty() || Objects.equals(quiz.get().getId(), quizId)) {
+            return false;
+        }
+
+        return true;
     }
 }
