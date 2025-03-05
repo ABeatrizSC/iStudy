@@ -1,6 +1,8 @@
 package io.github.abeatrizsc.study_gamification_ms.controllers;
 
+import io.github.abeatrizsc.study_gamification_ms.domain.Card;
 import io.github.abeatrizsc.study_gamification_ms.domain.Flashcard;
+import io.github.abeatrizsc.study_gamification_ms.dtos.FlashcardAnswerDto;
 import io.github.abeatrizsc.study_gamification_ms.dtos.FlashcardRequestDto;
 import io.github.abeatrizsc.study_gamification_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.study_gamification_ms.services.FlashcardService;
@@ -54,4 +56,10 @@ public class FlashcardController {
 
         return ResponseEntity.ok(flashcards);
     }
+
+    @PutMapping("/answer/{id}")
+    public ResponseEntity<List<Card>> answerFlashcard(@PathVariable String id, @RequestBody @Valid FlashcardAnswerDto dto) {
+        return ResponseEntity.ok(service.answer(id, dto));
+    }
+
 }

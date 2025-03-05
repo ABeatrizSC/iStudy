@@ -1,9 +1,10 @@
 package io.github.abeatrizsc.study_gamification_ms.services;
 
 import io.github.abeatrizsc.study_gamification_ms.domain.*;
-import io.github.abeatrizsc.study_gamification_ms.dtos.FlashcardRequestDto;
+import io.github.abeatrizsc.study_gamification_ms.dtos.*;
 import io.github.abeatrizsc.study_gamification_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.study_gamification_ms.exceptions.NotFoundException;
+import io.github.abeatrizsc.study_gamification_ms.repositories.CardRepository;
 import io.github.abeatrizsc.study_gamification_ms.repositories.FlashcardRepository;
 import io.github.abeatrizsc.study_gamification_ms.utils.AuthRequestUtils;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,7 @@ import java.util.Optional;
 @AllArgsConstructor
 public class FlashcardService {
     private FlashcardRepository repository;
+    private CardRepository cardRepository;
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
@@ -79,6 +81,24 @@ public class FlashcardService {
         repository.delete(flashcard);
 
         return findAll();
+    }
+
+    @Transactional
+    public List<Card> answer(String id, FlashcardAnswerDto answerDto) {
+        Flashcard flashcard = findById(id);
+
+        for (Card card : flashcard.getCards()) {
+            for (CardAnswerDto cardAnswer : answerDto.getCardsAnswer()) {
+                if (card.getId().equals(cardAnswer.getId())) {
+                    card.setIsHit(cardAnswer.getIsHit());
+                    break;
+                }
+            }
+        }
+
+        repository.save(flashcard);
+
+        return cardRepository.findByIsHitAndFlashcardId(false, flashcard.getId());
     }
 
     public List<Flashcard> findAll(){

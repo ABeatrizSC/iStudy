@@ -51,7 +51,7 @@ public class QuizController {
     }
 
     @PutMapping("/answer/{id}")
-    public ResponseEntity<List<Question>> updateById(@PathVariable String id, @RequestBody @Valid QuizAnswerDto dto) {
+    public ResponseEntity<List<Question>> answerQuiz(@PathVariable String id, @RequestBody @Valid QuizAnswerDto dto) {
         return ResponseEntity.ok(service.answer(id, dto));
     }
 
