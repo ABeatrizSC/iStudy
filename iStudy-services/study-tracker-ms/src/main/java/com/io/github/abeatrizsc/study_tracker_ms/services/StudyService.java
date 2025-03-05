@@ -18,7 +18,12 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.temporal.WeekFields;
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -71,7 +76,7 @@ public class StudyService {
         return repository
                 .findAll()
                 .stream()
-                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(s -> authRequestUtils.isRequestFromCreator(s.getCreatedBy()))
                 .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
                 .toList();
     }
@@ -89,7 +94,7 @@ public class StudyService {
     public List<StudyResponseDto> findByDate(LocalDate date) {
         return repository.findByDate(date)
                 .stream()
-                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(s -> authRequestUtils.isRequestFromCreator(s.getCreatedBy()))
                 .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
                 .toList();
     }
@@ -97,7 +102,7 @@ public class StudyService {
     public List<StudyResponseDto> findByIsCompletedTrue() {
         return repository.findByIsCompletedTrue()
                 .stream()
-                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(s -> authRequestUtils.isRequestFromCreator(s.getCreatedBy()))
                 .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
                 .toList();
     }
@@ -108,7 +113,7 @@ public class StudyService {
 
         return repository.findByDateBetween(startDate, endDate)
                 .stream()
-                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(s -> authRequestUtils.isRequestFromCreator(s.getCreatedBy()))
                 .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
                 .toList();
     }
@@ -122,7 +127,7 @@ public class StudyService {
 
         return repository.findByDateBetween(startDate, endDate)
                 .stream()
-                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(s -> authRequestUtils.isRequestFromCreator(s.getCreatedBy()))
                 .map(s -> studyMapper.convertEntityToResponseDto(s, s.getTopicId()))
                 .toList();
     }
@@ -130,7 +135,7 @@ public class StudyService {
     public List<StudyResponseDto> findByDisciplineCategory(String category) {
         return findAll()
                 .stream()
-                .filter(s -> Objects.equals(s.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(s -> authRequestUtils.isRequestFromCreator(s.getCreatedBy()))
                 .filter(s -> s.getDiscipline().getCategory().equals(category))
                 .toList();
     }
@@ -158,7 +163,6 @@ public class StudyService {
     }
 
     public LocalTime getMonthlyCompletedStudyTime(Integer year, Integer month) {
-        LocalTime totalTime = LocalTime.of(0, 0);
         List<StudyResponseDto> monthlyStudies = findByMonth(year, month);
 
         return calcCompletedStudyTime(monthlyStudies);

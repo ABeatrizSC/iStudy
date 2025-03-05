@@ -70,7 +70,7 @@ public class DisciplineService {
         return repository
                 .findAll()
                 .stream()
-                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(d -> authRequestUtils.isRequestFromCreator(d.getCreatedBy()))
                 .toList();
     }
 
@@ -92,7 +92,7 @@ public class DisciplineService {
         return repository
                 .findAllByCategory(category)
                 .stream()
-                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(d -> authRequestUtils.isRequestFromCreator(d.getCreatedBy()))
                 .toList();
     }
 
@@ -100,7 +100,7 @@ public class DisciplineService {
         return repository
                 .findByNameContaining(query)
                 .stream()
-                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(d -> authRequestUtils.isRequestFromCreator(d.getCreatedBy()))
                 .toList();
     }
 
@@ -108,7 +108,7 @@ public class DisciplineService {
         return repository
                 .findByIsCompletedTrue()
                 .stream()
-                .filter(d -> Objects.equals(d.getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(d -> authRequestUtils.isRequestFromCreator(d.getCreatedBy()))
                 .toList();
     }
 
