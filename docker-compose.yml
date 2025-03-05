@@ -108,6 +108,25 @@ services:
         condition: service_started
     networks:
       - istudy-network
+  study-gamification-ms:
+    build: ./iStudy-services/study-gamification-ms
+    container_name: study-gamification-ms
+    ports:
+      - "8084:8084"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - DB_URL=jdbc:mysql://mysql-db:3306/study_gamification_ms_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    networks:
+      - istudy-network
 
 networks:
   istudy-network:

@@ -83,7 +83,7 @@ public class TopicService {
         return repository
                 .findAll()
                 .stream()
-                .filter(t -> Objects.equals(t.getDiscipline().getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(t -> authRequestUtils.isRequestFromCreator(t.getDiscipline().getCreatedBy()))
                 .map(topicMapper::convertEntityToResponseDto)
                 .toList();
     }
@@ -92,7 +92,7 @@ public class TopicService {
         return repository
                 .findByIsCompletedTrue()
                 .stream()
-                .filter(t -> Objects.equals(t.getDiscipline().getCreatedBy(), authRequestUtils.getRequestUserId()))
+                .filter(t -> authRequestUtils.isRequestFromCreator(t.getDiscipline().getCreatedBy()))
                 .filter(t ->  Objects.equals(t.getDiscipline().getId(), disciplineId))
                 .map(t -> topicMapper.convertEntityToResponseDto(t))
                 .toList();

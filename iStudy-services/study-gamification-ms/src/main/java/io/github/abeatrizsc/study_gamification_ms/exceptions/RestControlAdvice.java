@@ -1,7 +1,6 @@
-package com.io.github.abeatrizsc.study_tracker_ms.exceptions;
+package io.github.abeatrizsc.study_gamification_ms.exceptions;
 
-import com.io.github.abeatrizsc.study_tracker_ms.exceptions.dto.ErrorMessageDto;
-import feign.FeignException;
+import io.github.abeatrizsc.study_gamification_ms.exceptions.dto.ErrorMessageDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;

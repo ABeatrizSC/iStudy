@@ -1,9 +1,10 @@
 package com.io.github.abeatrizsc.study_tracker_ms.controllers;
 
 import com.io.github.abeatrizsc.study_tracker_ms.domain.Study;
+import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyInfoDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyResponseDto;
-import com.io.github.abeatrizsc.study_tracker_ms.dtos.vo.SuccessResponseVo;
+import com.io.github.abeatrizsc.study_tracker_ms.dtos.SuccessResponseDto;
 import com.io.github.abeatrizsc.study_tracker_ms.exceptions.ConflictException;
 import com.io.github.abeatrizsc.study_tracker_ms.mapper.StudyMapper;
 import com.io.github.abeatrizsc.study_tracker_ms.services.StudyService;
@@ -49,10 +50,15 @@ public class StudyController {
     }
 
     @GetMapping("/month")
-    public ResponseEntity<List<StudyResponseDto>> getByMonth(@RequestParam Integer month, @RequestParam Integer year) {
-        List<StudyResponseDto> studiesPerMonth = service.findByMonth(month, year);
+    public ResponseEntity<List<StudyResponseDto>> getByMonth(@RequestParam Integer year, @RequestParam Integer month) {
+        List<StudyResponseDto> studiesPerMonth = service.findByMonth(year, month);
 
         return studiesPerMonth.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studiesPerMonth);
+    }
+
+    @GetMapping("/month/info")
+    public ResponseEntity<StudyInfoDto> getMonthInfo(@RequestParam Integer year, @RequestParam Integer month) {
+        return ResponseEntity.ok(service.getMonthInfo(year, month));
     }
 
     @GetMapping("/week")
@@ -60,6 +66,11 @@ public class StudyController {
         List<StudyResponseDto> studiesPerWeek = service.findByWeek(year, week);
 
         return studiesPerWeek.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studiesPerWeek);
+    }
+
+    @GetMapping("/week/info")
+    public ResponseEntity<StudyInfoDto> getWeekInfo(@RequestParam Integer year, @RequestParam Integer week) {
+        return ResponseEntity.ok(service.getWeekInfo(year, week));
     }
 
     @GetMapping("/subject-category")
@@ -70,10 +81,10 @@ public class StudyController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseVo> insert(@RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
+    public ResponseEntity<SuccessResponseDto> insert(@RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
         service.save(requestDto);
 
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseVo("Study created successfully!"));
+        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseDto("Study created successfully!"));
     }
 
     @PutMapping("/{id}")
@@ -84,9 +95,9 @@ public class StudyController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponseVo> deleteById(@PathVariable String id) {
+    public ResponseEntity<SuccessResponseDto> deleteById(@PathVariable String id) {
         service.delete(id);
 
-        return ResponseEntity.ok(new SuccessResponseVo("Study deleted successfully!"));
+        return ResponseEntity.ok(new SuccessResponseDto("Study deleted successfully!"));
     }
 }

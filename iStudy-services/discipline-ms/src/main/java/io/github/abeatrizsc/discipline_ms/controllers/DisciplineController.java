@@ -21,18 +21,18 @@ public class DisciplineController {
     private DisciplineService service;
 
     @GetMapping
-    public Discipline getByName(@RequestParam String name) {
-        return service.findByName(name);
+    public ResponseEntity<Discipline> getByName(@RequestParam String name) {
+        return ResponseEntity.ok(service.findByName(name));
     }
 
     @GetMapping("/all")
-    public List<Discipline> getAll() {
-        return service.findAll();
+    public ResponseEntity<List<Discipline>> getAll() {
+        return ResponseEntity.ok(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public Discipline getById(@PathVariable String id) {
-        return service.findById(id);
+    public ResponseEntity<Discipline> getById(@PathVariable String id) {
+        return ResponseEntity.ok(service.findById(id));
     }
 
     @PostMapping
