@@ -4,7 +4,6 @@ import com.io.github.abeatrizsc.study_tracker_ms.domain.Study;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyInfoDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyResponseDto;
-import com.io.github.abeatrizsc.study_tracker_ms.dtos.SuccessResponseDto;
 import com.io.github.abeatrizsc.study_tracker_ms.exceptions.ConflictException;
 import com.io.github.abeatrizsc.study_tracker_ms.mapper.StudyMapper;
 import com.io.github.abeatrizsc.study_tracker_ms.services.StudyService;
@@ -81,23 +80,17 @@ public class StudyController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponseDto> insert(@RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
-        service.save(requestDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponseDto("Study created successfully!"));
+    public ResponseEntity<List<StudyResponseDto>> insert(@RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(requestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<StudyResponseDto> updateById(@PathVariable String id, @RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
-        StudyResponseDto responseDto = service.update(id, requestDto);
-
-        return ResponseEntity.ok(responseDto);
+    public ResponseEntity<List<StudyResponseDto>> updateById(@PathVariable String id, @RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
+        return ResponseEntity.ok(service.update(id, requestDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponseDto> deleteById(@PathVariable String id) {
-        service.delete(id);
-
-        return ResponseEntity.ok(new SuccessResponseDto("Study deleted successfully!"));
+    public ResponseEntity<List<StudyResponseDto>> deleteById(@PathVariable String id) {
+        return ResponseEntity.ok(service.delete(id));
     }
 }

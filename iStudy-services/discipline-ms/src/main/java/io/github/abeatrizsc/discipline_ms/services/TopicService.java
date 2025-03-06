@@ -25,7 +25,7 @@ public class TopicService {
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
-    public void save(TopicRequestDto requestDto) throws NameConflictException {
+    public List<TopicResponseDto> save(TopicRequestDto requestDto) throws NameConflictException {
         Topic topic = topicMapper.convertRequestDtoToEntity(requestDto);
 
         if (disciplineService.topicAlreadyExistsInDiscipline(null, topic.getDiscipline().getCreatedBy(), requestDto.getName())) {
@@ -36,10 +36,12 @@ public class TopicService {
 
         List<TopicResponseDto> completedTopics = findAllIsCompletedTrueByDiscipline(topic.getDiscipline().getId());
         disciplineService.updateTime(completedTopics, topic.getDiscipline().getId());
+
+        return findAll();
     }
 
     @Transactional
-    public TopicResponseDto update(String id, TopicUpdateDto updateDto) throws NameConflictException {
+    public List<TopicResponseDto> update(String id, TopicUpdateDto updateDto) throws NameConflictException {
         Topic topic = topicMapper.convertResponseDtoToEntity(findById(id));
 
         String userCreator = topic.getDiscipline().getCreatedBy();
@@ -60,11 +62,11 @@ public class TopicService {
         List<TopicResponseDto> completedTopics = findAllIsCompletedTrueByDiscipline(topic.getDiscipline().getId());
         disciplineService.updateTime(completedTopics, topic.getDiscipline().getId());
 
-        return topicMapper.convertEntityToResponseDto(topic);
+        return findAll();
     }
 
     @Transactional
-    public void delete(String id) {
+    public List<TopicResponseDto> delete(String id) {
         Topic topic = topicMapper.convertResponseDtoToEntity(findById(id));
 
         String userCreator = topic.getDiscipline().getCreatedBy();
@@ -77,6 +79,8 @@ public class TopicService {
 
         List<TopicResponseDto> completedTopics = findAllIsCompletedTrueByDiscipline(topic.getDiscipline().getId());
         disciplineService.updateTime(completedTopics, topic.getDiscipline().getId());
+
+        return findAll();
     }
 
     public List<TopicResponseDto> findAll() {

@@ -1,7 +1,6 @@
 package io.github.abeatrizsc.discipline_ms.controllers;
 
 import io.github.abeatrizsc.discipline_ms.dtos.TopicRequestDto;
-import io.github.abeatrizsc.discipline_ms.dtos.vo.SuccessResponse;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicResponseDto;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicUpdateDto;
 import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
@@ -36,23 +35,17 @@ public class TopicController {
     }
 
     @PostMapping
-    public ResponseEntity<SuccessResponse> insert(@RequestBody @Valid TopicRequestDto requestDto) throws NameConflictException {
-        topicService.save(requestDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse("Topic created successfully!"));
+    public ResponseEntity<List<TopicResponseDto>> insert(@RequestBody @Valid TopicRequestDto requestDto) throws NameConflictException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(topicService.save(requestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<TopicResponseDto> updateById(@PathVariable @Valid String id, @RequestBody TopicUpdateDto updateDto) throws NameConflictException {
-        TopicResponseDto topicResponse = topicService.update(id, updateDto);
-
-        return ResponseEntity.ok(topicResponse);
+    public ResponseEntity<List<TopicResponseDto>> updateById(@PathVariable @Valid String id, @RequestBody TopicUpdateDto updateDto) throws NameConflictException {
+        return ResponseEntity.ok(topicService.update(id, updateDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse> deleteById(@PathVariable String id) {
-        topicService.delete(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Topic deleted successfully!"));
+    public ResponseEntity<List<TopicResponseDto>> deleteById(@PathVariable String id) {
+        return ResponseEntity.ok(topicService.delete(id));
     }
 }

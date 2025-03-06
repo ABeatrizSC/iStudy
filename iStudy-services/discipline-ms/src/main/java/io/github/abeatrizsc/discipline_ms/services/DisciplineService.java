@@ -28,7 +28,7 @@ public class DisciplineService {
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
-    public void save(DisciplineRequestDto requestDto) throws NameConflictException {
+    public List<Discipline> save(DisciplineRequestDto requestDto) throws NameConflictException {
         Discipline discipline = DisciplineMapper.INSTANCE.convertDtoToEntity(requestDto);
 
         String userCreator = authRequestUtils.getRequestUserId();
@@ -40,10 +40,12 @@ public class DisciplineService {
         }
 
         repository.save(discipline);
+
+        return findAll();
     }
 
     @Transactional
-    public Discipline update(String id, DisciplineRequestDto requestDto) throws NameConflictException {
+    public List<Discipline> update(String id, DisciplineRequestDto requestDto) throws NameConflictException {
         Discipline discipline = findById(id);
 
         if (disciplineNameAlreadyExists(discipline.getId(), requestDto.getName(), discipline.getCreatedBy())) {
@@ -56,14 +58,16 @@ public class DisciplineService {
 
         repository.save(discipline);
 
-        return discipline;
+        return findAll();
     }
 
     @Transactional
-    public void delete(String id) {
+    public List<Discipline> delete(String id) {
         Discipline discipline = findById(id);
 
         repository.delete(discipline);
+
+        return findAll();
     }
 
     public List<Discipline> findAll() {
