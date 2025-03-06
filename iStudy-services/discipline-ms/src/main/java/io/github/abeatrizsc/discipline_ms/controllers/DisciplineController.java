@@ -2,7 +2,6 @@ package io.github.abeatrizsc.discipline_ms.controllers;
 
 import io.github.abeatrizsc.discipline_ms.dtos.DisciplineRequestDto;
 import io.github.abeatrizsc.discipline_ms.domain.Discipline;
-import io.github.abeatrizsc.discipline_ms.dtos.vo.SuccessResponse;
 import io.github.abeatrizsc.discipline_ms.enums.DisciplineCategoryEnum;
 import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
 import io.github.abeatrizsc.discipline_ms.services.DisciplineService;
@@ -20,6 +19,21 @@ import java.util.List;
 public class DisciplineController {
     private DisciplineService service;
 
+    @PostMapping
+    public ResponseEntity<List<Discipline>> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws NameConflictException {
+        return ResponseEntity.status(HttpStatus.CREATED).body(service.save(requestDto));
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<List<Discipline>> updateById(@PathVariable String id, @RequestBody @Valid  DisciplineRequestDto requestDto) throws NameConflictException {
+        return ResponseEntity.ok(service.update(id, requestDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<List<Discipline>> deleteById(@PathVariable String id) {
+        return ResponseEntity.ok(service.delete(id));
+    }
+
     @GetMapping
     public ResponseEntity<Discipline> getByName(@RequestParam String name) {
         return ResponseEntity.ok(service.findByName(name));
@@ -33,27 +47,6 @@ public class DisciplineController {
     @GetMapping("/{id}")
     public ResponseEntity<Discipline> getById(@PathVariable String id) {
         return ResponseEntity.ok(service.findById(id));
-    }
-
-    @PostMapping
-    public ResponseEntity<SuccessResponse> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws NameConflictException {
-        service.save(requestDto);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(new SuccessResponse("Subject created successfully!"));
-    }
-
-    @PutMapping("/{id}")
-    public ResponseEntity<Discipline> updateById(@PathVariable String id, @RequestBody @Valid  DisciplineRequestDto requestDto) throws NameConflictException {
-        Discipline discipline = service.update(id, requestDto);
-
-        return ResponseEntity.ok(discipline);
-    }
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<SuccessResponse> deleteById(@PathVariable String id) {
-        service.delete(id);
-
-        return ResponseEntity.status(HttpStatus.OK).body(new SuccessResponse("Subject deleted successfully!"));
     }
 
     @GetMapping("/category/{category}")

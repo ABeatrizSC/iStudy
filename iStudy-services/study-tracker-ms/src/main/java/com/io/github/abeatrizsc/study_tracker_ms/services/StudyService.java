@@ -34,7 +34,7 @@ public class StudyService {
     private AuthRequestUtils authRequestUtils;
 
     @Transactional
-    public void save(StudyRequestDto requestDto) throws ConflictException {
+    public List<StudyResponseDto> save(StudyRequestDto requestDto) throws ConflictException {
         Study study = studyMapper.convertRequestDtoToEntity(requestDto);
         study.setCreatedBy(authRequestUtils.getRequestUserId());
 
@@ -43,10 +43,11 @@ public class StudyService {
         }
 
         repository.save(study);
+        return findAll();
     }
 
     @Transactional
-    public StudyResponseDto update(String id, StudyRequestDto requestDto) throws ConflictException {
+    public List<StudyResponseDto> update(String id, StudyRequestDto requestDto) throws ConflictException {
         Study studyUpdated = studyMapper.convertRequestDtoToEntity(requestDto);
         Study study = findById(id);
 
@@ -61,15 +62,15 @@ public class StudyService {
         }
 
         repository.save(study);
-
-        return studyMapper.convertEntityToResponseDto(study, study.getTopicId());
+        return findAll();
     }
 
     @Transactional
-    public void delete(String id) {
+    public List<StudyResponseDto> delete(String id) {
         Study study = findById(id);
 
         repository.delete(study);
+        return findAll();
     }
 
     public List<StudyResponseDto> findAll() {
