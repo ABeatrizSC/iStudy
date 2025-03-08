@@ -108,6 +108,7 @@ services:
         condition: service_started
     networks:
       - istudy-network
+
   study-gamification-ms:
     build: ./iStudy-services/study-gamification-ms
     container_name: study-gamification-ms
@@ -124,6 +125,23 @@ services:
       eureka-server:
         condition: service_started
       api-gateway:
+        condition: service_started
+    networks:
+      - istudy-network
+
+  istudy-app:
+    build: ./istudy-app
+    container_name: istudy-app
+    ports:
+    - "3000:3000"
+    depends_on:
+      auth-ms:
+        condition: service_started
+      discipline-ms:
+        condition: service_started
+      study-tracker-ms:
+        condition: service_started
+      study-gamification-ms:
         condition: service_started
     networks:
       - istudy-network
