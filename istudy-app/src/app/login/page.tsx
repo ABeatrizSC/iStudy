@@ -17,9 +17,14 @@ import { CustomLink } from '@/components/Link';
 import { formScheme, LoginForm, validationScheme } from "./formScheme";
 import { useFormik } from "formik";
 import { FieldError } from '@/components/FieldError';
+import { User } from '@/resources/styles/auth-user/user.resource';
+import { useAuth } from '@/resources/styles/auth-user/authentication.service';
+import { useRouter } from "next/navigation";
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
+  const auth = useAuth();
+  const router = useRouter();
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -34,7 +39,15 @@ export default function Login() {
   });
 
   async function onSubmit(values: LoginForm) {
-    console.log(values);
+    const user: User = { email: values.email, password: values.password };
+
+    try {
+      await auth.login(user);
+      router.push("/")
+    } catch(error: any) {
+      const message = error?.message;
+      console.log(message)
+    }
   }
 
   return (
