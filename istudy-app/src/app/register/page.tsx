@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from '@/resources/styles/Theme';
+import theme from '@/resources/assets/styles/Theme';
 import {Button} from '@/components/Button';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
@@ -16,8 +16,8 @@ import { CustomLink } from '@/components/Link';
 import { formScheme, RegisterForm, validationScheme } from "./formScheme";
 import { useFormik } from "formik";
 import { FieldError } from '@/components/FieldError';
-import { User } from '@/resources/styles/auth-user/user.resource';
-import { useAuth } from '@/resources/styles/auth-user/authentication.service';
+import { User } from '@/resources/auth-user/user.resource';
+import { useAuth } from '@/resources/auth-user/authentication.service';
 import { useNotification } from '@/components/notification';
 import { ToastContainer } from 'react-toastify';
 

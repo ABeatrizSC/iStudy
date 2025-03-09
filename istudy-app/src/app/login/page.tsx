@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
-import theme from '@/resources/styles/Theme';
+import theme from '@/resources/assets/styles/Theme';
 import Avatar from '@mui/material/Avatar';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
@@ -17,8 +17,8 @@ import { CustomLink } from '@/components/Link';
 import { formScheme, LoginForm, validationScheme } from "./formScheme";
 import { useFormik } from "formik";
 import { FieldError } from '@/components/FieldError';
-import { User } from '@/resources/styles/auth-user/user.resource';
-import { useAuth } from '@/resources/styles/auth-user/authentication.service';
+import { User } from '@/resources/auth-user/user.resource';
+import { useAuth } from '@/resources/auth-user/authentication.service';
 import { useRouter } from "next/navigation";
 import { useNotification } from '@/components/notification';
 import { ToastContainer } from 'react-toastify';
@@ -27,7 +27,7 @@ export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const auth = useAuth();
   const router = useRouter();
-    const notification = useNotification();
+  const notification = useNotification();
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
