@@ -20,11 +20,14 @@ import { FieldError } from '@/components/FieldError';
 import { User } from '@/resources/styles/auth-user/user.resource';
 import { useAuth } from '@/resources/styles/auth-user/authentication.service';
 import { useRouter } from "next/navigation";
+import { useNotification } from '@/components/notification';
+import { ToastContainer } from 'react-toastify';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const auth = useAuth();
   const router = useRouter();
+    const notification = useNotification();
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -46,7 +49,7 @@ export default function Login() {
       router.push("/")
     } catch(error: any) {
       const message = error?.message;
-      console.log(message)
+      notification.notify(message, "error");
     }
   }
 
@@ -137,6 +140,7 @@ export default function Login() {
           </Box>
         </Box>
       </Container>
+      <ToastContainer position='bottom-right' />
     </ThemeProvider>
   );
 }

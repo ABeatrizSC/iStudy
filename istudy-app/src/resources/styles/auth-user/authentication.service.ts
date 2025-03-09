@@ -15,7 +15,7 @@ class AuthService {
 
         if (response.status !== 200) {
             const responseError = await response.json();
-            throw new Error(responseError.error);
+            throw new Error(responseError.message);
         }
 
         const data = await response.json();
@@ -35,7 +35,7 @@ class AuthService {
 
         if(response.status != 201){
             const responseError = await response.json();
-            throw new Error(responseError.error);
+            throw new Error(responseError.message);
         }
 
         const responseData = await response.json();

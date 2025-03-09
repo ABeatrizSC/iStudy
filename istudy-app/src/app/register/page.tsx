@@ -18,11 +18,12 @@ import { useFormik } from "formik";
 import { FieldError } from '@/components/FieldError';
 import { User } from '@/resources/styles/auth-user/user.resource';
 import { useAuth } from '@/resources/styles/auth-user/authentication.service';
-import { useRouter } from "next/navigation";
+import { useNotification } from '@/components/notification';
+import { ToastContainer } from 'react-toastify';
 
 export default function Login() {
   const auth = useAuth();
-  const router = useRouter();
+  const notification = useNotification();
 
   const formik = useFormik<RegisterForm>({
     initialValues: formScheme,
@@ -34,11 +35,11 @@ export default function Login() {
     const newUser: User = { name: values.name, email: values.email, password: values.password }
 
     try {
-      await auth.save(newUser);
-      router.push("/login")
+      const response = await auth.save(newUser);
+      notification.notify(response, "success");
     } catch(error: any) {
       const message = error?.message;
-      console.log(message);
+      notification.notify(message, "error");
     }
   }
 
@@ -159,6 +160,7 @@ export default function Login() {
           </Box>
         </Box>
       </Container>
+      <ToastContainer position='bottom-right' />
     </ThemeProvider>
   );
 }
