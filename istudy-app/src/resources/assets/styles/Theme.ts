@@ -44,7 +44,7 @@ const theme = createTheme({
     },
     text: {
       primary: "#29292E",
-      secondary: "#7E7E86",
+      secondary: "#a1aaaf",
     },
     hover: {
       primary: "#6A46D4",

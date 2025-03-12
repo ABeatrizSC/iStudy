@@ -31,7 +31,7 @@ export const Button: React.FC<ButtonProps> = ({
 
     return (
         <button 
-            className={`${style} flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors duration-300 ease-in-out font-medium text-white
+            className={`${style} flex items-center justify-center gap-2 px-4 py-2 rounded-lg transition-colors duration-300 ease-in-out font-medium text-white uppercase
                 ${disabled ? "opacity-50 cursor-not-allowed" : "hover:brightness-105"}
             `} 
             style={{ backgroundColor: bgColor }}
