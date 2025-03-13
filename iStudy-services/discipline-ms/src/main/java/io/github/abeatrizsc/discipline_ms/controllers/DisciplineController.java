@@ -49,6 +49,11 @@ public class DisciplineController {
         return ResponseEntity.ok(service.findById(id));
     }
 
+    @GetMapping("/category")
+    public ResponseEntity<List<String>> getAllCategories() {
+        return ResponseEntity.ok(service.getAllCategories());
+    }
+
     @GetMapping("/category/{category}")
     public ResponseEntity<List<Discipline>> getAllByCategory(@PathVariable String category) {
         List<Discipline> disciplines = service.findAllByCategory(DisciplineCategoryEnum.valueOf(category));
@@ -69,4 +74,5 @@ public class DisciplineController {
 
         return disciplines.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(disciplines);
     }
+
 }

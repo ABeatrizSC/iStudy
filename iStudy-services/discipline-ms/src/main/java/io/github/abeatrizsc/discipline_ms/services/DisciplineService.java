@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalTime;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -114,6 +115,10 @@ public class DisciplineService {
                 .stream()
                 .filter(d -> authRequestUtils.isRequestFromCreator(d.getCreatedBy()))
                 .toList();
+    }
+
+    public List<String> getAllCategories() {
+        return Arrays.stream(DisciplineCategoryEnum.values()).map( c -> c.toString()).toList();
     }
 
     public Boolean disciplineNameAlreadyExists(String id, String newName, String createdBy) {
