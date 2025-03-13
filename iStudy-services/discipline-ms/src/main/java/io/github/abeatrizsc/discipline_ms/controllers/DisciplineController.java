@@ -49,12 +49,12 @@ public class DisciplineController {
         return ResponseEntity.ok(service.findById(id));
     }
 
-    @GetMapping("/category")
+    @GetMapping("/categories")
     public ResponseEntity<List<String>> getAllCategories() {
         return ResponseEntity.ok(service.getAllCategories());
     }
 
-    @GetMapping("/category/{category}")
+    @GetMapping("/categories/{category}")
     public ResponseEntity<List<Discipline>> getAllByCategory(@PathVariable String category) {
         List<Discipline> disciplines = service.findAllByCategory(DisciplineCategoryEnum.valueOf(category));
 
