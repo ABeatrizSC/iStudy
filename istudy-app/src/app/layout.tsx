@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { Roboto } from 'next/font/google'
+import QueryProvider from '@/providers/QueryProvider';
 
 const roboto = Roboto({ subsets: ['latin'], weight: '500' })
 
@@ -16,7 +17,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="pt-br">
-     <body className={`${roboto.className}`}>{children}</body>
+      <body className={`${roboto.className}`}>
+        <QueryProvider>
+          {children}
+        </QueryProvider>
+      </body>
     </html>
   )
 }
