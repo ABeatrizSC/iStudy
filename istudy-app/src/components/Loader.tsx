@@ -3,7 +3,7 @@ export const Loader: React.FC = () => {
         <div role="status" className="absolute top-2/4 left-2/4 transform -translate-x-1/2 -translate-y-1/2">
             <svg
                 aria-hidden="true"
-                className="inline w-11 h-11 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600"
+                className={`inline w-11 h-11 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-violet-600`}
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"

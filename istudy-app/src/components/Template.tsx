@@ -16,11 +16,11 @@ interface TemplateProps {
 export const Template: React.FC<TemplateProps> = ({ children, loading = false }: TemplateProps) => {
     return (
         <ThemeProvider theme={theme}>
-            <div className={`${loading ? 'animate-pulse' : ''}`}>
-                <Sidebar>
-                    {!loading ? children : <Loader />}
-                </Sidebar>
-            </div>
+            <Sidebar>
+                <div className={`${loading ? 'animate-pulse' : ''} w-full h-full`}>
+                        {!loading ? children : <Loader />}
+                </div>
+            </Sidebar>
             <ToastContainer position='bottom-right' />
         </ ThemeProvider>
     )

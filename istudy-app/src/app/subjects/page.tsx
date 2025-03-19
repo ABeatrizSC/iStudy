@@ -4,116 +4,22 @@ import { useState } from "react";
 import { Button } from "@/components/Button";
 import { Template } from "@/components/Template";
 import theme from '@/resources/assets/styles/Theme';
-import { Input, MenuItem, Select } from "@mui/material";
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
+import { Input, MenuItem, Select, SelectChangeEvent, TableBody } from "@mui/material";
+import { CustomTable, Column, CustomTableHead, CustomTableCell } from "@/components/Table/index";
 import TableRow from '@mui/material/TableRow';
 import { Visibility, Edit, Delete, Search, Add } from "@mui/icons-material";
-
-interface Discipline {
-    id: string,
-    name: string,
-    category: string,
-    totalTime: string,
-    timeCompleted: string,
-    isCompleted: boolean
-}
-
-const disciplines: Discipline[] = [
-    {
-        id: "1",
-        name: "Estruturas de Dados",
-        category: "Exact sciences",
-        totalTime: "40h",
-        timeCompleted: "10h",
-        isCompleted: false
-    },
-    {
-        id: "2",
-        name: "Banco de Dados",
-        category: "Exact sciences",
-        totalTime: "35h",
-        timeCompleted: "20h",
-        isCompleted: false
-    },
-    {
-        id: "3",
-        name: "Redes de Computadores",
-        category: "Exact sciences",
-        totalTime: "30h",
-        timeCompleted: "5h",
-        isCompleted: false
-    },
-    {
-        id: "4",
-        name: "Desenvolvimento Web",
-        category: "Exact sciences",
-        totalTime: "50h",
-        timeCompleted: "50h",
-        isCompleted: true
-    },
-    {
-        id: "5",
-        name: "Engenharia de Software",
-        category: "Exact sciences",
-        totalTime: "25h",
-        timeCompleted: "15h",
-        isCompleted: false
-    },
-    {
-        id: "6",
-        name: "Inteligência Artificial",
-        category: "Exact sciences",
-        totalTime: "45h",
-        timeCompleted: "30h",
-        isCompleted: false
-    },
-    {
-        id: "7",
-        name: "Sistemas Operacionais",
-        category: "Exact sciences",
-        totalTime: "40h",
-        timeCompleted: "25h",
-        isCompleted: false
-    },
-    {
-        id: "8",
-        name: "Matemática Discreta",
-        category: "Exact sciences",
-        totalTime: "35h",
-        timeCompleted: "15h",
-        isCompleted: false
-    },
-    {
-        id: "9",
-        name: "Arquitetura de Computadores",
-        category: "Exact sciences",
-        totalTime: "30h",
-        timeCompleted: "30h",
-        isCompleted: true
-    },
-    {
-        id: "10",
-        name: "Segurança da Informação",
-        category: "Exact sciences",
-        totalTime: "40h",
-        timeCompleted: "10h",
-        isCompleted: false
-    }
-];
-
-interface Column {
-    id: 'subject' | 'category' | 'completed' | 'actions';
-    label: string;
-    minWidth?: number;
-    align?: 'center';
-    format?: (value: number) => string;
-}
+import { useSubjectData } from "@/hooks/useSubjectData";
+import { useSubjectCategories } from "@/hooks/useSubjectCategories";
+import { useSubjectBySearch } from "@/hooks/useSubjectBySearch";
+import { useSubjectByCategory } from "@/hooks/useSubjectByCategory";
+import { Subject } from "@/resources/services/subject/subject.resource";
+import { Container } from "@/components/Container";
+import { useDeleteSubject } from "@/hooks/useDeleteSubject";
+import { SubjectModal, ConfirmationModal } from "@/components/Modal/index";
+import { useCreateSubject } from "@/hooks/useCreateSubject";
+import { useUpdateSubject } from "@/hooks/useUpdateSubject";
   
-const columns: readonly Column[] = [
+const columns: Column[] = [
     { 
         id: 'subject', 
         label: 'Subject', 
@@ -125,94 +31,200 @@ const columns: readonly Column[] = [
         align: 'center',
     },
     {
-      id: 'completed',
-      label: '% Completed',
+      id: 'total-time',
+      label: 'Total time',
       align: 'center',
     },
     {
-      id: 'actions',
-      label: 'Actions',
+      id: 'time-completed',
+      label: 'Time completed',
       align: 'center',
+    },
+    {
+        id: 'actions',
+        label: 'Actions',
+        align: 'center',
     }
 ];
 
+export const formatCategory = (category?: string) => {
+    if (!category) return "-";
+    return category
+      .toLocaleLowerCase()
+      .split("_")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+      .join(" ");
+};
+
 export default function Subjects() {
-    const [category, setCategory] = useState("");
-  
+    const [search, setSearch] = useState<string>("");
+    const [searchQuery, setSearchQuery] = useState<string>("");
+    const [categorySelected, setCategorySelected] = useState<string>("");
+    const [subjectSelected, setSubjectSelected] = useState<Subject>({id: "",
+        createdBy: "",
+        name: "",
+        category: "",
+        totalTime: "",
+        timeCompleted: "",
+        isCompleted: false,
+        topics: null
+    });
+    const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
+    const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+    const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState<boolean>(false);
+
+    const handleCloseCreateModal = () => {
+        setOpenCreateModal(false);
+    }
+
+    const handleCloseEditModal = () => {
+        setOpenEditModal(false);
+    }
+
+    const handleCloseConfirmDeleteModal = () => {
+        setOpenConfirmDeleteModal(false);
+    }
+
+    const createSubject = useCreateSubject();
+    const updateSubject = useUpdateSubject();
+    const deleteSubject = useDeleteSubject();
+
+    const handleDeleteSubject = (id: string = '') => {
+        deleteSubject.mutate(id, {
+            onSuccess: () => handleCloseConfirmDeleteModal(),
+        });
+    }
+    
+
+    const { data: subjectsBySearch, isLoading: loadingSearch } = useSubjectBySearch(searchQuery);
+
+    const { data: subjectsByCategory, isLoading: loadingCategory } = useSubjectByCategory(categorySelected);
+
+    const { data: allSubjects, isLoading: loadingAll } = useSubjectData();
+
+    const { data: categories } = useSubjectCategories();
+
+    const isLoading = loadingSearch || loadingCategory || loadingAll;
+
+    const subjects = searchQuery
+        ? subjectsBySearch
+        : categorySelected
+        ? subjectsByCategory
+        : allSubjects;
+
+    const handleSearch = () => {
+        setSearchQuery(search)
+    }
+
+    const handleCategoryChange = (event: SelectChangeEvent<string>) => {
+        setCategorySelected(event.target.value as string);
+        setSearchQuery("");
+        setSearch("");
+    };
+      
     return (
-        <Template>
+        <Template loading={isLoading}>
             <h1 className="mb-3" style={{ color: theme.palette.text.secondary}}>Subjects</h1>
-            <section className="w-full bg-white py-3 px-4 mb-4 rounded-lg shadow-[0_0_0.6rem_0.2rem_rgba(0,0,0,0.1)] flex flex-wrap items-center justify-center gap-5">
+            <Container style="!flex-row gap-5 items-center justify-center mb-5">
                 <span className="flex-1 flex items-center">
                     <span className="mr-2">Search:</span>
                     <Input 
                         placeholder="Subject name" 
                         fullWidth={true} 
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
                         sx={{
                             minWidth: '170px',
                         }}
                     />
                 </span>
+                <Button onClick={handleSearch}>
+                    <Search />
+                </Button> 
                 <span>
                     <span className="mr-2">Category:</span>
                     <Select
-                        value={category}
-                        onChange={(event) => setCategory(event.target.value)}
+                        value={categorySelected}
+                        onChange={handleCategoryChange}
                         sx={{
                             width: '180px'
                         }}
                     >
                         <MenuItem value={""}>None</MenuItem>
-                        <MenuItem value={"Biological Sciences"}>Biological Sciences</MenuItem>
-                        <MenuItem value={"Human sciences"}>Human sciences</MenuItem>
-                        <MenuItem value={"Exact sciences"}>Exact sciences</MenuItem>
-                        <MenuItem value={"Languages"}>Social sciences</MenuItem>
-                        <MenuItem value={"Exact sciences"}>Health sciences</MenuItem>
-                        <MenuItem value={"Exact sciences"}>Arts and humanities</MenuItem>
+                        {categories?.map((category) => (
+                            <MenuItem key={category} value={category}>{formatCategory(category)}</MenuItem>
+                        ))}
                     </Select>
                 </span>
-                <Button>
-                    <Search />
-                </Button>
-                <Button>
+                <Button onClick={() => setOpenCreateModal(true)}>
                     <Add />
                     New
                 </Button>
-            </section>
+            </Container>
 
-            <section className="w-full flex flex-col flex-grow bg-white py-3 px-4 rounded-lg shadow-[0_0_0.6rem_0.2rem_rgba(0,0,0,0.1)]">
-                <TableContainer sx={{ maxHeight: "400px", overflowY: "auto" }} className="w-full rounded-lg">
-                    <Table stickyHeader aria-label="sticky table">
-                        <TableHead>
-                            <TableRow>
-                                {columns.map((column) => (
-                                    <TableCell 
-                                        key={column.id} 
-                                        align={column.align}
-                                        sx={{ backgroundColor: theme.palette.primary.main, color: "white" }}
+            <Container>
+                <CustomTable>
+                    <CustomTableHead columns={columns}/>
+                    <TableBody>
+                        {subjects?.map((subject: Subject) => (
+                            <TableRow hover role="checkbox" tabIndex={-1} key={subject.id}>
+                                <CustomTableCell>{subject.name}</CustomTableCell>
+                                <CustomTableCell>
+                                    {formatCategory(subject.category)}
+                                </CustomTableCell>
+                                <CustomTableCell>{subject.totalTime.split(":").slice(0, 2).join(":")}h</CustomTableCell>
+                                <CustomTableCell>{subject.timeCompleted.split(":").slice(0, 2).join(":")}h</CustomTableCell>
+                                <CustomTableCell sx={{ display: 'flex', gap: '5px', alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
+                                    <Button>
+                                        <Visibility />
+                                    </Button>
+                                    <Button color="green" onClick={() => {
+                                        setSubjectSelected(subject),
+                                        setOpenEditModal(true)
+                                    }}>
+                                        <Edit />
+                                    </Button>
+                                    <Button onClick={ () => {
+                                             setOpenConfirmDeleteModal(true)
+                                            setSubjectSelected(subject)
+                                        }} 
+                                        color="red"
                                     >
-                                        {column.label}
-                                    </TableCell>
-                                ))}
+                                        <Delete />
+                                    </Button>
+                                </CustomTableCell>
                             </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {disciplines.map((discipline) => (
-                                <TableRow hover role="checkbox" tabIndex={-1} key={discipline.id}>
-                                    <TableCell className="text-center">{discipline.name}</TableCell>
-                                    <TableCell className="text-center">{discipline.category}</TableCell>
-                                    <TableCell className="text-center">{((parseInt(discipline.timeCompleted) / parseInt(discipline.totalTime)) * 100).toFixed(2)}%</TableCell>
-                                    <TableCell className="flex gap-2 justify-center">
-                                        <Button><Visibility /></Button>
-                                        <Button color="green"><Edit /></Button>
-                                        <Button color="red"><Delete /></Button>
-                                    </TableCell>
-                                </TableRow>
-                            ))}
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            </section>
+                        ))}
+                    </TableBody>
+                </CustomTable>
+                {subjects?.length === 0 && <span className="block w-full text-center my-5">No subject registered.</span>}
+            </Container>
+            <SubjectModal 
+                title={"Add a new subject"} 
+                submitText={"Create"} 
+                categoriesList={categories} 
+                createAction={createSubject} 
+                open={openCreateModal} 
+                handleClose={handleCloseCreateModal} 
+            />
+            <SubjectModal 
+                key={subjectSelected.id} 
+                title={"Edit subject"} 
+                submitText={"Save"} 
+                categoriesList={categories} 
+                data={subjectSelected} 
+                updateAction={updateSubject} 
+                open={openEditModal} 
+                handleClose={handleCloseEditModal} 
+            />
+            <ConfirmationModal
+                title={`Delete subject '${subjectSelected.name}'?`}
+                description={"This action will delete all the subject data and its topics."}
+                agreeText={"Delete"}
+                action={() => handleDeleteSubject(subjectSelected.id)}
+                open={openConfirmDeleteModal}
+                handleClose={handleCloseConfirmDeleteModal}
+            />
         </Template>
     );
 }

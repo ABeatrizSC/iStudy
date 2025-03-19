@@ -5,7 +5,7 @@ interface ButtonProps {
     color?: "primary" | "secondary" | "red" | "green" | string;
     style ?: string;
     label?: string;
-    onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
+    onClick?: ((event: React.MouseEvent<HTMLButtonElement>) => void) | (() => void);
     type?: "submit" | "button" | "reset";
     disabled?: boolean;
     children?: React.ReactNode;
