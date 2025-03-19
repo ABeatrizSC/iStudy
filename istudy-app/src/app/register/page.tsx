@@ -16,8 +16,8 @@ import { CustomLink } from '@/components/Link';
 import { formScheme, RegisterForm, validationScheme } from "./formScheme";
 import { useFormik } from "formik";
 import { FieldError } from '@/components/FieldError';
-import { User } from '@/resources/auth-user/user.resource';
-import { useAuth } from '@/resources/auth-user/authentication.service';
+import { User } from '@/resources/services/auth-user/user.resource';
+import { useAuth } from '@/resources/services/auth-user/authentication.service';
 import { useNotification } from '@/components/notification';
 import { ToastContainer } from 'react-toastify';
 

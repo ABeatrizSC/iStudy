@@ -7,7 +7,7 @@ import { BookCheckIcon, Calendar, ChevronDown, ClipboardList, Gamepad2, Home, Lo
 import istudyLogo from '../resources/assets/images/iStudyLogo.png';
 import {Button} from '@/components/Button';
 import Link from "next/link";
-import { useAuth } from "@/resources/auth-user/authentication.service";
+import { useAuth } from "@/resources/services/auth-user/authentication.service";
 
 export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isSidebarOpened, setIsSidebarOpened] = useState(true);
@@ -88,7 +88,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
                     {isSidebarOpened && "Logout"}
                 </Button>
             </aside>
-            <main className="!items-start !justify-start">
+            <main className="!items-start !justify-start relative">
                 {children}
             </main>
         </div>
