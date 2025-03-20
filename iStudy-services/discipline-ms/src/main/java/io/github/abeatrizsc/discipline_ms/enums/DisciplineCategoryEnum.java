@@ -8,10 +8,9 @@ public enum DisciplineCategoryEnum {
     EXACT_SCIENCES(1),
     HUMAN_SCIENCES(2),
     BIOLOGICAL_SCIENCES(3),
-    LANGUAGES(4),
-    TECHNOLOGY_AND_COMPUTING(5),
-    HEALTH_AND_MEDICINE(6),
-    BUSINESS_AND_MANAGEMENT(7);
+    SOCIAL_SCIENCES(4),
+    HEALTH_SCIENCES(5),
+    ARTS_AND_HUMANITIES(6);
 
     @Getter
     private final int code;

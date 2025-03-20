@@ -9,6 +9,12 @@ spring:
     url: ${DB_URL}
     username: ${DB_USER}
     password: ${DB_PASSWORD}
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    url: ${DB_URL}
+    user: ${DB_USER}
+    password: ${DB_PASSWORD}
   jpa:
     hibernate:
       dialect: org.hibernate.dialect.MySQLDialect
