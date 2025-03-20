@@ -17,13 +17,11 @@ import { formScheme, RegisterForm, validationScheme } from "./formScheme";
 import { useFormik } from "formik";
 import { FieldError } from '@/components/FieldError';
 import { User } from '@/resources/services/auth-user/user.resource';
-import { useAuth } from '@/resources/services/auth-user/authentication.service';
-import { useNotification } from '@/components/notification';
 import { ToastContainer } from 'react-toastify';
+import { useRegister } from '@/hooks/auth-user/useRegister';
 
-export default function Login() {
-  const auth = useAuth();
-  const notification = useNotification();
+export default function Register() {
+  const useUserRegister = useRegister();
 
   const formik = useFormik<RegisterForm>({
     initialValues: formScheme,
@@ -34,13 +32,7 @@ export default function Login() {
   async function onSubmit(values: RegisterForm) {
     const newUser: User = { name: values.name, email: values.email, password: values.password }
 
-    try {
-      const response = await auth.save(newUser);
-      notification.notify(response, "success");
-    } catch(error: any) {
-      const message = error?.message;
-      notification.notify(message, "error");
-    }
+    useUserRegister.mutate(newUser);
   }
 
   return (

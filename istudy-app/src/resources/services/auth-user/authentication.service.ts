@@ -1,3 +1,4 @@
+import { ApiService } from "../utils/api.service";
 import { UserCredentials, AccessToken, User } from "./user.resource";
 
 export const getAuthHeaders = () => {
@@ -10,44 +11,20 @@ export const getAuthHeaders = () => {
 };
 
 class AuthService {
-    baseURL: string = 'http://localhost:8080/auth'
     static AUTH_PARAM: string = "_auth";
+    private apiService = new ApiService();
 
     async login(credentials: UserCredentials): Promise<void> {
-        const response = await fetch(`${this.baseURL}/login`, {
-            method: 'POST',
-            body: JSON.stringify(credentials),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+        const data: any = await this.apiService.request('/auth/login', 'POST', credentials);
 
-        if (response.status !== 200) {
-            const responseError = await response.json();
-            throw new Error(responseError.message);
-        }
-
-        const data = await response.json();
         const token: AccessToken = data.token;
 
         this.initSession(token);
     }
 
     async save(user: User) : Promise<string> {
-        const response = await fetch(`${this.baseURL}/register`, {
-            method: 'POST',
-            body: JSON.stringify(user),
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
+        const responseData: any = await this.apiService.request('/auth/register', 'POST', user);
 
-        if(response.status != 201){
-            const responseError = await response.json();
-            throw new Error(responseError.message);
-        }
-
-        const responseData = await response.json();
         return responseData.message;
     }
 
@@ -62,4 +39,4 @@ class AuthService {
     }
 }
 
-export const useAuth = () => new AuthService();
+export const useAuthService = () => new AuthService();

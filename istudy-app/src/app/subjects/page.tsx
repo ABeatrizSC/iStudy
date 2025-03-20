@@ -8,17 +8,11 @@ import { Input, MenuItem, Select, SelectChangeEvent, TableBody } from "@mui/mate
 import { CustomTable, Column, CustomTableHead, CustomTableCell } from "@/components/Table/index";
 import TableRow from '@mui/material/TableRow';
 import { Visibility, Edit, Delete, Search, Add } from "@mui/icons-material";
-import { useSubjectData } from "@/hooks/useSubjectData";
-import { useSubjectCategories } from "@/hooks/useSubjectCategories";
-import { useSubjectBySearch } from "@/hooks/useSubjectBySearch";
-import { useSubjectByCategory } from "@/hooks/useSubjectByCategory";
+import { useSubjectData, useSubjectCategories, useSubjectBySearch, useSubjectByCategory, useDeleteSubject, useCreateSubject, useUpdateSubject } from "@/hooks/subject/index";
 import { Subject } from "@/resources/services/subject/subject.resource";
 import { Container } from "@/components/Container";
-import { useDeleteSubject } from "@/hooks/useDeleteSubject";
 import { SubjectModal, ConfirmationModal } from "@/components/Modal/index";
-import { useCreateSubject } from "@/hooks/useCreateSubject";
-import { useUpdateSubject } from "@/hooks/useUpdateSubject";
-  
+
 const columns: Column[] = [
     { 
         id: 'subject', 

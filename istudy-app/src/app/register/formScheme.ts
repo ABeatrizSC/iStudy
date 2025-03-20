@@ -1,7 +1,7 @@
 import * as Yup from 'yup'
 
 export interface RegisterForm {
-    name?: string;
+    name: string;
     email: string;
     password: string;
     passwordMatch?: string;

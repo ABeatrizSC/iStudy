@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import theme from '@/resources/assets/styles/Theme';
 import Image from "next/image";
@@ -7,19 +6,19 @@ import { BookCheckIcon, Calendar, ChevronDown, ClipboardList, Gamepad2, Home, Lo
 import istudyLogo from '../resources/assets/images/iStudyLogo.png';
 import {Button} from '@/components/Button';
 import Link from "next/link";
-import { useAuth } from "@/resources/services/auth-user/authentication.service";
+import { useAuthService } from "@/resources/services/auth-user/authentication.service";
 
 export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isSidebarOpened, setIsSidebarOpened] = useState(true);
     const [openedDropdownIndex, setOpenedDropdownIndex] = useState<number | null>(null);
     const router = useRouter();
-    const auth = useAuth();
+    const authService = useAuthService();
     
     const toggleSidebar = () => setIsSidebarOpened(!isSidebarOpened);
     const toggleDropdown = (index: number) => setOpenedDropdownIndex(openedDropdownIndex === index ? null : index);
     
     const handleLogout = () => {
-        auth.logoutSession();
+        authService.logoutSession();
         router.push("/login");
     }
 

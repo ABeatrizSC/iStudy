@@ -17,17 +17,13 @@ import { CustomLink } from '@/components/Link';
 import { formScheme, LoginForm, validationScheme } from "./formScheme";
 import { useFormik } from "formik";
 import { FieldError } from '@/components/FieldError';
-import { User } from '@/resources/services/auth-user/user.resource';
-import { useAuth } from '@/resources/services/auth-user/authentication.service';
-import { useRouter } from "next/navigation";
-import { useNotification } from '@/components/notification';
+import { UserCredentials } from '@/resources/services/auth-user/user.resource';
 import { ToastContainer } from 'react-toastify';
+import { useLogin } from '@/hooks/auth-user/useLogin';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
-  const auth = useAuth();
-  const router = useRouter();
-  const notification = useNotification();
+  const useUserLogin = useLogin();
 
   const handleClickShowPassword = () => setShowPassword((prev) => !prev);
 
@@ -42,15 +38,9 @@ export default function Login() {
   });
 
   async function onSubmit(values: LoginForm) {
-    const user: User = { email: values.email, password: values.password };
+    const user: UserCredentials = { email: values.email, password: values.password };
 
-    try {
-      await auth.login(user);
-      router.push("/")
-    } catch(error: any) {
-      const message = error?.message;
-      notification.notify(message, "error");
-    }
+    useUserLogin.mutate(user);
   }
 
   return (
