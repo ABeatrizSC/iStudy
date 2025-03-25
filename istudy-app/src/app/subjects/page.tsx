@@ -8,8 +8,8 @@ import { Visibility, Edit, Delete, Search, Add } from "@mui/icons-material";
 import { useSubjectData, useSubjectCategories, useSubjectBySearch, useSubjectByCategory, useDeleteSubject, useCreateSubject, useUpdateSubject } from "@/hooks/subject";
 import { Subject } from "@/resources/services/subject/subject.resource";
 import { useRouter } from "next/navigation";
-import { formatCategory, formatTime } from "../utils/formatters";
 import { Column } from "@/components/Table";
+import { formatCategory, formatTime } from "@/utils/formatters";
 
 const columns: Column[] = [
     { 

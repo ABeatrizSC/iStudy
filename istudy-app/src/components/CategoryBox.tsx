@@ -1,5 +1,5 @@
-import { CATEGORY_COLOR } from "@/app/constants/colors/categoriesColors";
-import { formatCategory } from "@/app/utils/formatters";
+import { CATEGORY_COLOR } from "@/constants/colors/categoriesColors";
+import { formatCategory } from "@/utils/formatters";
 
 interface CategoryBoxProps {
     category: string;

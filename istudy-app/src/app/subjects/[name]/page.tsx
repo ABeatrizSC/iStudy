@@ -6,7 +6,7 @@ import { Checkbox, LinearProgress, TableBody, TableRow } from "@mui/material";
 import { useParams } from "next/navigation";
 import { Add, Delete, Edit } from "@mui/icons-material";
 import theme from "@/resources/assets/styles/Theme";
-import { formatTime } from "@/app/utils/formatters";
+import { formatTime } from "@/utils/formatters";
 import { useEffect, useState } from "react";
 import { Topic, TopicUpdate } from "@/resources/services/topic/topic.resource";
 import { useCreateTopic, useDeleteTopic, useUpdateTopic } from "@/hooks/topic";
