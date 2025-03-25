@@ -7,7 +7,7 @@ import { DialogContentText } from '@mui/material';
 
 interface ConfirmationModalProps {
     title: string;
-    description: string;
+    description?: string;
     agreeText?: string;
     action: () => void;
     open: boolean;

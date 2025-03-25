@@ -7,7 +7,7 @@ import { Button } from '../Button';
 import { useEffect, useState } from 'react';
 import { Subject, SubjectRequest } from '@/resources/services/subject/subject.resource';
 import { UseMutationResult } from '@tanstack/react-query';
-import { formatCategory } from '@/app/subjects/page';
+import { formatCategory } from '@/app/utils/formatters';
 
 interface SubjectModalProps {
     title: string;

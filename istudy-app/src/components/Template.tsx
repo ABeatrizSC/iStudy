@@ -17,7 +17,7 @@ export const Template: React.FC<TemplateProps> = ({ children, loading = false }:
     return (
         <ThemeProvider theme={theme}>
             <Sidebar>
-                <div className={`${loading ? 'animate-pulse' : ''} w-full h-full`}>
+                <div className={`${loading ? 'animate-pulse' : ''} w-full flex flex-col gap-4 justify-start`}>
                         {!loading ? children : <Loader />}
                 </div>
             </Sidebar>

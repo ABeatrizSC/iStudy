@@ -5,14 +5,14 @@ export interface Topic {
     name: string;
     time: string;
     isCompleted: boolean;
-    subject: Subject;
+    discipline: Subject | null;
 }
 
 export interface TopicRequest {
     name: string;
     time: string;
     isCompleted: boolean;
-    subjectId: string; 
+    disciplineId: string; 
 }
 
 export interface TopicResponse{
@@ -20,7 +20,7 @@ export interface TopicResponse{
     name: string;
     time: string;
     isCompleted: boolean;
-    subjectId: string; 
+    disciplineId: string; 
 }
 
 export interface TopicUpdate{

@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { Button } from "@/components/Button";
 import { Template } from "@/components/Template";
-import theme from '@/resources/assets/styles/Theme';
 import { Input, MenuItem, Select, SelectChangeEvent, TableBody } from "@mui/material";
 import { CustomTable, Column, CustomTableHead, CustomTableCell } from "@/components/Table/index";
 import TableRow from '@mui/material/TableRow';
@@ -12,6 +11,11 @@ import { useSubjectData, useSubjectCategories, useSubjectBySearch, useSubjectByC
 import { Subject } from "@/resources/services/subject/subject.resource";
 import { Container } from "@/components/Container";
 import { SubjectModal, ConfirmationModal } from "@/components/Modal/index";
+import { useRouter } from "next/navigation";
+import { Title } from "@/components/Title";
+import { formatTime } from "../utils/formatters/formatTime";
+import { formatCategory } from "../utils/formatters";
+import { CategoryBox } from "@/components/CategoryBox";
 
 const columns: Column[] = [
     { 
@@ -40,16 +44,6 @@ const columns: Column[] = [
         align: 'center',
     }
 ];
-
-export const formatCategory = (category?: string) => {
-    if (!category) return "-";
-    return category
-      .toLocaleLowerCase()
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-};
-
 export default function Subjects() {
     const [search, setSearch] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -66,6 +60,7 @@ export default function Subjects() {
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
     const [openEditModal, setOpenEditModal] = useState<boolean>(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState<boolean>(false);
+    const router = useRouter()
 
     const handleCloseCreateModal = () => {
         setOpenCreateModal(false);
@@ -88,7 +83,6 @@ export default function Subjects() {
             onSuccess: () => handleCloseConfirmDeleteModal(),
         });
     }
-    
 
     const { data: subjectsBySearch, isLoading: loadingSearch } = useSubjectBySearch(searchQuery);
 
@@ -118,8 +112,10 @@ export default function Subjects() {
       
     return (
         <Template loading={isLoading}>
-            <h1 className="mb-3" style={{ color: theme.palette.text.secondary}}>Subjects</h1>
-            <Container style="!flex-row gap-5 items-center justify-center mb-5">
+            <Title>
+                Subjects
+            </Title>
+            <Container style="!flex-row gap-5 items-center justify-center">
                 <span className="flex-1 flex items-center">
                     <span className="mr-2">Search:</span>
                     <Input 
@@ -145,7 +141,7 @@ export default function Subjects() {
                         }}
                     >
                         <MenuItem value={""}>None</MenuItem>
-                        {categories?.map((category) => (
+                        {categories?.map((category: string) => (
                             <MenuItem key={category} value={category}>{formatCategory(category)}</MenuItem>
                         ))}
                     </Select>
@@ -160,16 +156,23 @@ export default function Subjects() {
                 <CustomTable>
                     <CustomTableHead columns={columns}/>
                     <TableBody>
-                        {subjects?.map((subject: Subject) => (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={subject.id}>
+                        {subjects?.map((subject: Subject, index: number) => (
+                            <TableRow hover 
+                                role="checkbox" 
+                                tabIndex={-1} 
+                                key={subject.id}
+                                sx={{
+                                    backgroundColor: (index % 2 === 0 ? "#f9f9f9" : "#ffffff"),
+                                }}
+                            >
                                 <CustomTableCell>{subject.name}</CustomTableCell>
                                 <CustomTableCell>
-                                    {formatCategory(subject.category)}
+                                    <CategoryBox category={subject.category} />
                                 </CustomTableCell>
-                                <CustomTableCell>{subject.totalTime.split(":").slice(0, 2).join(":")}h</CustomTableCell>
-                                <CustomTableCell>{subject.timeCompleted.split(":").slice(0, 2).join(":")}h</CustomTableCell>
+                                <CustomTableCell>{formatTime(subject.totalTime)}</CustomTableCell>
+                                <CustomTableCell>{formatTime(subject.timeCompleted)}</CustomTableCell>
                                 <CustomTableCell sx={{ display: 'flex', gap: '5px', alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                                    <Button>
+                                    <Button onClick={() => router.push(`/subjects/${subject.name}`)}>
                                         <Visibility />
                                     </Button>
                                     <Button color="green" onClick={() => {
