@@ -5,12 +5,11 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Input } from '@mui/material';
-import { Button } from '../Button';
+import { Button, TimeInput } from '../';
 import { Topic, TopicRequest, TopicResponse } from '@/resources/services/topic/topic.resource';
 import { UseMutationResult } from '@tanstack/react-query';
 import { useState } from 'react';
 import dayjs from 'dayjs';
-import { TimeInput } from '../TimeInput';
 
 interface CreateTopicModalProps {
     data?: Topic,

@@ -6,7 +6,7 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { BookCheckIcon, Calendar, ChevronDown, ClipboardList, Gamepad2, Home, LogOut, Menu, SquareGanttChart, StickyNote, Timer } from "lucide-react";
 import istudyLogo from '../resources/assets/images/iStudyLogo.png';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 import Link from "next/link";
 import { useAuthService } from "@/resources/services/auth-user/authentication.service";
 

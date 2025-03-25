@@ -1,4 +1,4 @@
-import { useNotification } from "@/components/notification";
+import { useNotification } from "@/components";
 import { getAuthHeaders } from "../auth-user/authentication.service";
 
 export class ApiService {

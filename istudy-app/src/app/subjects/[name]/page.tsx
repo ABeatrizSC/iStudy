@@ -1,19 +1,13 @@
 'use client';
 
-import { Container } from "@/components/Container";
-import { Template } from "@/components/Template";
-import { Title } from "@/components/Title";
+import { Container, Template, Title, Button, CustomTable, CustomTableCell, ConfirmationModal, CreateTopicModal, UpdateTopicModal, CategoryBox } from "@/components";
 import { useSubjectByName } from "@/hooks/subject";
 import { Checkbox, LinearProgress, TableBody, TableRow } from "@mui/material";
 import { useParams } from "next/navigation";
-import { Button } from "@/components/Button";
 import { Add, Delete, Edit } from "@mui/icons-material";
-import { CustomTable, CustomTableCell } from "@/components/Table";
 import theme from "@/resources/assets/styles/Theme";
 import { formatTime } from "@/app/utils/formatters";
 import { useEffect, useState } from "react";
-import { CategoryBox } from "@/components/CategoryBox";
-import { ConfirmationModal, CreateTopicModal, UpdateTopicModal } from "@/components/Modal";
 import { Topic, TopicUpdate } from "@/resources/services/topic/topic.resource";
 import { useCreateTopic, useDeleteTopic, useUpdateTopic } from "@/hooks/topic";
 

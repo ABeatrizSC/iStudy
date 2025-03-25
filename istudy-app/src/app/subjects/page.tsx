@@ -1,21 +1,15 @@
 'use client';
 
 import { useState } from "react";
-import { Button } from "@/components/Button";
-import { Template } from "@/components/Template";
+import { Template, Container, Button, CustomTable, CustomTableHead, CustomTableCell, SubjectModal, ConfirmationModal, Title, CategoryBox } from "@/components";
 import { Input, MenuItem, Select, SelectChangeEvent, TableBody } from "@mui/material";
-import { CustomTable, Column, CustomTableHead, CustomTableCell } from "@/components/Table/index";
 import TableRow from '@mui/material/TableRow';
 import { Visibility, Edit, Delete, Search, Add } from "@mui/icons-material";
-import { useSubjectData, useSubjectCategories, useSubjectBySearch, useSubjectByCategory, useDeleteSubject, useCreateSubject, useUpdateSubject } from "@/hooks/subject/index";
+import { useSubjectData, useSubjectCategories, useSubjectBySearch, useSubjectByCategory, useDeleteSubject, useCreateSubject, useUpdateSubject } from "@/hooks/subject";
 import { Subject } from "@/resources/services/subject/subject.resource";
-import { Container } from "@/components/Container";
-import { SubjectModal, ConfirmationModal } from "@/components/Modal/index";
 import { useRouter } from "next/navigation";
-import { Title } from "@/components/Title";
-import { formatTime } from "../utils/formatters/formatTime";
-import { formatCategory } from "../utils/formatters";
-import { CategoryBox } from "@/components/CategoryBox";
+import { formatCategory, formatTime } from "../utils/formatters";
+import { Column } from "@/components/Table";
 
 const columns: Column[] = [
     { 

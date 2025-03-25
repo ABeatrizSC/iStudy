@@ -5,7 +5,7 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Input, MenuItem, Select } from '@mui/material';
-import { Button } from '../Button';
+import { Button } from '../';
 import { useEffect, useState } from 'react';
 import { Subject, SubjectRequest } from '@/resources/services/subject/subject.resource';
 import { UseMutationResult } from '@tanstack/react-query';
