@@ -12,5 +12,6 @@ export const useRegister = () => {
         onSuccess: () => {
             notification.notify("User created successfully!", "success")
         },
+        retry: false
     });
 };

@@ -11,5 +11,6 @@ import { Title } from "./Title";
 import { CustomTable, CustomTableCell, CustomTableHead } from "./Table";
 import { ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal } from "./Modal";
 import { useNotification } from "./notification";
+import { AuthenticatedPage } from "./AuthenticatedPage";
 
-export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, useNotification }
+export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, useNotification, AuthenticatedPage }

@@ -10,6 +10,7 @@ import { formatTime } from "@/app/utils/formatters";
 import { useEffect, useState } from "react";
 import { Topic, TopicUpdate } from "@/resources/services/topic/topic.resource";
 import { useCreateTopic, useDeleteTopic, useUpdateTopic } from "@/hooks/topic";
+import NotFoundPage from "@/app/not-found";
 
 export default function SubjectDetail() {
     const { name: subjectName } = useParams<{ name: string }>(); 
@@ -77,10 +78,12 @@ export default function SubjectDetail() {
         })
     };
     
+    if (!subject && !isLoading) return <NotFoundPage />
+
     return (
         <Template loading={isLoading}>
             <Title>
-               {`Subjects/${subject?.name}`}
+            {`Subjects/${subject?.name}`}
             </Title>
             <Container style="gap-2">
                 <div className="flex items-center gap-2">

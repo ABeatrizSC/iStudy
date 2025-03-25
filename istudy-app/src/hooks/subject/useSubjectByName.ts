@@ -6,6 +6,7 @@ export const useSubjectByName = (name?: string) => {
 
     return useQuery({
         queryKey: ['subject', name],
-        queryFn: () => subjectService.getByName(name!)
+        queryFn: () => subjectService.getByName(name!),
+        retry: false
     });
 };

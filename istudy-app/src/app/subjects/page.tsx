@@ -111,8 +111,9 @@ export default function Subjects() {
             </Title>
             <Container style="!flex-row gap-5 items-center justify-center">
                 <span className="flex-1 flex items-center">
-                    <span className="mr-2">Search:</span>
+                    <label htmlFor="subjectName" className="mr-2">Search:</label>
                     <Input 
+                        id="subjectName"
                         placeholder="Subject name" 
                         fullWidth={true} 
                         value={search}
@@ -126,8 +127,9 @@ export default function Subjects() {
                     <Search />
                 </Button> 
                 <span>
-                    <span className="mr-2">Category:</span>
+                    <label htmlFor="subjectCategory" className="mr-2">Category:</label>
                     <Select
+                        id="subjectCategory"
                         value={categorySelected}
                         onChange={handleCategoryChange}
                         sx={{
@@ -176,7 +178,7 @@ export default function Subjects() {
                                         <Edit />
                                     </Button>
                                     <Button onClick={ () => {
-                                             setOpenConfirmDeleteModal(true)
+                                            setOpenConfirmDeleteModal(true)
                                             setSubjectSelected(subject)
                                         }} 
                                         color="red"
