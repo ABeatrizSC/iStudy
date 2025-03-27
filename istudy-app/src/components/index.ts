@@ -12,5 +12,7 @@ import { CustomTable, CustomTableCell, CustomTableHead } from "./Table";
 import { ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal } from "./Modal";
 import { useNotification } from "./notification";
 import { AuthenticatedPage } from "./AuthenticatedPage";
+import { StudyBox, StudyInfo } from "./Study";
+import { CategoryBorder } from "./CategoryBorder";
 
-export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, useNotification, AuthenticatedPage }
+export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, useNotification, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder }
