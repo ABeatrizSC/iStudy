@@ -14,7 +14,7 @@ export const StudyBox: React.FC<StudyBoxProps> = ({ study: {id, time, date, isCo
     return (
           <div 
             key={id} 
-            className="w-[220px] h-[170px] group flex flex-col bg-gray-100 pt-3 pb-8 px-4 rounded-lg gap-1 relative overflow-hidden shadow-[0px_1px_5px_0px_rgba(117,117,117,0.57)] transition-transform duration-200 hover:scale-105"
+            className="min-w-[220px] max-w-[270px] h-[170px] group flex flex-col flex-grow flex-1 bg-gray-100 pt-3 pb-8 px-4 rounded-lg gap-1 relative overflow-hidden shadow-[0px_1px_5px_0px_rgba(117,117,117,0.57)] transition-transform duration-200 hover:scale-105"
         >
             <h3 className="text-wrap">{discipline.name}</h3>
             <StudyInfo info={discipline.topic.name}>

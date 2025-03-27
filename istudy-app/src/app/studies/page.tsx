@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Template, Container, Button, Title, StudyBox } from "@/components";
 import { Input, MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import {  Search, Add } from "@mui/icons-material";
+import { Search, Add } from "@mui/icons-material";
 import { useSubjectCategories } from "@/hooks/subject";
 import { formatCategory } from "@/utils/formatters";
 import { useStudyData } from "@/hooks/study/useStudyData";
@@ -72,12 +72,11 @@ export default function Studies() {
                     New
                 </Button>
             </Container>
-            <Container style="!flex-row !flex-none justify-start gap-5 flex-wrap">
+            <Container style="!flex-row justify-start gap-5 flex-wrap overflow-y-auto">
                 {studies?.map((study: StudyResponse) => (
                     <StudyBox key={study.id} study={study} />
                 ))}
             </Container>
-
         </Template>
     );
 }

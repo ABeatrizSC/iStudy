@@ -81,7 +81,8 @@ export const CreateTopicModal: React.FC<CreateTopicModalProps> = ({ data, subjec
             </span>
             <span className='flex flex-col gap-2'>
                 <label htmlFor="time" className="mr-2">Time:</label>
-                <TimeInput 
+                <TimeInput
+                    id="time" 
                     format='HH:mm' 
                     value={topicFormData.time}
                     onChangeFunc={(value) => setTopicFormData((prev) => ({

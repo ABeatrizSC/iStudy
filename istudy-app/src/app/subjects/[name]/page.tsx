@@ -99,7 +99,7 @@ export default function SubjectDetail() {
                 sx={{ height: '15px', borderRadius: "20px"}}
             />
             </Container>
-            <Container>
+            <Container style="overflow-y-auto">
                 <div className="flex justify-between items-center gap-5">
                     <h2>Topics</h2>
                     <Button onClick={() => setOpenCreateModal(true)}>

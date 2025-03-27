@@ -6,7 +6,7 @@ interface TableProps {
 }
 export const CustomTable: React.FC<TableProps> = ({ children }) => {
     return (
-        <TableContainer sx={{ maxHeight: "400px", overflowY: "auto" }} className="w-full rounded-lg">
+        <TableContainer sx={{ overflowY: "auto" }} className="w-full rounded-lg">
             <Table stickyHeader aria-label="sticky table">
                 {children}
             </Table>

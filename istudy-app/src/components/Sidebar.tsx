@@ -56,7 +56,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
     ];
     
     return (
-        <div className="flex">
+        <div className="flex" style={{ height: '100%'}}>
             <aside className={`text-white h-screen transition-all duration-300 ${isSidebarOpened ? 'w-64' : 'w-16'} flex flex-col p-4`} style={{ backgroundColor: theme.palette.primary.main }}> 
                 <div className="flex items-center justify-between mb-6">
                 {isSidebarOpened && <Image src={istudyLogo} alt="Logo" className="w-28" />}

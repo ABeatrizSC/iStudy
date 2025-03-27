@@ -148,7 +148,7 @@ export default function Subjects() {
                 </Button>
             </Container>
 
-            <Container>
+            <Container style="overflow-y-auto">
                 <CustomTable>
                     <CustomTableHead columns={columns}/>
                     <TableBody>

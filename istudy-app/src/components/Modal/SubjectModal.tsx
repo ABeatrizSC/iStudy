@@ -64,44 +64,46 @@ export const SubjectModal: React.FC<SubjectModalProps> = ({ title, submitText, c
             </DialogTitle>
             <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '40px'}}>
             <span className="flex flex-col gap-2">
-                <span className="mr-2">Name:</span>
-                    <Input 
-                        placeholder="Subject name" 
-                        fullWidth={true} 
-                        value={subjectData?.name ?? ""}
-                        required
-                        onChange={(event) =>
-                            setSubjectData((prev) => ({
-                                category: prev?.category,
-                                name: event.target.value,
-                            }))
-                        }
-                        sx={{
-                            minWidth: 'full-width',
-                        }}
-                    />
-                </span>
-                <span className='flex flex-col gap-2'>
-                    <span className="mr-2">Category:</span>
-                    <Select
-                      required
-                      value={subjectData?.category ?? ""}
-                      onChange={(event) =>
-                          setSubjectData((prev) => ({
-                              name: prev?.name || "",
-                              category: event.target.value,
-                          }))
-                      }
-                        sx={{width: 'full-width'}}
-                    >
-                        <MenuItem value={""}>None</MenuItem>
-                        {categoriesList?.map((category) => (
-                            <MenuItem key={category} value={category}>
-                                {formatCategory(category)}
-                            </MenuItem>
-                        ))}
-                    </Select>
-                </span>
+                <label htmlFor='subjectName' className="mr-2">Name:</label>
+                <Input 
+                    id="subjectName"
+                    placeholder="Subject name" 
+                    fullWidth={true} 
+                    value={subjectData?.name ?? ""}
+                    required
+                    onChange={(event) =>
+                        setSubjectData((prev) => ({
+                            category: prev?.category,
+                            name: event.target.value,
+                        }))
+                    }
+                    sx={{
+                        minWidth: 'full-width',
+                    }}
+                />
+            </span>
+            <span className='flex flex-col gap-2'>
+                <label htmlFor='category' className="mr-2">Category:</label>
+                <Select
+                    id="category"
+                    required
+                    value={subjectData?.category ?? ""}
+                    onChange={(event) =>
+                        setSubjectData((prev) => ({
+                            name: prev?.name || "",
+                            category: event.target.value,
+                        }))
+                    }
+                    sx={{width: 'full-width'}}
+                >
+                    <MenuItem value={""}>None</MenuItem>
+                    {categoriesList?.map((category) => (
+                        <MenuItem key={category} value={category}>
+                            {formatCategory(category)}
+                        </MenuItem>
+                    ))}
+                </Select>
+            </span>
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} style='!bg-transparent !text-red-500'>Cancel</Button>

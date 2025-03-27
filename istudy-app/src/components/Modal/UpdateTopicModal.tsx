@@ -69,26 +69,27 @@ export const UpdateTopicModal: React.FC<UpdateTopicModalProps> = ({ data, action
             <DialogContent sx={{ display: 'flex', flexDirection: 'column', gap: '40px' }}>
                 <span className="flex flex-col gap-2">
                     <label htmlFor="topicName" className="mr-2">Name:</label>
-                        <Input 
-                            id="topicName"
-                            placeholder="Topic name" 
-                            fullWidth={true} 
-                            required
-                            value={topicFormData.name}
-                            onChange={(event) =>
-                                setTopicFormData((prev) => ({
-                                    ...prev,
-                                    name: event.target.value
-                                }))
-                            }
-                            sx={{
-                                minWidth: 'full-width',
-                            }}
-                        />
+                    <Input 
+                        id="topicName"
+                        placeholder="Topic name" 
+                        fullWidth={true} 
+                        required
+                        value={topicFormData.name}
+                        onChange={(event) =>
+                            setTopicFormData((prev) => ({
+                                ...prev,
+                                name: event.target.value
+                            }))
+                        }
+                        sx={{
+                            minWidth: 'full-width',
+                        }}
+                    />
                 </span>
                 <span className='flex flex-col gap-2'>
                     <label htmlFor="time" className="mr-2">Time:</label>
                     <TimeInput 
+                        id="time"
                         format='HH:mm' 
                         value={topicFormData.time}
                         onChangeFunc={(value) => setTopicFormData((prev) => ({
