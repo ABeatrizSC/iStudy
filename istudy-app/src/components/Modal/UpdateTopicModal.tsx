@@ -8,7 +8,7 @@ import { Input } from '@mui/material';
 import { Button, TimeInput } from '../';
 import { Topic, TopicResponse, TopicUpdate } from '@/resources/services/topic/topic.resource';
 import { UseMutationResult } from '@tanstack/react-query';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dayjs from 'dayjs';
 
 interface UpdateTopicModalProps {
@@ -20,10 +20,20 @@ interface UpdateTopicModalProps {
 
 export const UpdateTopicModal: React.FC<UpdateTopicModalProps> = ({ data, action, open, handleClose }) => {
     const [topicFormData, setTopicFormData] = useState<TopicUpdate>({ 
-        name: data?.name ?? '', 
-        time: data?.time ?? '00:00', 
-        isCompleted: data?.isCompleted ?? false, 
+        name: '', 
+        time: '00:00', 
+        isCompleted: false, 
     });
+
+    useEffect(() => {
+        if (open) {
+            setTopicFormData({
+                name: data?.name ?? '',
+                time: data?.time ?? '00:00',
+                isCompleted: data?.isCompleted ?? false,
+            });
+        }
+    }, [open]);    
 
     const resetForm = () => {
         setTopicFormData({
@@ -32,7 +42,7 @@ export const UpdateTopicModal: React.FC<UpdateTopicModalProps> = ({ data, action
             isCompleted: false,
         });
     };
-
+    
     return (
         <Dialog
             open={open}
