@@ -21,11 +21,14 @@ public class Study {
     @Column(nullable = false, name = "created_by")
     private String createdBy;
 
-    @Column(nullable = false, name = "discipline_id")
-    private String disciplineId;
+    @Column(nullable = false, name = "discipline_name")
+    private String disciplineName;
 
-    @Column(nullable = false, name = "topic_id")
-    private String topicId;
+    @Column(nullable = false, name = "topic_name")
+    private String topicName;
+
+    @Column(nullable = false, name = "discipline_category")
+    private String disciplineCategory;
 
     @Column(nullable = false)
     private LocalTime time;

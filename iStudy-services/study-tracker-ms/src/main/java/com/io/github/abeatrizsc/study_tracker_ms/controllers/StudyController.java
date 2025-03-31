@@ -3,7 +3,6 @@ package com.io.github.abeatrizsc.study_tracker_ms.controllers;
 import com.io.github.abeatrizsc.study_tracker_ms.domain.Study;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyInfoDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
-import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyResponseDto;
 import com.io.github.abeatrizsc.study_tracker_ms.exceptions.ConflictException;
 import com.io.github.abeatrizsc.study_tracker_ms.mapper.StudyMapper;
 import com.io.github.abeatrizsc.study_tracker_ms.services.StudyService;
@@ -24,33 +23,33 @@ public class StudyController {
     private StudyMapper studyMapper;
 
     @GetMapping("/all")
-    public ResponseEntity<List<StudyResponseDto>> getAll() {
+    public ResponseEntity<List<Study>> getAll() {
         return ResponseEntity.status(HttpStatus.OK).body(service.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<StudyResponseDto> getById(@PathVariable String id) {
+    public ResponseEntity<Study> getById(@PathVariable String id) {
         Study study = service.findById(id);
-        return ResponseEntity.ok(studyMapper.convertEntityToResponseDto(study, study.getTopicId()));
+        return ResponseEntity.ok(study);
     }
 
     @GetMapping("/completed")
-    public ResponseEntity<List<StudyResponseDto>> getByIsCompleted() {
-        List<StudyResponseDto> studiesCompleted = service.findByIsCompletedTrue();
+    public ResponseEntity<List<Study>> getByIsCompleted() {
+        List<Study> studiesCompleted = service.findByIsCompletedTrue();
 
         return studiesCompleted.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studiesCompleted);
     }
 
     @GetMapping("/date")
-    public ResponseEntity<List<StudyResponseDto>> getByDate(@RequestParam String date) {
-        List<StudyResponseDto> studies = service.findByDate(LocalDate.parse(date));
+    public ResponseEntity<List<Study>> getByDate(@RequestParam String date) {
+        List<Study> studies = service.findByDate(LocalDate.parse(date));
 
         return studies.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studies);
     }
 
     @GetMapping("/month")
-    public ResponseEntity<List<StudyResponseDto>> getByMonth(@RequestParam Integer year, @RequestParam Integer month) {
-        List<StudyResponseDto> studiesPerMonth = service.findByMonth(year, month);
+    public ResponseEntity<List<Study>> getByMonth(@RequestParam Integer year, @RequestParam Integer month) {
+        List<Study> studiesPerMonth = service.findByMonth(year, month);
 
         return studiesPerMonth.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studiesPerMonth);
     }
@@ -61,8 +60,8 @@ public class StudyController {
     }
 
     @GetMapping("/week")
-    public ResponseEntity<List<StudyResponseDto>> getByWeek(@RequestParam Integer year, @RequestParam Integer week) {
-        List<StudyResponseDto> studiesPerWeek = service.findByWeek(year, week);
+    public ResponseEntity<List<Study>> getByWeek(@RequestParam Integer year, @RequestParam Integer week) {
+        List<Study> studiesPerWeek = service.findByWeek(year, week);
 
         return studiesPerWeek.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studiesPerWeek);
     }
@@ -73,24 +72,24 @@ public class StudyController {
     }
 
     @GetMapping("/subject-category")
-    public ResponseEntity<List<StudyResponseDto>> getByDisciplineCategory(@RequestParam String category) {
-        List<StudyResponseDto> studiesPerCategory = service.findByDisciplineCategory(category);
+    public ResponseEntity<List<Study>> getByDisciplineCategory(@RequestParam String category) {
+        List<Study> studiesPerCategory = service.findByDisciplineCategory(category);
 
         return studiesPerCategory.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studiesPerCategory);
     }
 
     @PostMapping
-    public ResponseEntity<List<StudyResponseDto>> insert(@RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
+    public ResponseEntity<List<Study>> insert(@RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(requestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<List<StudyResponseDto>> updateById(@PathVariable String id, @RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
+    public ResponseEntity<List<Study>> updateById(@PathVariable String id, @RequestBody @Valid StudyRequestDto requestDto) throws ConflictException {
         return ResponseEntity.ok(service.update(id, requestDto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<List<StudyResponseDto>> deleteById(@PathVariable String id) {
+    public ResponseEntity<List<Study>> deleteById(@PathVariable String id) {
         return ResponseEntity.ok(service.delete(id));
     }
 }
