@@ -139,6 +139,8 @@ cd istudy
 docker-compose up --build
  ```
 
+</br>
+
 # iStudy-services - Back-End
 ## Summary endpoints
 As the project is still in progress and subject to changes, this is a brief summary of all the available endpoints in each microservice and their functionality:
