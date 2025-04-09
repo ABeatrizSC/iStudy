@@ -5,7 +5,7 @@ export class ApiService {
     private baseURL: string = 'http://localhost:8080';
     private notification = useNotification();
 
-    async request<T>(endpoint: string, method: string = 'GET', body?: any): Promise<T | string> {
+    async request<T>(endpoint: string, method: string = 'GET', body?: any): Promise<any> {
         const response = await fetch(`${this.baseURL}${endpoint}`, {
             method,
             headers: getAuthHeaders(),

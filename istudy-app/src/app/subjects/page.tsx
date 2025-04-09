@@ -52,17 +52,9 @@ export default function Subjects() {
         topics: null
     });
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
-    const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+    const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState<boolean>(false);
     const router = useRouter()
-
-    const handleCloseCreateModal = () => {
-        setOpenCreateModal(false);
-    }
-
-    const handleCloseEditModal = () => {
-        setOpenEditModal(false);
-    }
 
     const handleCloseConfirmDeleteModal = () => {
         setOpenConfirmDeleteModal(false);
@@ -173,7 +165,7 @@ export default function Subjects() {
                                     </Button>
                                     <Button color="green" onClick={() => {
                                         setSubjectSelected(subject),
-                                        setOpenEditModal(true)
+                                        setOpenUpdateModal(true)
                                     }}>
                                         <Edit />
                                     </Button>
@@ -198,7 +190,7 @@ export default function Subjects() {
                 categoriesList={categories} 
                 createAction={createSubject} 
                 open={openCreateModal} 
-                handleClose={handleCloseCreateModal} 
+                handleClose={() => setOpenCreateModal(false)} 
             />
             <SubjectModal 
                 key={subjectSelected.id} 
@@ -207,12 +199,12 @@ export default function Subjects() {
                 categoriesList={categories} 
                 data={subjectSelected} 
                 updateAction={updateSubject} 
-                open={openEditModal} 
-                handleClose={handleCloseEditModal} 
+                open={openUpdateModal} 
+                handleClose={() => setOpenUpdateModal(false)} 
             />
             <ConfirmationModal
                 title={`Delete subject '${subjectSelected.name}'?`}
-                description={"This action will delete all the subject data and its topics."}
+                description={"This action will delete all the subject data, its topics and studies."}
                 agreeText={"Delete"}
                 action={() => handleDeleteSubject(subjectSelected.id)}
                 open={openConfirmDeleteModal}

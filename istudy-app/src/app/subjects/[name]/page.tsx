@@ -52,14 +52,6 @@ export default function SubjectDetail() {
     const handleCloseConfirmCompletedModal = () => {
         setOpenConfirmCompletedModal(false);
     }
-
-    const handleCloseCreateModal = () => {
-        setOpenCreateModal(false);
-    }
-    
-    const handleCloseUpdateModal = () => {
-        setOpenUpdateModal(false);
-    }
     
     const handleDeleteTopic = (id: string) => {
         deleteTopic.mutate(id, {
@@ -174,17 +166,17 @@ export default function SubjectDetail() {
                 subjectId={subject?.id ?? ""}
                 action={createTopic}
                 open={openCreateModal}
-                handleClose={handleCloseCreateModal}
+                handleClose={() => setOpenCreateModal(false)}
             />
             <UpdateTopicModal
                 data={topicSelected}
                 action={updateTopic}
                 open={openUpdateModal}
-                handleClose={handleCloseUpdateModal}
+                handleClose={() => setOpenUpdateModal(false)}
             />
             <ConfirmationModal 
                 title={`Delete topic '${topicSelected.name}'?`} 
-                description="This action cannot be reversed."
+                description="If you proceed, the topic and all linked studies will be permanently deleted. Are you sure you want to delete them?"
                 agreeText="Delete"
                 action={() => handleDeleteTopic(topicSelected.id)}
                 open={openConfirmDeleteModal}
