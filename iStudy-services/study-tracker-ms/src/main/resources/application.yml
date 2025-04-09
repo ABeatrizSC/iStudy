@@ -20,6 +20,21 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  rabbitmq:
+    host: rabbitmq
+
+rabbitmq:
+  queue:
+    discipline:
+      update:
+        name: discipline.update
+      delete:
+        name: discipline.delete
+    topic:
+      update:
+        name: topic.update
+      delete:
+        name: topic.delete
 
 eureka:
   client:

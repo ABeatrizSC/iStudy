@@ -1,12 +1,11 @@
 package io.github.abeatrizsc.discipline_ms.services;
 
 import io.github.abeatrizsc.discipline_ms.domain.Topic;
-import io.github.abeatrizsc.discipline_ms.dtos.TopicRequestDto;
-import io.github.abeatrizsc.discipline_ms.dtos.TopicResponseDto;
-import io.github.abeatrizsc.discipline_ms.dtos.TopicUpdateDto;
+import io.github.abeatrizsc.discipline_ms.dtos.*;
 import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
 import io.github.abeatrizsc.discipline_ms.exceptions.NotFoundException;
 import io.github.abeatrizsc.discipline_ms.mapper.TopicMapper;
+import io.github.abeatrizsc.discipline_ms.producer.DisciplineEventPublisher;
 import io.github.abeatrizsc.discipline_ms.repositories.TopicRepository;
 import io.github.abeatrizsc.discipline_ms.utils.AuthRequestUtils;
 import lombok.AllArgsConstructor;
@@ -23,6 +22,7 @@ public class TopicService {
     private DisciplineService disciplineService;
     private TopicMapper topicMapper;
     private AuthRequestUtils authRequestUtils;
+    private DisciplineEventPublisher disciplineEventPublisher;
 
     @Transactional
     public List<TopicResponseDto> save(TopicRequestDto requestDto) throws NameConflictException {
@@ -44,14 +44,12 @@ public class TopicService {
     public List<TopicResponseDto> update(String id, TopicUpdateDto updateDto) throws NameConflictException {
         Topic topic = topicMapper.convertResponseDtoToEntity(findById(id));
 
-        String userCreator = topic.getDiscipline().getCreatedBy();
-        if (!authRequestUtils.isRequestFromCreator(userCreator)) {
-            throw new SecurityException();
-        }
-
         if (disciplineService.topicAlreadyExistsInDiscipline(topic.getDiscipline().getId(), topic.getDiscipline().getCreatedBy(), updateDto.getName())) {
             throw new NameConflictException("topic");
         }
+
+        TopicUpdateEventDto topicEventDto = new TopicUpdateEventDto(topic.getDiscipline().getName(), topic.getName(), updateDto.getName());
+        disciplineEventPublisher.publishTopicUpdate(topicEventDto);
 
         topic.setName(updateDto.getName());
         topic.setIsCompleted(updateDto.getIsCompleted());
@@ -69,11 +67,8 @@ public class TopicService {
     public List<TopicResponseDto> delete(String id) {
         Topic topic = topicMapper.convertResponseDtoToEntity(findById(id));
 
-        String userCreator = topic.getDiscipline().getCreatedBy();
-
-        if (!authRequestUtils.isRequestFromCreator(userCreator)) {
-            throw new SecurityException();
-        }
+        TopicDeleteEventDto topicEventDto = new TopicDeleteEventDto(topic.getDiscipline().getName(), topic.getName());
+        disciplineEventPublisher.publishTopicDelete(topicEventDto);
 
         repository.delete(topic);
 
