@@ -1,17 +1,15 @@
 'use client';
 
 import { useState } from "react";
-import { Button } from "@/components/Button";
-import { Template } from "@/components/Template";
-import theme from '@/resources/assets/styles/Theme';
+import { Template, Container, Button, CustomTable, CustomTableHead, CustomTableCell, SubjectModal, ConfirmationModal, Title, CategoryBox } from "@/components";
 import { Input, MenuItem, Select, SelectChangeEvent, TableBody } from "@mui/material";
-import { CustomTable, Column, CustomTableHead, CustomTableCell } from "@/components/Table/index";
 import TableRow from '@mui/material/TableRow';
 import { Visibility, Edit, Delete, Search, Add } from "@mui/icons-material";
-import { useSubjectData, useSubjectCategories, useSubjectBySearch, useSubjectByCategory, useDeleteSubject, useCreateSubject, useUpdateSubject } from "@/hooks/subject/index";
+import { useSubjectData, useSubjectCategories, useSubjectBySearch, useSubjectByCategory, useDeleteSubject, useCreateSubject, useUpdateSubject } from "@/hooks/subject";
 import { Subject } from "@/resources/services/subject/subject.resource";
-import { Container } from "@/components/Container";
-import { SubjectModal, ConfirmationModal } from "@/components/Modal/index";
+import { useRouter } from "next/navigation";
+import { Column } from "@/components/Table";
+import { formatCategory, formatTime } from "@/utils/formatters";
 
 const columns: Column[] = [
     { 
@@ -40,16 +38,6 @@ const columns: Column[] = [
         align: 'center',
     }
 ];
-
-export const formatCategory = (category?: string) => {
-    if (!category) return "-";
-    return category
-      .toLocaleLowerCase()
-      .split("_")
-      .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-      .join(" ");
-};
-
 export default function Subjects() {
     const [search, setSearch] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState<string>("");
@@ -64,16 +52,9 @@ export default function Subjects() {
         topics: null
     });
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
-    const [openEditModal, setOpenEditModal] = useState<boolean>(false);
+    const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState<boolean>(false);
-
-    const handleCloseCreateModal = () => {
-        setOpenCreateModal(false);
-    }
-
-    const handleCloseEditModal = () => {
-        setOpenEditModal(false);
-    }
+    const router = useRouter()
 
     const handleCloseConfirmDeleteModal = () => {
         setOpenConfirmDeleteModal(false);
@@ -88,7 +69,6 @@ export default function Subjects() {
             onSuccess: () => handleCloseConfirmDeleteModal(),
         });
     }
-    
 
     const { data: subjectsBySearch, isLoading: loadingSearch } = useSubjectBySearch(searchQuery);
 
@@ -118,11 +98,14 @@ export default function Subjects() {
       
     return (
         <Template loading={isLoading}>
-            <h1 className="mb-3" style={{ color: theme.palette.text.secondary}}>Subjects</h1>
-            <Container style="!flex-row gap-5 items-center justify-center mb-5">
+            <Title>
+                Subjects
+            </Title>
+            <Container style="!flex-row gap-5 items-center justify-center">
                 <span className="flex-1 flex items-center">
-                    <span className="mr-2">Search:</span>
+                    <label htmlFor="subjectName" className="mr-2">Search:</label>
                     <Input 
+                        id="subjectName"
                         placeholder="Subject name" 
                         fullWidth={true} 
                         value={search}
@@ -136,8 +119,9 @@ export default function Subjects() {
                     <Search />
                 </Button> 
                 <span>
-                    <span className="mr-2">Category:</span>
+                    <label htmlFor="subjectCategory" className="mr-2">Category:</label>
                     <Select
+                        id="subjectCategory"
                         value={categorySelected}
                         onChange={handleCategoryChange}
                         sx={{
@@ -145,7 +129,7 @@ export default function Subjects() {
                         }}
                     >
                         <MenuItem value={""}>None</MenuItem>
-                        {categories?.map((category) => (
+                        {categories?.map((category: string) => (
                             <MenuItem key={category} value={category}>{formatCategory(category)}</MenuItem>
                         ))}
                     </Select>
@@ -156,30 +140,37 @@ export default function Subjects() {
                 </Button>
             </Container>
 
-            <Container>
+            <Container style="overflow-y-auto">
                 <CustomTable>
                     <CustomTableHead columns={columns}/>
                     <TableBody>
-                        {subjects?.map((subject: Subject) => (
-                            <TableRow hover role="checkbox" tabIndex={-1} key={subject.id}>
+                        {subjects?.map((subject: Subject, index: number) => (
+                            <TableRow hover 
+                                role="checkbox" 
+                                tabIndex={-1} 
+                                key={subject.id}
+                                sx={{
+                                    backgroundColor: (index % 2 === 0 ? "#f9f9f9" : "#ffffff"),
+                                }}
+                            >
                                 <CustomTableCell>{subject.name}</CustomTableCell>
                                 <CustomTableCell>
-                                    {formatCategory(subject.category)}
+                                    <CategoryBox category={subject.category} />
                                 </CustomTableCell>
-                                <CustomTableCell>{subject.totalTime.split(":").slice(0, 2).join(":")}h</CustomTableCell>
-                                <CustomTableCell>{subject.timeCompleted.split(":").slice(0, 2).join(":")}h</CustomTableCell>
+                                <CustomTableCell>{formatTime(subject.totalTime)}</CustomTableCell>
+                                <CustomTableCell>{formatTime(subject.timeCompleted)}</CustomTableCell>
                                 <CustomTableCell sx={{ display: 'flex', gap: '5px', alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                                    <Button>
+                                    <Button onClick={() => router.push(`/subjects/${subject.name}`)}>
                                         <Visibility />
                                     </Button>
                                     <Button color="green" onClick={() => {
                                         setSubjectSelected(subject),
-                                        setOpenEditModal(true)
+                                        setOpenUpdateModal(true)
                                     }}>
                                         <Edit />
                                     </Button>
                                     <Button onClick={ () => {
-                                             setOpenConfirmDeleteModal(true)
+                                            setOpenConfirmDeleteModal(true)
                                             setSubjectSelected(subject)
                                         }} 
                                         color="red"
@@ -199,7 +190,7 @@ export default function Subjects() {
                 categoriesList={categories} 
                 createAction={createSubject} 
                 open={openCreateModal} 
-                handleClose={handleCloseCreateModal} 
+                handleClose={() => setOpenCreateModal(false)} 
             />
             <SubjectModal 
                 key={subjectSelected.id} 
@@ -208,12 +199,12 @@ export default function Subjects() {
                 categoriesList={categories} 
                 data={subjectSelected} 
                 updateAction={updateSubject} 
-                open={openEditModal} 
-                handleClose={handleCloseEditModal} 
+                open={openUpdateModal} 
+                handleClose={() => setOpenUpdateModal(false)} 
             />
             <ConfirmationModal
                 title={`Delete subject '${subjectSelected.name}'?`}
-                description={"This action will delete all the subject data and its topics."}
+                description={"This action will delete all the subject data, its topics and studies."}
                 agreeText={"Delete"}
                 action={() => handleDeleteSubject(subjectSelected.id)}
                 open={openConfirmDeleteModal}

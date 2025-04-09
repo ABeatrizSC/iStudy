@@ -1,4 +1,4 @@
-import { useNotification } from "@/components/notification";
+import { useNotification } from "@/components";
 import { useAuthService } from "@/resources/services/auth-user/authentication.service";
 import { User } from "@/resources/services/auth-user/user.resource";
 import { useMutation } from "@tanstack/react-query";
@@ -12,5 +12,6 @@ export const useRegister = () => {
         onSuccess: () => {
             notification.notify("User created successfully!", "success")
         },
+        retry: false
     });
 };

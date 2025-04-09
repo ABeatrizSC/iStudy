@@ -28,6 +28,18 @@ class AuthService {
         return responseData.message;
     }
 
+    async isSessionValid(): Promise<boolean> {
+        try {
+            const response = await this.apiService.request('/auth/authenticated-user', 'GET');
+    
+            if (!response) return false;
+    
+            return typeof response === "string" && response.trim().length > 0; 
+        } catch (error) {
+            return false;
+        }
+    }    
+    
     initSession(token: AccessToken) {
         if (token) {
             localStorage.setItem(AuthService.AUTH_PARAM, JSON.stringify(token));

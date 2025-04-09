@@ -4,10 +4,12 @@ import io.github.abeatrizsc.discipline_ms.domain.Discipline;
 import io.github.abeatrizsc.discipline_ms.domain.Topic;
 import io.github.abeatrizsc.discipline_ms.dtos.DisciplineRequestDto;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicResponseDto;
+import io.github.abeatrizsc.discipline_ms.dtos.UpdateDisciplineEventDto;
 import io.github.abeatrizsc.discipline_ms.enums.DisciplineCategoryEnum;
 import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
 import io.github.abeatrizsc.discipline_ms.exceptions.NotFoundException;
 import io.github.abeatrizsc.discipline_ms.mapper.DisciplineMapper;
+import io.github.abeatrizsc.discipline_ms.producer.DisciplineEventPublisher;
 import io.github.abeatrizsc.discipline_ms.repositories.DisciplineRepository;
 import io.github.abeatrizsc.discipline_ms.repositories.TopicRepository;
 import io.github.abeatrizsc.discipline_ms.utils.AuthRequestUtils;
@@ -27,6 +29,7 @@ public class DisciplineService {
     private DisciplineRepository repository;
     private TopicRepository topicRepository;
     private AuthRequestUtils authRequestUtils;
+    private DisciplineEventPublisher disciplineEventPublisher;
 
     @Transactional
     public List<Discipline> save(DisciplineRequestDto requestDto) throws NameConflictException {
@@ -53,6 +56,9 @@ public class DisciplineService {
             throw new NameConflictException("subject");
         }
 
+        UpdateDisciplineEventDto disciplineEventDto = new UpdateDisciplineEventDto(discipline.getName(), requestDto.getName(), requestDto.getCategory().toString());
+        disciplineEventPublisher.publishDisciplineUpdate(disciplineEventDto);
+
         discipline.setName(requestDto.getName());
         discipline.setCategory(requestDto.getCategory());
         discipline.setIsCompleted(requestDto.getIsCompleted());
@@ -66,6 +72,7 @@ public class DisciplineService {
     public List<Discipline> delete(String id) {
         Discipline discipline = findById(id);
 
+        disciplineEventPublisher.publishDisciplineDelete(discipline.getName());
         repository.delete(discipline);
 
         return findAll();

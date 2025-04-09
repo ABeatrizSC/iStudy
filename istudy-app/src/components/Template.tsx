@@ -4,8 +4,7 @@ import React from "react";
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/resources/assets/styles/Theme';
 import { ToastContainer } from 'react-toastify';
-import { Sidebar } from "./Sidebar";
-import { Loader } from "./Loader";
+import { Sidebar, Loader, AuthenticatedPage } from "./";
 
 
 interface TemplateProps {
@@ -15,26 +14,15 @@ interface TemplateProps {
 
 export const Template: React.FC<TemplateProps> = ({ children, loading = false }: TemplateProps) => {
     return (
-        <ThemeProvider theme={theme}>
-            <Sidebar>
-                <div className={`${loading ? 'animate-pulse' : ''} w-full h-full`}>
-                        {!loading ? children : <Loader />}
-                </div>
-            </Sidebar>
-            <ToastContainer position='bottom-right' />
-        </ ThemeProvider>
+        <AuthenticatedPage>
+            <ThemeProvider theme={theme}>
+                <Sidebar>
+                    <div className={`${loading ? 'animate-pulse' : ''} w-full flex flex-col gap-4 justify-start`} style={{ maxHeight: '100%'}}>
+                            {!loading ? children : <Loader />}
+                    </div>
+                </Sidebar>
+                <ToastContainer position='bottom-right' />
+            </ ThemeProvider>
+        </AuthenticatedPage>
     )
-}
-
-interface RenderIfProps {
-    condition?: boolean;
-    children: React.ReactNode;
-}
-
-export const RenderIf: React.FC<RenderIfProps> = ({condition = true, children}) => {
-    if(condition){
-        return children
-    }
-
-    return false;
 }

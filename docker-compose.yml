@@ -79,6 +79,10 @@ services:
       - DB_URL=jdbc:mysql://mysql-db:3306/discipline_ms_db
       - DB_USER=root
       - DB_PASSWORD=root
+      - SPRING.RABBITMQ.HOST=rabbitmq
+      - SPRING.RABBITMQ.PORT=5672
+      - SPRING.RABBITMQ.USERNAME=guest
+      - SPRING.RABBITMQ.PASSWORD=guest
     depends_on:
       mysql-db:
         condition: service_healthy
@@ -99,8 +103,14 @@ services:
       - DB_URL=jdbc:mysql://mysql-db:3306/study_tracker_ms_db
       - DB_USER=root
       - DB_PASSWORD=root
+      - SPRING.RABBITMQ.HOST=rabbitmq
+      - SPRING.RABBITMQ.PORT=5672
+      - SPRING.RABBITMQ.USERNAME=guest
+      - SPRING.RABBITMQ.PASSWORD=guest
     depends_on:
       mysql-db:
+        condition: service_healthy
+      rabbitmq:
         condition: service_healthy
       eureka-server:
         condition: service_started
@@ -143,6 +153,24 @@ services:
         condition: service_started
       study-gamification-ms:
         condition: service_started
+    networks:
+      - istudy-network
+
+  rabbitmq:
+    image: rabbitmq:3.13.7-management
+    healthcheck:
+      test: rabbitmq-diagnostics -q ping
+      timeout: 100s
+      interval: 100s
+      retries: 3
+    container_name: rabbitmq
+    ports:
+      - 5672:5672
+      - 15672:15672
+    environment:
+      RABBITMQ_DEFAULT_USER: "guest"
+      RABBITMQ_DEFAULT_PASSWORD: "guest"
+      RABBITMQ_DEFAULT_VHOST: "/"
     networks:
       - istudy-network
 

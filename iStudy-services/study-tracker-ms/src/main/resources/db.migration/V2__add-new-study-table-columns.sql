@@ -1,0 +1,3 @@
+ALTER TABLE studies ADD COLUMN discipline_name VARCHAR(35) NOT NULL;
+ALTER TABLE studies ADD COLUMN topic_name VARCHAR(35) NOT NULL;
+ALTER TABLE studies ADD COLUMN discipline_category VARCHAR(255) NOT NULL;

@@ -1,10 +1,12 @@
+'use client'
+
 import React, { useState } from "react";
 import theme from '@/resources/assets/styles/Theme';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { BookCheckIcon, Calendar, ChevronDown, ClipboardList, Gamepad2, Home, LogOut, Menu, SquareGanttChart, StickyNote, Timer } from "lucide-react";
 import istudyLogo from '../resources/assets/images/iStudyLogo.png';
-import {Button} from '@/components/Button';
+import { Button } from '@/components';
 import Link from "next/link";
 import { useAuthService } from "@/resources/services/auth-user/authentication.service";
 
@@ -54,7 +56,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
     ];
     
     return (
-        <div className="flex">
+        <div className="flex" style={{ height: '100%'}}>
             <aside className={`text-white h-screen transition-all duration-300 ${isSidebarOpened ? 'w-64' : 'w-16'} flex flex-col p-4`} style={{ backgroundColor: theme.palette.primary.main }}> 
                 <div className="flex items-center justify-between mb-6">
                 {isSidebarOpened && <Image src={istudyLogo} alt="Logo" className="w-28" />}

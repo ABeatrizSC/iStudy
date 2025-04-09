@@ -20,6 +20,12 @@ spring:
       dialect: org.hibernate.dialect.MySQLDialect
       ddl-auto: update
     show-sql: true
+  rabbitmq:
+    host: rabbitmq
+
+rabbitmq:
+  exchange:
+    name: discipline.events
 
 eureka:
   client:
