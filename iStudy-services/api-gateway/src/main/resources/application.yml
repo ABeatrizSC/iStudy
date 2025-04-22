@@ -35,13 +35,12 @@ spring:
             - Path=/studies/**
           filters:
             - AuthenticationFilter
-        - id: study-gamification-ms
-          uri: lb://STUDY-GAMIFICATION-MS
+        - id: study-planner-ms
+          uri: lb://STUDY-PLANNER-MS
           predicates:
-            - Path=/games/**
+            - Path=/planners/**
           filters:
             - AuthenticationFilter
-
 eureka:
   client:
     service-url:

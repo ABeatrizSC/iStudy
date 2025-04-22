@@ -139,6 +139,26 @@ services:
     networks:
       - istudy-network
 
+  study-planner-ms:
+    build: ./iStudy-services/study-planner-ms
+    container_name: study-planner-ms
+    ports:
+      - "8085:8085"
+    environment:
+      - EUREKA_CLIENT_SERVICEURL_DEFAULTZONE=http://eureka-server:8761/eureka
+      - DB_URL=jdbc:mysql://mysql-db:3306/study_planner_ms_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+      eureka-server:
+        condition: service_started
+      api-gateway:
+        condition: service_started
+    networks:
+      - istudy-network
+
   istudy-app:
     build: ./istudy-app
     container_name: istudy-app
