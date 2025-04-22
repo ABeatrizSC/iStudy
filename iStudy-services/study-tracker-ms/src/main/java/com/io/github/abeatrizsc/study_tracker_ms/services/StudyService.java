@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.temporal.WeekFields;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -168,28 +167,34 @@ public class StudyService {
         return true;
     }
 
+    public LocalTime getTotalDailyStudyTime(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcTotalStudyTime(dailyStudies);
+    }
+
+    public List<StudyTimeDto> getDailyCompletedStudyTimeByDiscipline(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcCompletedStudyTimeByDiscipline(dailyStudies);
+    }
+
+    public List<StudyTimeDto> getDailyCompletedStudyTimeByDisciplineCategory(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcCompletedStudyTimeByCategory(dailyStudies);
+    }
+
     public LocalTime getTotalMonthlyStudyTime(Integer year, Integer month) {
         List<Study> monthlyStudies = findByMonth(year, month);
 
         return calcTotalStudyTime(monthlyStudies);
     }
 
-    public LocalTime getTotalWeeklyStudyTime(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
-
-        return calcTotalStudyTime(weeklyStudies);
-    }
-
     public LocalTime getMonthlyCompletedStudyTime(Integer year, Integer month) {
         List<Study> monthlyStudies = findByMonth(year, month);
 
         return calcCompletedStudyTime(monthlyStudies);
-    }
-
-    public LocalTime getWeeklyCompletedStudyTime(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
-
-        return calcCompletedStudyTime(weeklyStudies);
     }
 
     public List<StudyTimeDto> getMonthlyCompletedStudyTimeByDiscipline(Integer year, Integer month) {
@@ -202,6 +207,24 @@ public class StudyService {
         List<Study> monthlyStudies = findByMonth(year, month);
 
         return calcCompletedStudyTimeByCategory(monthlyStudies);
+    }
+
+    public LocalTime getTotalWeeklyStudyTime(Integer year, Integer week) {
+        List<Study> weeklyStudies = findByWeek(year, week);
+
+        return calcTotalStudyTime(weeklyStudies);
+    }
+
+    public LocalTime getDailyCompletedStudyTime(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcCompletedStudyTime(dailyStudies);
+    }
+
+    public LocalTime getWeeklyCompletedStudyTime(Integer year, Integer week) {
+        List<Study> weeklyStudies = findByWeek(year, week);
+
+        return calcCompletedStudyTime(weeklyStudies);
     }
 
     public List<StudyTimeDto> getWeeklyCompletedStudyTimeByDiscipline(Integer year, Integer week) {
@@ -236,17 +259,24 @@ public class StudyService {
     }
 
     private List<StudyTimeDto> calcCompletedStudyTimeByDiscipline(List<Study> studies) {
-        Map<String, LocalTime> disciplineTimeMap = new HashMap<>();
+        String token = authRequestUtils.getAuthorizationToken();
+        List<DisciplineVo> allDisciplines = disciplineServiceClient.getAll(token).getBody();
+
+        Map<String, LocalTime> disciplineTimeMap = allDisciplines.stream()
+                .collect(Collectors.toMap(
+                        DisciplineVo::getName,
+                        d -> LocalTime.of(0, 0)
+                ));
 
         for (Study study : studies) {
             if (study.getIsCompleted()) {
-                String disciplineName = study.getDisciplineName();
                 LocalTime studyTime = study.getTime();
 
-                disciplineTimeMap.put(disciplineName,
-                        disciplineTimeMap.getOrDefault(disciplineName, LocalTime.of(0, 0))
+                disciplineTimeMap.put(study.getDisciplineName(),
+                        disciplineTimeMap.getOrDefault(study.getDisciplineName(), LocalTime.of(0, 0))
                                 .plusHours(studyTime.getHour())
-                                .plusMinutes(studyTime.getMinute()));
+                                .plusMinutes(studyTime.getMinute())
+                );
             }
         }
 
@@ -256,23 +286,44 @@ public class StudyService {
     }
 
     private List<StudyTimeDto> calcCompletedStudyTimeByCategory(List<Study> studies) {
-        Map<String, LocalTime> disciplineTimeMap = new HashMap<>();
+        String token = authRequestUtils.getAuthorizationToken();
+        List<String> allCategories = disciplineServiceClient.getAllCategories(token).getBody();
 
+        // Initialize all categories with 00:00h
+        Map<String, LocalTime> disciplineTimeMap = allCategories.stream()
+                .collect(Collectors.toMap(
+                        category -> category,
+                        category -> LocalTime.of(0, 0)
+                ));
+
+        //Sum time
         for (Study study : studies) {
             if (study.getIsCompleted()) {
                 String disciplineCategory = study.getDisciplineCategory();
                 LocalTime studyTime = study.getTime();
 
-                disciplineTimeMap.put(disciplineCategory,
+                disciplineTimeMap.put(
+                        disciplineCategory,
                         disciplineTimeMap.getOrDefault(disciplineCategory, LocalTime.of(0, 0))
                                 .plusHours(studyTime.getHour())
-                                .plusMinutes(studyTime.getMinute()));
+                                .plusMinutes(studyTime.getMinute())
+                );
             }
         }
 
         return disciplineTimeMap.entrySet().stream()
                 .map(entry -> new StudyTimeDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
+    }
+
+    public StudyInfoDto getDayInfo(LocalDate date) {
+        StudyInfoDto studyInfoDto = new StudyInfoDto();
+        studyInfoDto.setTotalStudyTime(getTotalDailyStudyTime(date));
+        studyInfoDto.setCompletedStudyTime(getDailyCompletedStudyTime(date));
+        studyInfoDto.setCompletedStudyTimeByDiscipline(getDailyCompletedStudyTimeByDiscipline(date));
+        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getDailyCompletedStudyTimeByDisciplineCategory(date));
+
+        return studyInfoDto;
     }
 
     public StudyInfoDto getWeekInfo(Integer year, Integer week) {

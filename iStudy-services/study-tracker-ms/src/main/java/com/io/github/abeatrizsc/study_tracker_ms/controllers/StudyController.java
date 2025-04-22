@@ -47,6 +47,11 @@ public class StudyController {
         return studies.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studies);
     }
 
+    @GetMapping("/date/info")
+    public ResponseEntity<StudyInfoDto> getByDateInfo(@RequestParam String date) {
+        return ResponseEntity.ok(service.getDayInfo(LocalDate.parse(date)));
+    }
+
     @GetMapping("/month")
     public ResponseEntity<List<Study>> getByMonth(@RequestParam Integer year, @RequestParam Integer month) {
         List<Study> studiesPerMonth = service.findByMonth(year, month);
