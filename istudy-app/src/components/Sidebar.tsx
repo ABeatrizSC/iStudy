@@ -27,15 +27,11 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
     const menuItems = [
         { path: "/", name: "Home", icon: <Home /> },
         {
-            path: "/subjects", name: "Subjects", icon: <ClipboardList />, dropdown: [
-                { path: "/subjects", name: "Management" },
-                { path: "/subjects/info", name: "Statistical Information" },
-            ]
-        },
+            path: "/subjects", name: "Subjects", icon: <ClipboardList />},
         {
             path: "#", name: "Studies", icon: <BookCheckIcon />, dropdown: [
                 { path: "/studies", name: "Management" },
-                { path: "/studies/info", name: "Statistical Information" },
+                { path: "/studies/statistical-information", name: "Statistical Information" },
             ]
         },
         { path: "/schedules", name: "Schedule", icon: <SquareGanttChart /> },
@@ -57,7 +53,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
     
     return (
         <div className="flex" style={{ height: '100%'}}>
-            <aside className={`text-white h-screen transition-all duration-300 ${isSidebarOpened ? 'w-64' : 'w-16'} flex flex-col p-4`} style={{ backgroundColor: theme.palette.primary.main }}> 
+            <aside className={`text-white h-screen min-w-fit transition-all duration-300 ${isSidebarOpened ? 'w-64' : 'w-16'} flex flex-col p-4`} style={{ backgroundColor: theme.palette.primary.main }}> 
                 <div className="flex items-center justify-between mb-6">
                 {isSidebarOpened && <Image src={istudyLogo} alt="Logo" className="w-28" />}
                     <Menu className="cursor-pointer" onClick={toggleSidebar} />
@@ -89,7 +85,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
                     {isSidebarOpened && "Logout"}
                 </Button>
             </aside>
-            <main className="!items-start !justify-start relative">
+            <main className="flex-1 overflow-y-auto !items-start !justify-start relative">
                 {children}
             </main>
         </div>

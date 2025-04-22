@@ -15,5 +15,10 @@ import { AuthenticatedPage } from "./AuthenticatedPage";
 import { StudyBox, StudyInfo } from "./Study";
 import { CategoryBorder } from "./CategoryBorder";
 import { StudyModal } from "./Modal";
+import { CompletedStudyTimeChart } from "./charts/CompletedStudyTimeChart";
+import { PercentageStudyTimeChart } from "./charts/PercentageStudyTimeChart";
+import { CustomPieTooltip } from "./charts/CustomPieToolTip";
+import { WeeklyStudyChart } from "./charts/WeeklyStudyChart";
+import { ChartsHeader } from "./charts/ChartsHeader";
 
-export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, useNotification, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder, StudyModal, DateInput }
+export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, useNotification, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder, StudyModal, DateInput, CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader }
