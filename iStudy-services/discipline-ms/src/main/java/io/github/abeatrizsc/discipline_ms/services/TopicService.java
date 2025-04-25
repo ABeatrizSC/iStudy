@@ -110,7 +110,7 @@ public class TopicService {
     }
 
     public TopicResponseDto findByName(String name) {
-        Topic topic = repository.findByNameAndCreatedBy(name, authRequestUtils.getRequestUserId()).orElseThrow(() -> new NotFoundException("Topic"));
+        Topic topic = repository.findByNameAndCreatedBy(name, authRequestUtils.getUserId()).orElseThrow(() -> new NotFoundException("Topic"));
 
         return topicMapper.convertEntityToResponseDto(topic);
     }

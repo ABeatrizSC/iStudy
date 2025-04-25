@@ -35,7 +35,7 @@ public class DisciplineService {
     public List<Discipline> save(DisciplineRequestDto requestDto) throws NameConflictException {
         Discipline discipline = DisciplineMapper.INSTANCE.convertDtoToEntity(requestDto);
 
-        String userCreator = authRequestUtils.getRequestUserId();
+        String userCreator = authRequestUtils.getUserId();
 
         discipline.setCreatedBy(userCreator);
 
@@ -97,7 +97,7 @@ public class DisciplineService {
     }
 
     public Discipline findByName(String name) {
-        return repository.findByNameAndCreatedBy(name, authRequestUtils.getRequestUserId()).orElseThrow(() -> new NotFoundException("Subject"));
+        return repository.findByNameAndCreatedBy(name, authRequestUtils.getUserId()).orElseThrow(() -> new NotFoundException("Subject"));
     }
 
     public List<Discipline> findAllByCategory(DisciplineCategoryEnum category) {

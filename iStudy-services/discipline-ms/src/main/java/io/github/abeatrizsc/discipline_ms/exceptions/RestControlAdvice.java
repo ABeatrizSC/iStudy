@@ -37,10 +37,4 @@ public class RestControlAdvice {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new RestErrorMessage(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED, "You don't have permission to access this resource."));
     }
-
-    @ExceptionHandler(FeignConnectionException.class)
-    public ResponseEntity<RestErrorMessage> handleFeignConnectionException(FeignConnectionException e) {
-
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
-    }
 }

@@ -37,18 +37,22 @@ public class StudyService {
 
     @Transactional
     public List<Study> save(StudyRequestDto requestDto) throws ConflictException {
-        String token = authRequestUtils.getAuthorizationToken();
+        String token = authRequestUtils.getToken();
+        System.out.println("TOKEN = " + token);
+        System.out.println("REQUESTDTO = " + requestDto);
 
         Study study = studyMapper.convertRequestDtoToEntity(requestDto);
-        study.setCreatedBy(authRequestUtils.getRequestUserId());
+        study.setCreatedBy(authRequestUtils.getUserId());
 
-        try {
+/*        try {*/
             DisciplineVo discipline = disciplineServiceClient.getDisciplineByName(token, requestDto.getDisciplineName()).getBody();
             study.setDisciplineCategory(discipline.getCategory());
             disciplineServiceClient.getTopicByName(token, requestDto.getTopicName()).getBody();
+/*
         } catch (FeignException e) {
             throw new NotFoundException("Topic or Subject");
         }
+*/
 
         if (studyAlreadyExists(study)) {
             throw new ConflictException("study");
@@ -60,7 +64,7 @@ public class StudyService {
 
     @Transactional
     public List<Study> update(String id, StudyRequestDto requestDto) throws ConflictException {
-        String token = authRequestUtils.getAuthorizationToken();
+        String token = authRequestUtils.getToken();
         Study studyUpdated = studyMapper.convertRequestDtoToEntity(requestDto);
         Study study = findById(id);
 
@@ -259,7 +263,7 @@ public class StudyService {
     }
 
     private List<StudyTimeDto> calcCompletedStudyTimeByDiscipline(List<Study> studies) {
-        String token = authRequestUtils.getAuthorizationToken();
+        String token = authRequestUtils.getToken();
         List<DisciplineVo> allDisciplines = disciplineServiceClient.getAll(token).getBody();
 
         Map<String, LocalTime> disciplineTimeMap = allDisciplines.stream()
@@ -286,7 +290,7 @@ public class StudyService {
     }
 
     private List<StudyTimeDto> calcCompletedStudyTimeByCategory(List<Study> studies) {
-        String token = authRequestUtils.getAuthorizationToken();
+        String token = authRequestUtils.getToken();
         List<String> allCategories = disciplineServiceClient.getAllCategories(token).getBody();
 
         // Initialize all categories with 00:00h

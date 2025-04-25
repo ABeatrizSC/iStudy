@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
-@FeignClient(name = "discipline-ms", path = "/disciplines")
+@FeignClient(name = "api-gateway", path = "/disciplines")
 public interface DisciplineServiceClient {
     @GetMapping
     ResponseEntity<DisciplineVo> getDisciplineByName(@RequestHeader("Authorization") String token, @RequestParam String name);
