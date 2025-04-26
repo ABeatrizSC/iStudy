@@ -39,4 +39,10 @@ public class RestControlAdvice {
 
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessageDto(HttpStatus.UNAUTHORIZED.value(), HttpStatus.UNAUTHORIZED, "You don't have permission to access this resource."));
     }
+
+    @ExceptionHandler(UserIdUnavailableException.class)
+    public ResponseEntity<ErrorMessageDto> handleUserIdUnavailableException(UserIdUnavailableException e) {
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
+    }
 }

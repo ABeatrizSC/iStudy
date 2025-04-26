@@ -1,5 +1,6 @@
 package io.github.abeatrizsc.study_gamification_ms.utils;
 
+import io.github.abeatrizsc.study_gamification_ms.exceptions.UserIdUnavailableException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -12,7 +13,13 @@ public class AuthRequestUtils {
     private final HttpServletRequest request;
 
     public String getUserId() {
-        return request.getHeader("X-User-Id");
+        String id = request.getHeader("X-User-Id");
+
+        if (id == null) {
+            throw new UserIdUnavailableException();
+        }
+
+        return id;
     }
 
     public Boolean isRequestFromCreator(String creatorId) {
