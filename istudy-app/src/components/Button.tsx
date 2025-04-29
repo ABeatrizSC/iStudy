@@ -14,6 +14,7 @@ interface ButtonProps {
 const colorClasses: Record<string, string> = {
     primary: theme.palette.primary.main,
     secondary: theme.palette.secondary.main,
+    gray: theme.palette.gray.main,
     red: theme.palette.red.main,
     green: theme.palette.green.main,
 };

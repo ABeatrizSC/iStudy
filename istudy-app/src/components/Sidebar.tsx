@@ -45,8 +45,8 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
         },
         {
             path: "#", name: "Time tracker", icon: <Timer />, dropdown: [
-                { path: "/time-tools/timer", name: "Timer" },
-                { path: "/time-tools/pomodoro", name: "Pomodoro" },
+                { path: "/timer", name: "Timer" },
+                { path: "/pomodoro", name: "Pomodoro" },
             ]
         }
     ];
