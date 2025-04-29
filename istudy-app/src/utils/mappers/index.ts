@@ -1,3 +1,4 @@
 import { mapStudyToRequest } from "./mapStudyEntityToRequest";
+import { mapScheduleItemToRequest } from "./mapScheduleItemToRequest";
 
-export { mapStudyToRequest };
+export { mapStudyToRequest, mapScheduleItemToRequest };

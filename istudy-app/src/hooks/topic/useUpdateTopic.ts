@@ -1,4 +1,4 @@
-import { useNotification } from "@/components";
+import { useNotification } from "@/hooks/notification";
 import { TopicUpdate } from "@/resources/services/topic/topic.resource";
 import { useTopic } from "@/resources/services/topic/topic.service";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
