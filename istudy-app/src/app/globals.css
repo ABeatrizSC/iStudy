@@ -45,6 +45,57 @@ h3 {
   font-size: 17px;
 }
 
+.react-calendar {
+  border: none !important;
+  width: 500px !important;
+}
+/* Customização da data selecionada */
+.react-calendar__tile--active {
+  background-color: #e73f5e00 !important;  /* Substitua pela cor desejada */
+  color: #000 !important; /* Cor do texto */
+}
+
+/* Customização da data de hoje */
+.react-calendar__tile--now {
+  background-color: #835AFD!important;  /* Cor de fundo da data de hoje */
+  color: #fff !important; /* Cor do texto da data de hoje */
+  border-radius: 100%;
+  height: 60px;
+}
+
+abbr:where([title]) {
+  -webkit-text-decoration: none !important;
+  text-decoration: none !important;
+}
+
+.react-calendar__navigation button {
+  font-size: 30px;
+  color: #835AFD;
+}
+
+.react-calendar__navigation__label span {
+  font-size: 20px;
+  color: #000;
+  text-transform: uppercase;
+}
+
+.swiper {
+  width: 400px;
+  height: 250px;
+}
+
+.swiper-slide {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 18px;
+  font-size: 18px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #835AFD; /* azul do MUI */
+  padding: 20px;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

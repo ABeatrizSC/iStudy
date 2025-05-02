@@ -9,7 +9,7 @@ import { Template } from "./Template";
 import { TimeInput, DateInput } from "./Input";
 import { Title } from "./Title";
 import { CustomTable, CustomTableCell, CustomTableHead } from "./Table";
-import { StudyModal, ScheduleItemModal, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, PomoConfigModal } from "./Modal";
+import { StudyModal, ScheduleItemModal, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal } from "./Modal";
 import { AuthenticatedPage } from "./AuthenticatedPage";
 import { StudyBox, StudyInfo } from "./Study";
 import { CategoryBorder } from "./CategoryBorder";
@@ -19,5 +19,7 @@ import { CustomPieTooltip } from "./charts/CustomPieToolTip";
 import { WeeklyStudyChart } from "./charts/WeeklyStudyChart";
 import { ChartsHeader } from "./charts/ChartsHeader";
 import { CountdownTimer } from "./CountdownTimer";
+import { FlashcardBox } from "./flashcards/FlashcardBox";
+import { CardBox } from "./flashcards/CardBox";
 
-export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder, StudyModal, DateInput, CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader, CountdownTimer, ScheduleItemModal, PomoConfigModal }
+export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder, StudyModal, DateInput, CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader, CountdownTimer, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, FlashcardBox, CardBox }
