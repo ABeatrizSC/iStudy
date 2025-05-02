@@ -66,6 +66,7 @@ public class FlashcardService {
             card.setQuestion(cDto.getQuestion());
             card.setAnswer(cDto.getAnswer());
             card.setFlashcard(flashcard);
+            card.setCreatedBy(authRequestUtils.getUserId());
 
             flashcard.getCards().add(card);
         });

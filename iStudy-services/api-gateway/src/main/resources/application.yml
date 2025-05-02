@@ -35,6 +35,12 @@ spring:
             - Path=/studies/**
           filters:
             - AuthenticationFilter
+        - id: study-gamification-ms
+          uri: lb://STUDY-GAMIFICATION-MS
+          predicates:
+            - Path=/games/**
+          filters:
+            - AuthenticationFilter
         - id: study-planner-ms
           uri: lb://STUDY-PLANNER-MS
           predicates:
