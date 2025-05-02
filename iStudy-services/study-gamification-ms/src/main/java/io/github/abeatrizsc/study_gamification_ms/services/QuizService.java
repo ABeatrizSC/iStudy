@@ -36,7 +36,7 @@ public class QuizService {
 
         Quiz quiz = new Quiz();
         quiz.setTitle(requestDto.getTitle());
-        quiz.setCreatedBy(authRequestUtils.getRequestUserId());
+        quiz.setCreatedBy(authRequestUtils.getUserId());
 
         List<Question> questions = requestDto.getQuestions().stream().map(qDto -> {
             Question question = new Question();
@@ -154,7 +154,7 @@ public class QuizService {
     }
 
     public Boolean quizAlreadyExists(String title, String quizId) {
-        String userId = authRequestUtils.getRequestUserId();
+        String userId = authRequestUtils.getUserId();
         Optional<Quiz> quiz = repository.findByTitleAndCreatedBy(title, userId);
 
         if (quiz.isEmpty() || Objects.equals(quiz.get().getId(), quizId)) {

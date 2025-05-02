@@ -2,10 +2,10 @@ import theme from '@/resources/assets/styles/Theme';
 import { TableCell, TableHead, TableRow } from '@mui/material';
 
 export interface Column {
-    id: 'subject' | 'category' | 'total-time' | 'time-completed' | 'actions';
+    id: any;
     label: string;
     minWidth?: number;
-    align?: 'center';
+    align?: "center";
     format?: (value: number) => string;
 }
 
@@ -21,7 +21,7 @@ export const CustomTableHead: React.FC<TableHeadProps> = ({ columns , bgColor = 
                 {columns.map((column) => (
                     <TableCell 
                         key={column.id} 
-                        align={column.align}
+                        align={column.align ?? "center"}
                         sx={{ backgroundColor: bgColor, color: "white" }}
                     >
                         {column.label}

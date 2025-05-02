@@ -30,7 +30,7 @@ public class FlashcardService {
 
         Flashcard newFlashcard = new Flashcard();
         newFlashcard.setTitle(requestDto.getTitle());
-        newFlashcard.setCreatedBy(authRequestUtils.getRequestUserId());
+        newFlashcard.setCreatedBy(authRequestUtils.getUserId());
 
         List<Card> cards = requestDto.getCards().stream().map(cDto -> {
                 Card card = new Card();
@@ -66,6 +66,7 @@ public class FlashcardService {
             card.setQuestion(cDto.getQuestion());
             card.setAnswer(cDto.getAnswer());
             card.setFlashcard(flashcard);
+            card.setCreatedBy(authRequestUtils.getUserId());
 
             flashcard.getCards().add(card);
         });
@@ -130,7 +131,7 @@ public class FlashcardService {
     }
 
     public Boolean flashcardAlreadyExists(String title, String flashcardId) {
-        String userId = authRequestUtils.getRequestUserId();
+        String userId = authRequestUtils.getUserId();
         Optional<Flashcard> flashcard = repository.findByTitleAndCreatedBy(title, userId);
 
         if (flashcard.isEmpty() || Objects.equals(flashcard.get().getId(), flashcardId)) {

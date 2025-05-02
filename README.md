@@ -95,6 +95,12 @@ At the moment, these are the technologies used:
 
 * **DayJs**: A lightweight JavaScript library for parsing, validating, manipulating, and formatting dates.
 
+* **Swiper js**: A powerful, free, and open-source JavaScript library for creating modern, touch-friendly sliders and carousels.
+
+* **React card flip**: A specific library or component that allows you to create a card that animates to reveal content on its back when clicked or interacted withxt.
+
+* **React calendar**: A lightweight and easily configurable calendar component.
+
 ## Databases and other technologies
 * **Docker**: A platform that allows developers to automate the deployment of applications inside lightweight containers, ensuring consistency across different environments and simplifying the setup process.
 
@@ -158,7 +164,7 @@ As the project is still in progress and subject to changes, this is a brief summ
 ### 2. DISCIPLINE-MS
 - Microservice responsible for creating, updating, deleting, and generating information about disciplines and their topics.
 
-Discipline Endpoints
+#### Discipline endpoints
 
 | Method  | Endpoint                      | Description                                              | Request Body                   | Response Body                          |
 |---------|--------------------------------|----------------------------------------------------------|--------------------------------|----------------------------------------|
@@ -173,7 +179,7 @@ Discipline Endpoints
 | **GET**    | /disciplines/search          | Returns all disciplines that have the searched character | - (Query Param: name)        | `List<Discipline>`                      |
 | **GET**    | /disciplines/completed       | Retrieves all completed disciplines                      | -                            | `List<Discipline>`                      |
 
-Topic Endpoints
+#### Topic endpoints
 
 | Method  | Endpoint                      | Description                                | Request Body                   | Response Body                          |
 |---------|--------------------------------|-------------------------------------------------|--------------------------------|----------------------------------------|
@@ -206,7 +212,7 @@ Topic Endpoints
 ### 4. STUDY-GAMIFICATION-MS
 - Microservice that manages the creation of quizzes and flashcards to enhance user learning.
 
-Quiz Endpoints
+#### Quiz Endpoints
 
 | Method   | Endpoint                      | Description                                       | Request Body     | Response Body     |
 |----------|--------------------------------|---------------------------------------------------|------------------|-------------------|
@@ -218,7 +224,7 @@ Quiz Endpoints
 | **GET**   | `/games/quizzes/{id}`         | Retrieves a quiz by ID                            | -                | `Quiz`            |
 | **GET**   | `/games/quizzes/search?title={title}` | Retrieves a quiz by title                         | -                | `Optional<Quiz>`  |
 
-Flashcard Endpoints
+#### Flashcard Endpoints
 
 | Method   | Endpoint                          | Description                    | Request Body          | Response Body      |
 |----------|----------------------------------|--------------------------------|-----------------------|--------------------|
@@ -230,7 +236,31 @@ Flashcard Endpoints
 | **GET**   | `/games/flashcards/{id}`        | Retrieves a flashcard by ID    | -                     | `Flashcard`       |
 | **GET**   | `/games/flashcards/search?title={title}` | Retrieves a flashcard by title | -                     | `Optional<Flashcard>` |
 
-### Status code meanings
+### 5. STUDY-PLANNER-MS
+- Manages user reminders and schedules
+
+#### Reminder endpoints
+| Method | Endpoint                                              | Description                                                         | Request Body             | Response Body                 |
+|--------|-------------------------------------------------------|---------------------------------------------------------------------|--------------------------|-------------------------------|
+| GET    | `/planners/reminders?date=yyyy-MM-dd`                | Retrieves reminders for a specific date (e.g., 2025-05-02)          | -                        | `List<ReminderResponseDto>`   |
+| GET    | `/planners/reminders/all`                            | Retrieves all reminders                                             | -                        | `List<ReminderResponseDto>`   |
+| GET    | `/planners/reminders/{id}`                           | Retrieves a reminder by its ID                                      | -                        | `ReminderResponseDto`         |
+| GET    | `/planners/reminders/completed?isCompleted=true`     | Retrieves reminders by completion status (`true` or `false`)        | -                        | `List<ReminderResponseDto>`   |
+| POST   | `/planners/reminders`                                | Creates one or more reminders                                       | `ReminderRequestDto`     | `List<ReminderResponseDto>`   |
+| PUT    | `/planners/reminders/{id}`                           | Updates a reminder by its ID                                        | `ReminderRequestDto`     | `List<ReminderResponseDto>`   |
+| DELETE | `/planners/reminders/{id}`                           | Deletes a reminder by its ID                                        | -                        | `List<ReminderResponseDto>`   |
+
+#### Schedule endpoints
+| Method | Endpoint                                               | Description                                                              | Request Body               | Response Body                    |
+|--------|--------------------------------------------------------|--------------------------------------------------------------------------|----------------------------|----------------------------------|
+| GET    | `/planners/schedules?dayOfWeek=1`                      | Retrieves schedule items for a given day of the week (`1 = Monday`, etc) | -                          | `List<ScheduleItemResponseDto>` |
+| GET    | `/planners/schedules/all`                              | Retrieves all schedule items                                             | -                          | `List<ScheduleItemResponseDto>` |
+| GET    | `/planners/schedules/{id}`                             | Retrieves a schedule item by its ID                                      | -                          | `ScheduleItemResponseDto`       |
+| POST   | `/planners/schedules`                                  | Creates one or more schedule items                                       | `ScheduleItemRequestDto`   | `List<ScheduleItemResponseDto>` |
+| PUT    | `/planners/schedules/{id}`                             | Updates a schedule item by its ID                                        | `ScheduleItemRequestDto`   | `List<ScheduleItemResponseDto>` |
+| DELETE | `/planners/schedules/{id}`                             | Deletes a schedule item by its ID                                        | -                          | `List<ScheduleItemResponseDto>` |     |
+
+### STATUS CODE MEANINGS
 - **`200 OK`** → Request was successful.
 - **`201 Created`** → A new resource was successfully created.
 - **`400 Bad Request`** → Invalid input parameters or a duplicate name exists.
@@ -240,33 +270,63 @@ Flashcard Endpoints
 </br>
 
 # iStudy-app - Front-End
+## Pages preview
 - Since it's still under development, I'm sharing just a few previews of the screens/pages that are already finished:
 
-## Login page preview
+### Login page
 ![alt text](docs/images/login-page.jpg) 
 
-## Register page preview
+### Register page
 ![alt text](docs/images/sign-up-page.jpg) 
 
-## Subject page preview
+### Subject page
 ![alt text](docs/images/subject-page.jpg)
-### Subject page preview: Create a subject
+#### Subject page: Create subject modal
 ![alt text](docs/images/create-subject-page.jpg) 
 
-## Subject Management page preview
+### Subject Management page
 ![alt text](docs/images/subject-management-page.jpg)
 
-### Subject Management page preview: Create a topic
+#### Subject Management page: Create topic modal
 ![alt text](docs/images/create-topic-page.jpg) 
 
-### Subject Management page preview: Delete a topic
+#### Subject Management page: Delete topic modal
 ![alt text](docs/images/delete-topic-page.jpg) 
 
-## Studies page preview
+### Studies page
 ![alt text](docs/images/studies-page.jpg) 
 
-### Studies page preview: Create a study
+#### Studies page: Create study modal
 ![alt text](docs/images/create-study-page.jpg) 
+
+### Reminders page
+![alt text](docs/images/reminders-page.jpg) 
+
+### Schedules page
+![alt text](docs/images/schedule-page.jpg) 
+#### Schedules page: Create schedule modal
+![alt text](docs/images/create-schedule-page.jpg) 
+
+### Calendar page
+![alt text](docs/images/calendar-page.jpg) 
+
+### Games
+#### Games: Flashcards page
+![alt text](docs/images/flashcard-page.jpg) 
+#### Games: Flashcards create modal
+![alt text](docs/images/create-flashcard-page.jpg) 
+#### Games: Flashcard game page
+![alt text](docs/images/flashcard-game-page.jpg) 
+#### Games: Flashcard result game page
+![alt text](docs/images/flashcard-game-result-page.jpg) 
+
+### Time tracker
+#### Time tracker: Timer page
+![alt text](docs/images/timer-page.jpg) 
+#### Time tracker: Pomodoro page
+![alt text](docs/images/pomodoro-page.jpg) 
+#### Time tracker: Pomodoro settings modal
+![alt text](docs/images/pomodoro-settings-modal.jpg) 
 
 # Contact
 * GitHub: [ABeatrizSC](https://github.com/ABeatrizSC)

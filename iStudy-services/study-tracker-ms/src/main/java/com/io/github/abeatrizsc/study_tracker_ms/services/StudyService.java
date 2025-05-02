@@ -20,7 +20,6 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.temporal.WeekFields;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -38,18 +37,22 @@ public class StudyService {
 
     @Transactional
     public List<Study> save(StudyRequestDto requestDto) throws ConflictException {
-        String token = authRequestUtils.getAuthorizationToken();
+        String token = authRequestUtils.getToken();
+        System.out.println("TOKEN = " + token);
+        System.out.println("REQUESTDTO = " + requestDto);
 
         Study study = studyMapper.convertRequestDtoToEntity(requestDto);
-        study.setCreatedBy(authRequestUtils.getRequestUserId());
+        study.setCreatedBy(authRequestUtils.getUserId());
 
-        try {
+/*        try {*/
             DisciplineVo discipline = disciplineServiceClient.getDisciplineByName(token, requestDto.getDisciplineName()).getBody();
             study.setDisciplineCategory(discipline.getCategory());
             disciplineServiceClient.getTopicByName(token, requestDto.getTopicName()).getBody();
+/*
         } catch (FeignException e) {
             throw new NotFoundException("Topic or Subject");
         }
+*/
 
         if (studyAlreadyExists(study)) {
             throw new ConflictException("study");
@@ -61,7 +64,7 @@ public class StudyService {
 
     @Transactional
     public List<Study> update(String id, StudyRequestDto requestDto) throws ConflictException {
-        String token = authRequestUtils.getAuthorizationToken();
+        String token = authRequestUtils.getToken();
         Study studyUpdated = studyMapper.convertRequestDtoToEntity(requestDto);
         Study study = findById(id);
 
@@ -168,28 +171,34 @@ public class StudyService {
         return true;
     }
 
+    public LocalTime getTotalDailyStudyTime(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcTotalStudyTime(dailyStudies);
+    }
+
+    public List<StudyTimeDto> getDailyCompletedStudyTimeByDiscipline(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcCompletedStudyTimeByDiscipline(dailyStudies);
+    }
+
+    public List<StudyTimeDto> getDailyCompletedStudyTimeByDisciplineCategory(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcCompletedStudyTimeByCategory(dailyStudies);
+    }
+
     public LocalTime getTotalMonthlyStudyTime(Integer year, Integer month) {
         List<Study> monthlyStudies = findByMonth(year, month);
 
         return calcTotalStudyTime(monthlyStudies);
     }
 
-    public LocalTime getTotalWeeklyStudyTime(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
-
-        return calcTotalStudyTime(weeklyStudies);
-    }
-
     public LocalTime getMonthlyCompletedStudyTime(Integer year, Integer month) {
         List<Study> monthlyStudies = findByMonth(year, month);
 
         return calcCompletedStudyTime(monthlyStudies);
-    }
-
-    public LocalTime getWeeklyCompletedStudyTime(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
-
-        return calcCompletedStudyTime(weeklyStudies);
     }
 
     public List<StudyTimeDto> getMonthlyCompletedStudyTimeByDiscipline(Integer year, Integer month) {
@@ -202,6 +211,24 @@ public class StudyService {
         List<Study> monthlyStudies = findByMonth(year, month);
 
         return calcCompletedStudyTimeByCategory(monthlyStudies);
+    }
+
+    public LocalTime getTotalWeeklyStudyTime(Integer year, Integer week) {
+        List<Study> weeklyStudies = findByWeek(year, week);
+
+        return calcTotalStudyTime(weeklyStudies);
+    }
+
+    public LocalTime getDailyCompletedStudyTime(LocalDate date) {
+        List<Study> dailyStudies = findByDate(date);
+
+        return calcCompletedStudyTime(dailyStudies);
+    }
+
+    public LocalTime getWeeklyCompletedStudyTime(Integer year, Integer week) {
+        List<Study> weeklyStudies = findByWeek(year, week);
+
+        return calcCompletedStudyTime(weeklyStudies);
     }
 
     public List<StudyTimeDto> getWeeklyCompletedStudyTimeByDiscipline(Integer year, Integer week) {
@@ -236,17 +263,24 @@ public class StudyService {
     }
 
     private List<StudyTimeDto> calcCompletedStudyTimeByDiscipline(List<Study> studies) {
-        Map<String, LocalTime> disciplineTimeMap = new HashMap<>();
+        String token = authRequestUtils.getToken();
+        List<DisciplineVo> allDisciplines = disciplineServiceClient.getAll(token).getBody();
+
+        Map<String, LocalTime> disciplineTimeMap = allDisciplines.stream()
+                .collect(Collectors.toMap(
+                        DisciplineVo::getName,
+                        d -> LocalTime.of(0, 0)
+                ));
 
         for (Study study : studies) {
             if (study.getIsCompleted()) {
-                String disciplineName = study.getDisciplineName();
                 LocalTime studyTime = study.getTime();
 
-                disciplineTimeMap.put(disciplineName,
-                        disciplineTimeMap.getOrDefault(disciplineName, LocalTime.of(0, 0))
+                disciplineTimeMap.put(study.getDisciplineName(),
+                        disciplineTimeMap.getOrDefault(study.getDisciplineName(), LocalTime.of(0, 0))
                                 .plusHours(studyTime.getHour())
-                                .plusMinutes(studyTime.getMinute()));
+                                .plusMinutes(studyTime.getMinute())
+                );
             }
         }
 
@@ -256,23 +290,44 @@ public class StudyService {
     }
 
     private List<StudyTimeDto> calcCompletedStudyTimeByCategory(List<Study> studies) {
-        Map<String, LocalTime> disciplineTimeMap = new HashMap<>();
+        String token = authRequestUtils.getToken();
+        List<String> allCategories = disciplineServiceClient.getAllCategories(token).getBody();
 
+        // Initialize all categories with 00:00h
+        Map<String, LocalTime> disciplineTimeMap = allCategories.stream()
+                .collect(Collectors.toMap(
+                        category -> category,
+                        category -> LocalTime.of(0, 0)
+                ));
+
+        //Sum time
         for (Study study : studies) {
             if (study.getIsCompleted()) {
                 String disciplineCategory = study.getDisciplineCategory();
                 LocalTime studyTime = study.getTime();
 
-                disciplineTimeMap.put(disciplineCategory,
+                disciplineTimeMap.put(
+                        disciplineCategory,
                         disciplineTimeMap.getOrDefault(disciplineCategory, LocalTime.of(0, 0))
                                 .plusHours(studyTime.getHour())
-                                .plusMinutes(studyTime.getMinute()));
+                                .plusMinutes(studyTime.getMinute())
+                );
             }
         }
 
         return disciplineTimeMap.entrySet().stream()
                 .map(entry -> new StudyTimeDto(entry.getKey(), entry.getValue()))
                 .collect(Collectors.toList());
+    }
+
+    public StudyInfoDto getDayInfo(LocalDate date) {
+        StudyInfoDto studyInfoDto = new StudyInfoDto();
+        studyInfoDto.setTotalStudyTime(getTotalDailyStudyTime(date));
+        studyInfoDto.setCompletedStudyTime(getDailyCompletedStudyTime(date));
+        studyInfoDto.setCompletedStudyTimeByDiscipline(getDailyCompletedStudyTimeByDiscipline(date));
+        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getDailyCompletedStudyTimeByDisciplineCategory(date));
+
+        return studyInfoDto;
     }
 
     public StudyInfoDto getWeekInfo(Integer year, Integer week) {

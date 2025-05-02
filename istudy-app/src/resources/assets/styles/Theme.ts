@@ -4,6 +4,7 @@ declare module "@mui/material/styles" {
   interface Palette {
     red: PaletteColor;
     green: PaletteColor;
+    gray: PaletteColor;
     hover: {
       primary: string;
       secondary: string;
@@ -14,6 +15,7 @@ declare module "@mui/material/styles" {
   interface PaletteOptions {
     red?: PaletteColorOptions;
     green?: PaletteColorOptions;
+    gray?: PaletteColorOptions;
     hover?: {
       primary: string;
       secondary: string;
@@ -37,6 +39,9 @@ const theme = createTheme({
     },
     green: {
       main: "#00C853",
+    },
+    gray: {
+      main: "#8b969b",
     },
     background: {
       default: "#F8F8F8",

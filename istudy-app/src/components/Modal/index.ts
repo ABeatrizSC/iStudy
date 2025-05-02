@@ -3,5 +3,10 @@ import { SubjectModal } from "./SubjectModal";
 import { CreateTopicModal } from "./CreateTopicModal"
 import { UpdateTopicModal } from "./UpdateTopicModal";
 import { StudyModal } from "./StudyModal";
+import { ScheduleItemModal } from "./ScheduleItemModal";
+import { PomoConfigModal } from "./PomoConfigModal";
+import { FlashcardModal } from "./FlashcardModal";
+import { FlashcardGameModal } from "./FlashcardGameModal";
+import { StartGameOptionsModal } from "./StartGameOptionsModal";
 
-export { ConfirmationModal, SubjectModal, CreateTopicModal, UpdateTopicModal, StudyModal }
+export { ConfirmationModal, SubjectModal, CreateTopicModal, UpdateTopicModal, StudyModal, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal }

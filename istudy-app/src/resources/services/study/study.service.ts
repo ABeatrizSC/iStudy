@@ -33,6 +33,10 @@ class StudyService {
         return this.apiService.request<Study[]>(`${this.baseURL}/date?date=${date}`, 'GET');
     }
 
+    async getDayInfo(date: string) : Promise<StudyInfo> {
+        return this.apiService.request<StudyInfo>(`${this.baseURL}/date/info?date=${date}`, 'GET');
+    }
+
     async getByMonth(year: number, month: number) : Promise<Study[]> {
         return this.apiService.request<Study[]>(`${this.baseURL}/month?year=${year}&month=${month}`, 'GET');
     }

@@ -38,10 +38,16 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     authHeader = authHeader.substring(7);
                 }
 
-                if (jwtUtil.validateToken(authHeader) == null) {
+                String userId = jwtUtil.validateToken(authHeader);
+                if (userId == null) {
                     throw new SecurityException("Invalid or expired token.");
                 }
+
+                exchange = exchange.mutate()
+                        .request(builder -> builder.header("X-User-Id", userId))
+                        .build();
             }
+
             return chain.filter(exchange);
         };
     }

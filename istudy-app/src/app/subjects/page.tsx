@@ -38,6 +38,7 @@ const columns: Column[] = [
         align: 'center',
     }
 ];
+
 export default function Subjects() {
     const [search, setSearch] = useState<string>("");
     const [searchQuery, setSearchQuery] = useState<string>("");

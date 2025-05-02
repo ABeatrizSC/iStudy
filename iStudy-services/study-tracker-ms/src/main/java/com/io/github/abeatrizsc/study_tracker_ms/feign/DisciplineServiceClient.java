@@ -8,11 +8,19 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "discipline-ms", path = "/disciplines")
+import java.util.List;
+
+@FeignClient(name = "api-gateway", path = "/disciplines")
 public interface DisciplineServiceClient {
     @GetMapping
     ResponseEntity<DisciplineVo> getDisciplineByName(@RequestHeader("Authorization") String token, @RequestParam String name);
 
     @GetMapping("/topics")
     ResponseEntity<TopicVo> getTopicByName(@RequestHeader("Authorization") String token, @RequestParam String name);
+
+    @GetMapping("/categories")
+    ResponseEntity<List<String>> getAllCategories(@RequestHeader("Authorization") String token);
+
+    @GetMapping("/all")
+    ResponseEntity<List<DisciplineVo>> getAll(@RequestHeader("Authorization") String token);
 }

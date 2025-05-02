@@ -41,7 +41,12 @@ spring:
             - Path=/games/**
           filters:
             - AuthenticationFilter
-
+        - id: study-planner-ms
+          uri: lb://STUDY-PLANNER-MS
+          predicates:
+            - Path=/planners/**
+          filters:
+            - AuthenticationFilter
 eureka:
   client:
     service-url:

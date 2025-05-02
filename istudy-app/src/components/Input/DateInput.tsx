@@ -14,6 +14,9 @@ export const DateInput: React.FC<DateInputProps> = ({ value, onChangeFunc }) => 
                 value={dayjs(value)}
                 onChange={onChangeFunc}
                 slotProps={{ textField: { fullWidth: true } }}
+                sx={{
+                    width: '180px'
+                }}
             />
         </LocalizationProvider>
     );

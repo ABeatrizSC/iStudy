@@ -1,9 +1,7 @@
 package com.io.github.abeatrizsc.study_tracker_ms.utils;
 
-
-import com.io.github.abeatrizsc.study_tracker_ms.exceptions.FeignConnectionException;
-import com.io.github.abeatrizsc.study_tracker_ms.feign.AuthServiceClient;
-import feign.FeignException;
+import com.io.github.abeatrizsc.study_tracker_ms.exceptions.InvalidTokenException;
+import com.io.github.abeatrizsc.study_tracker_ms.exceptions.UserIdUnavailableException;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -15,9 +13,25 @@ import java.util.Objects;
 @Component
 @AllArgsConstructor
 public class AuthRequestUtils {
-    private AuthServiceClient authServiceClient;
+    private final HttpServletRequest request;
 
-    public String getAuthorizationToken() {
+    public String getUserId() {
+        String id = request.getHeader("X-User-Id");
+
+        if (id == null) {
+          throw new UserIdUnavailableException();
+        }
+
+        return id;
+    }
+
+    public Boolean isRequestFromCreator(String creatorId) {
+        String requestUser = getUserId();
+
+        return Objects.equals(requestUser, creatorId);
+    }
+
+    public String getToken() {
         ServletRequestAttributes attributes =
                 (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();
 
@@ -25,22 +39,7 @@ public class AuthRequestUtils {
             HttpServletRequest request = attributes.getRequest();
             return request.getHeader("Authorization");
         }
-        return null;
-    }
 
-    public String getRequestUserId() {
-        String token = getAuthorizationToken();
-        try {
-            return authServiceClient.getAuthenticatedUser(token);
-
-        } catch (FeignException e) {
-            throw new FeignConnectionException();
-        }
-    }
-
-    public Boolean isRequestFromCreator(String creatorId) {
-        String requestUser = getRequestUserId();
-
-        return Objects.equals(requestUser, creatorId);
+        throw new InvalidTokenException();
     }
 }
