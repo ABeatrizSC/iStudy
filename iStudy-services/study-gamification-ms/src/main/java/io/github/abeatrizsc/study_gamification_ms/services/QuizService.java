@@ -78,6 +78,7 @@ public class QuizService {
         requestDto.getQuestions().forEach(qDto -> {
             Question question = new Question();
             question.setQuestion(qDto.getQuestion());
+            question.setCreatedBy(quiz.getCreatedBy());
             question.setQuiz(quiz);
 
             List<Option> options = qDto.getOptions().stream().map(oDto -> {
@@ -85,6 +86,7 @@ public class QuizService {
                 option.setOption(oDto.getOption());
                 option.setIsCorrect(oDto.getIsCorrect());
                 option.setQuestion(question);
+                option.setCreatedBy(quiz.getCreatedBy());
                 return option;
             }).toList();
 
