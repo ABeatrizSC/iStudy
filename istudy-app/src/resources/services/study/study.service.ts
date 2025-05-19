@@ -1,5 +1,5 @@
 import { ApiService } from "../utils/api.service";
-import { StudyInfo, StudyRequest, Study } from "./study.resource";
+import { StudyInfo, StudyRequest, Study, DailyStudyStatus } from "./study.resource";
 
 class StudyService {
     private baseURL: string = "/studies" 
@@ -55,6 +55,10 @@ class StudyService {
 
     async getByDisciplineCategory(category: string) : Promise<Study[]> {
         return this.apiService.request<Study[]>(`${this.baseURL}/subject-category?category=${category}`, 'GET');
+    }
+
+    async getStudyStatusBetweenDates(startDate: string, endDate: string) : Promise<DailyStudyStatus[]> {
+        return this.apiService.request<Study[]>(`${this.baseURL}/status?startDate=${startDate}&endDate=${endDate}`, 'GET');
     }
 }
 
