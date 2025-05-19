@@ -11,6 +11,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudyInfoDto {
+    private Integer totalStudies;
+    private Integer totalCompletedStudies;
     private LocalTime totalStudyTime;
     private LocalTime completedStudyTime;
     private List<StudyTimeDto> completedStudyTimeByDiscipline;

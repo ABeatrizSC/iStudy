@@ -1,6 +1,7 @@
 package com.io.github.abeatrizsc.study_tracker_ms.services;
 
 import com.io.github.abeatrizsc.study_tracker_ms.domain.Study;
+import com.io.github.abeatrizsc.study_tracker_ms.dtos.DailyStudyStatusDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyInfoDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyTimeDto;
@@ -20,11 +21,7 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.temporal.WeekFields;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,21 +35,19 @@ public class StudyService {
     @Transactional
     public List<Study> save(StudyRequestDto requestDto) throws ConflictException {
         String token = authRequestUtils.getToken();
-        System.out.println("TOKEN = " + token);
-        System.out.println("REQUESTDTO = " + requestDto);
 
         Study study = studyMapper.convertRequestDtoToEntity(requestDto);
         study.setCreatedBy(authRequestUtils.getUserId());
 
-/*        try {*/
+        try {
             DisciplineVo discipline = disciplineServiceClient.getDisciplineByName(token, requestDto.getDisciplineName()).getBody();
             study.setDisciplineCategory(discipline.getCategory());
             disciplineServiceClient.getTopicByName(token, requestDto.getTopicName()).getBody();
-/*
+
         } catch (FeignException e) {
             throw new NotFoundException("Topic or Subject");
         }
-*/
+
 
         if (studyAlreadyExists(study)) {
             throw new ConflictException("study");
@@ -320,8 +315,36 @@ public class StudyService {
                 .collect(Collectors.toList());
     }
 
+    public List<Integer> getDailyStudiesQuantity(LocalDate date) {
+        List<Study> studies = findByDate(date);
+        int total = studies.size();
+        int completed = (int) studies.stream().filter(Study::getIsCompleted).count();
+
+        return Arrays.asList(total, completed);
+    }
+
+    public List<Integer> getWeeklyStudiesQuantity(Integer year, Integer week) {
+        List<Study> studies = findByWeek(year, week);
+        int total = studies.size();
+        int completed = (int) studies.stream().filter(Study::getIsCompleted).count();
+
+        return Arrays.asList(total, completed);
+    }
+
+    public List<Integer> getMonthlyStudiesQuantity(Integer year, Integer month) {
+        List<Study> studies = findByMonth(year, month);
+        int total = studies.size();
+        int completed = (int) studies.stream().filter(Study::getIsCompleted).count();
+
+        return Arrays.asList(total, completed);
+    }
+
     public StudyInfoDto getDayInfo(LocalDate date) {
         StudyInfoDto studyInfoDto = new StudyInfoDto();
+        List<Integer> stats = getDailyStudiesQuantity(date);
+
+        studyInfoDto.setTotalStudies(stats.get(0));
+        studyInfoDto.setTotalCompletedStudies(stats.get(1));
         studyInfoDto.setTotalStudyTime(getTotalDailyStudyTime(date));
         studyInfoDto.setCompletedStudyTime(getDailyCompletedStudyTime(date));
         studyInfoDto.setCompletedStudyTimeByDiscipline(getDailyCompletedStudyTimeByDiscipline(date));
@@ -332,6 +355,10 @@ public class StudyService {
 
     public StudyInfoDto getWeekInfo(Integer year, Integer week) {
         StudyInfoDto studyInfoDto = new StudyInfoDto();
+        List<Integer> stats = getWeeklyStudiesQuantity(year, week);
+
+        studyInfoDto.setTotalStudies(stats.get(0));
+        studyInfoDto.setTotalCompletedStudies(stats.get(1));
         studyInfoDto.setTotalStudyTime(getTotalWeeklyStudyTime(year, week));
         studyInfoDto.setCompletedStudyTime(getWeeklyCompletedStudyTime(year, week));
         studyInfoDto.setCompletedStudyTimeByDiscipline(getWeeklyCompletedStudyTimeByDiscipline(year, week));
@@ -342,11 +369,48 @@ public class StudyService {
 
     public StudyInfoDto getMonthInfo(Integer year, Integer month) {
         StudyInfoDto studyInfoDto = new StudyInfoDto();
+        List<Integer> stats = getMonthlyStudiesQuantity(year, month);
+
+        studyInfoDto.setTotalStudies(stats.get(0));
+        studyInfoDto.setTotalCompletedStudies(stats.get(1));
         studyInfoDto.setTotalStudyTime(getTotalMonthlyStudyTime(year, month));
         studyInfoDto.setCompletedStudyTime(getMonthlyCompletedStudyTime(year, month));
         studyInfoDto.setCompletedStudyTimeByDiscipline(getMonthlyCompletedStudyTimeByDiscipline(year, month));
         studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getMonthlyCompletedStudyTimeByDisciplineCategory(year, month));
 
         return studyInfoDto;
+    }
+
+    public List<DailyStudyStatusDto> getStudyStatusBetweenDates(LocalDate startDate, LocalDate endDate) {
+        List<Study> studies = repository
+                .findByDateBetween(startDate, endDate)
+                .stream()
+                .filter(s -> authRequestUtils.isRequestFromCreator(s.getCreatedBy()))
+                .toList();
+
+        Map<LocalDate, List<Study>> studiesByDate = studies.stream()
+                .collect(Collectors.groupingBy(Study::getDate));
+
+        List<DailyStudyStatusDto> statusList = new ArrayList<>();
+
+        for (LocalDate date = startDate; !date.isAfter(endDate); date = date.plusDays(1)) {
+            List<Study> dailyStudies = studiesByDate.getOrDefault(date, Collections.emptyList());
+
+            if (dailyStudies.isEmpty()) {
+                statusList.add(new DailyStudyStatusDto(date, false, false));
+            } else {
+                LocalTime completedTime = calcCompletedStudyTime(dailyStudies);
+                LocalTime totalTime = calcTotalStudyTime(dailyStudies);
+
+                if (totalTime.getHour() == 0 && totalTime.getMinute() == 0) {
+                    statusList.add(new DailyStudyStatusDto(date, false, true));
+                } else {
+                    boolean metGoal = !completedTime.isBefore(totalTime);
+                    statusList.add(new DailyStudyStatusDto(date, metGoal, true));
+                }
+            }
+        }
+
+        return statusList;
     }
 }
