@@ -168,6 +168,8 @@ public class DisciplineService {
         discipline.setTimeCompleted(completedTime);
         if (!discipline.getTotalTime().equals(LocalTime.MIDNIGHT) && discipline.getTotalTime() == discipline.getTimeCompleted()) {
             discipline.setIsCompleted(true);
+        } else {
+            discipline.setIsCompleted(false);
         }
     }
 }

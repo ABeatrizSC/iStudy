@@ -12,6 +12,7 @@ export const useCreateTopic = (subjectName: string) => {
         mutationFn: (topic: TopicRequest) => topicService.create(topic),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subject', subjectName] });
+            queryClient.invalidateQueries({ queryKey: ['subject-data'] });
             notification.notify("Topic created successfully!", "success");
         },
     });

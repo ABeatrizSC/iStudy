@@ -13,6 +13,7 @@ export const useUpdateTopic = (subjectName: string) => {
             topicService.update(topic, id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['subject', subjectName] });
+            queryClient.invalidateQueries({ queryKey: ['subject-data'] });
             notification.notify("Topic updated successfully!", "success");
         },
     });
