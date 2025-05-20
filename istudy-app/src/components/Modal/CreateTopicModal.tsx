@@ -19,6 +19,7 @@ interface CreateTopicModalProps {
     handleClose: () => void;
 }
 
+
 export const CreateTopicModal: React.FC<CreateTopicModalProps> = ({ data, subjectId, action, open, handleClose }) => {
     const [topicFormData, setTopicFormData] = useState<TopicRequest>({ 
         name: data?.name ?? '', 
@@ -32,7 +33,7 @@ export const CreateTopicModal: React.FC<CreateTopicModalProps> = ({ data, subjec
             name: '',
             time: '00:00',
             isCompleted: false,
-            disciplineId: '',
+            disciplineId: subjectId,
         });
     };
 

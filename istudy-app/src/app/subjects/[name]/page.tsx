@@ -3,8 +3,8 @@
 import { Container, Template, Title, Button, CustomTable, CustomTableCell, ConfirmationModal, CreateTopicModal, UpdateTopicModal, CategoryBox } from "@/components";
 import { useSubjectByName } from "@/hooks/subject";
 import { Checkbox, LinearProgress, TableBody, TableRow } from "@mui/material";
-import { useParams } from "next/navigation";
-import { Add, Delete, Edit } from "@mui/icons-material";
+import { useParams, useRouter } from "next/navigation";
+import { Add, ArrowBack, Delete, Edit } from "@mui/icons-material";
 import theme from "@/resources/assets/styles/Theme";
 import { formatTime } from "@/utils/formatters";
 import { useEffect, useState } from "react";
@@ -13,6 +13,7 @@ import { useCreateTopic, useDeleteTopic, useUpdateTopic } from "@/hooks/topic";
 import NotFoundPage from "@/app/not-found";
 
 export default function SubjectDetail() {
+    const router = useRouter();
     const { name: subjectName } = useParams<{ name: string }>(); 
     const [progressValue, setProgressValue] = useState<number>(0);
     const { data: subject, isLoading } = useSubjectByName(subjectName);
@@ -74,9 +75,17 @@ export default function SubjectDetail() {
 
     return (
         <Template loading={isLoading}>
-            <Title>
-            {`Subjects/${subject?.name}`}
-            </Title>
+            <div className="flex gap-3">
+                <Button onClick={() => router.push("/subjects")} style="!bg-transparent !p-0">
+                    <ArrowBack 
+                        sx={{ fill: theme.palette.primary.main }}
+                        fontSize="large"
+                    />
+                </Button>
+                <Title>
+                {`Subjects/${subject?.name}`}
+                </Title>
+            </div>
             <Container style="gap-2">
                 <div className="flex items-center gap-2">
                     <h2>{subject?.name}</h2>
