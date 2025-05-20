@@ -1,17 +1,18 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Template, Container, Button, Title, StudyBox, StudyModal, ConfirmationModal, DateInput } from "@/components";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Add } from "@mui/icons-material";
 import { useSubjectCategories } from "@/hooks/subject";
-import { formatCategory, formatSavedDate } from "@/utils/formatters";
-import { useStudyData, useCreateStudy, useDeleteStudy, useUpdateStudy, useStudyByCategory, useStudyByDate } from "@/hooks/study";
+import { formatCategory, formatSavedDate, formatStatus } from "@/utils/formatters";
+import { useStudyData, useCreateStudy, useDeleteStudy, useUpdateStudy } from "@/hooks/study";
 import { Study } from "@/resources/services/study/study.resource";
+import dayjs from "dayjs";
 
 export default function Studies() {
-    const [studies, setStudies] = useState<Study[]>([]);
     const [categoryFilter, setCategoryFilter] = useState<string>("");
+    const [topicFilter, setTopicFilter] = useState<string>("");
     const [statusFilter, setStatusFilter] = useState<boolean | null>(null);
     const [dateFilter, setDateFilter] = useState<string>("");
     const [studySelected, setStudySelected] = useState<Study>({
@@ -27,55 +28,52 @@ export default function Studies() {
 
     const { data: allStudies, isLoading: isStudiesLoading } = useStudyData();
     const { data: categories, isLoading: isCategoriesLoading } = useSubjectCategories();
-    const { data: studiesByCategory, isLoading: isLoadingStudiesByCategory } = useStudyByCategory(categoryFilter);
-    const { data: studiesByDate, isLoading: isLoadingStudiesByDate } = useStudyByDate(dateFilter);
 
-    useEffect(() => {
-        let filteredStudies = allStudies || [];
-    
-        if (categoryFilter) {
-            filteredStudies = studiesByCategory || [];
-        } else if (dateFilter) {
-            filteredStudies = studiesByDate || [];
+    const topics = allStudies?.reduce((acc: string[], study) => {
+        if (!acc.includes(study.topicName)) {
+            acc.push(study.topicName);
         }
-    
-        if (statusFilter !== null) {
-            filteredStudies = filteredStudies.filter(study => study.isCompleted === statusFilter);
-        }
-    
-        setStudies(filteredStudies);
-    }, [categoryFilter, dateFilter, statusFilter, allStudies, studiesByCategory, studiesByDate]);    
+        return acc;
+    }, []);
+
     
     const createStudy = useCreateStudy();
     const deleteStudy = useDeleteStudy();
     const updateStudy = useUpdateStudy();
     
-    const isLoading = isStudiesLoading || isCategoriesLoading || isLoadingStudiesByCategory || isLoadingStudiesByDate;
+    const isLoading = isStudiesLoading || isCategoriesLoading;
 
     const [openCreateModal, setOpenCreateModal]= useState<boolean>(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal]= useState<boolean>(false);
     const [openUpdateModal, setOpenUpdateModal]= useState<boolean>(false);
 
-    const handleCategoryChange = (event: SelectChangeEvent<string>) => {
-        setDateFilter("");
-        setStatusFilter(formatStatus(""));
-        setCategoryFilter(event.target.value as string);
-    };
-
-    const formatStatus = (status: string) => {
-        if (status == "complete") {
-            return true;
-        } else if (status == "incomplete") {
-            return false;
-        }
-        return null;
-    }
-
     const handleStatusChange = (event: SelectChangeEvent<string>) => {
         setDateFilter("");
         setCategoryFilter("");
+        setTopicFilter("");
         setStatusFilter(formatStatus(event.target.value));
     };
+
+    const handleCategoryChange = (event: SelectChangeEvent<string>) => {
+        setDateFilter("");
+        setStatusFilter(formatStatus(""));
+        setTopicFilter("");
+        setCategoryFilter(event.target.value as string);
+    };
+
+    const handleTopicChange = (event: SelectChangeEvent<string>) => {
+        setDateFilter("");
+        setStatusFilter(formatStatus(""));
+        setCategoryFilter("");
+        setTopicFilter(event.target.value);
+    };
+
+    const handleDateChange = (newValue: string | Date | dayjs.Dayjs | null) => {
+        setCategoryFilter("");
+        setStatusFilter(formatStatus(""));
+        setTopicFilter("");
+        setDateFilter(formatSavedDate(newValue));
+    }
 
     const handleCloseDeleteModal = () => {
         setOpenConfirmDeleteModal(false)
@@ -86,6 +84,10 @@ export default function Studies() {
             onSuccess: () => handleCloseDeleteModal(),
         });
     }
+
+    let studies = categoryFilter ? allStudies?.filter(s => s.disciplineCategory == categoryFilter) : dateFilter ? allStudies?.filter(s => s.date == dateFilter) : statusFilter ? allStudies?.filter(s => s.isCompleted === statusFilter) : topicFilter ? allStudies?.filter(s => s.topicName === topicFilter) : allStudies;
+
+    studies = studies?.sort((a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf());
 
     return (
         <Template loading={isLoading}>
@@ -108,15 +110,32 @@ export default function Studies() {
                         <MenuItem value={"incomplete"}>Incomplete</MenuItem>
                     </Select>
                 </span>
+                 <span>
+                    <label htmlFor="subjectCategory" className="mr-2">Topic:</label>
+                    <Select
+                        id="subjectCategory"
+                        value={topicFilter}
+                        onChange={handleTopicChange}
+                        sx={{
+                            width: '180px'
+                        }}
+                    >
+                        <MenuItem value={""}>None</MenuItem>
+                        {topics?.map((topic: string) => (
+                            <MenuItem 
+                                key={topic} 
+                                value={topic}
+                            >
+                                {topic}
+                            </MenuItem>
+                        ))}
+                    </Select>
+                </span>
                 <span className="flex items-center">
                     <label className="mr-2">Date:</label>
                     <DateInput 
                         value={dateFilter}
-                        onChangeFunc={(newValue) => {
-                            setCategoryFilter("");
-                            setStatusFilter(formatStatus(""));
-                            setDateFilter(formatSavedDate(newValue));
-                        }}
+                        onChangeFunc={(newValue) => handleDateChange(newValue)}
                     />
                 </span>
                 <span>
@@ -146,8 +165,8 @@ export default function Studies() {
                 </Button>
             </Container>
             <Container style="!flex-row justify-start gap-5 flex-wrap overflow-y-auto">
-                {studies.length > 0 ? (
-                    studies.map((study: Study) => (
+                {studies && studies?.length > 0 ? (
+                    studies?.map((study: Study) => (
                         <StudyBox 
                             key={study.id} 
                             study={study} 

@@ -1,5 +1,6 @@
 package com.io.github.abeatrizsc.study_tracker_ms.dtos;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -22,6 +23,7 @@ public class StudyRequestDto {
     @NotNull(message = "Study time is required.")
     private LocalTime time;
 
+    @FutureOrPresent(message = "The date must be present or future.")
     @NotNull(message = "Study date is required.")
     private LocalDate date;
 

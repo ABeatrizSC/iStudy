@@ -43,7 +43,7 @@ export const SubjectModal: React.FC<SubjectModalProps> = ({ title, submitText, c
                     event.preventDefault();
                     const updatedData = {
                       ...subjectData,
-                      category: subjectData.category === "" ? null : subjectData.category
+                      category: subjectData.category === "" ? null : subjectData.category,
                     };
                     
                     if (data?.id) {
