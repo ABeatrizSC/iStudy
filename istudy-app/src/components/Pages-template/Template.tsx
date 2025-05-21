@@ -4,7 +4,7 @@ import React from "react";
 import { ThemeProvider } from '@mui/material/styles';
 import theme from '@/resources/assets/styles/Theme';
 import { ToastContainer } from 'react-toastify';
-import { Sidebar, Loader, AuthenticatedPage } from "./";
+import { Sidebar, Loader, AuthenticatedPage } from "..";
 
 
 interface TemplateProps {

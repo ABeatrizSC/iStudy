@@ -2,7 +2,7 @@
 
 import { Pie, PieChart, Tooltip, Cell, LabelList, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from '@/components/ui/chart';
-import { CustomPieTooltip } from '../../components';
+import { CustomPieTooltip } from '..';
 import theme from '@/resources/assets/styles/Theme';
 
 type Props = {

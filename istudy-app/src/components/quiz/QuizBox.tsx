@@ -1,7 +1,7 @@
 'use client'
 
 import { alpha } from "@mui/material";
-import { Button } from "../";
+import { Button } from "..";
 import theme from "@/resources/assets/styles/Theme";
 import { Delete, Edit, PlayArrow } from "@mui/icons-material";
 import QuizIcon from '@mui/icons-material/Quiz';
