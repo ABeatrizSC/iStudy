@@ -148,124 +148,952 @@ docker-compose up --build
 </br>
 
 # iStudy-services - Back-End
-## Summary endpoints
-As the project is still in progress and subject to changes, this is a brief summary of all the available endpoints in each microservice and their functionality:
-
-### 1. AUTH-MS
+## 1. AUTH-MS
 - Authentication and user management microservice.
+### **POST** `/auth/register`
+- Creates a new user.
 
-| Method  | Endpoint                  | Description                         | Request Body                   | Response Body                           |
-|---------|---------------------------|------------------------------------------|--------------------------------|-----------------------------------------|
-| **POST**  | /auth/login              | Authenticates a user and returns a JWT token | `LoginRequestDto` (email, password) | LoginResponseDto (JWT token)           |
-| **POST**  | /auth/register           | Registers a new user                     | `RegisterRequestDto` (name, email, password) | RegisterResponseDto |
-| **GET**   | /auth/authenticated-user  | Retrieves the authenticated user from the token | - | String (user ID) |
-| **GET**   | /users/{id}              | Fetches a user by ID if authorized      | - | `User` |
+#### Request Body
 
-### 2. DISCIPLINE-MS
+```json
+{
+    "name": "New user",
+    "email": "newuser@email.com",
+    "password": "12345678"
+}
+```
+
+#### Success Response Body
+
+```json
+{
+    "message": "User created successfully!"
+}
+```
+---
+
+### **POST** `/auth/login`
+- Authenticates the user.
+
+#### Request Body
+
+```json
+{
+    "email": "newuser@email.com",
+    "password": "12345678"
+}
+```
+
+#### Success Response Body
+
+```json
+{
+    "token": "ey..."
+}
+```
+
+</br>
+
+## 2. DISCIPLINE-MS
 - Microservice responsible for creating, updating, deleting, and generating information about disciplines and their topics.
 
-#### Discipline endpoints
+### DISCIPLINE ENDPOINTS
 
-| Method  | Endpoint                      | Description                                              | Request Body                   | Response Body                          |
-|---------|--------------------------------|----------------------------------------------------------|--------------------------------|----------------------------------------|
-| **POST**   | /disciplines                 | Creates a new discipline                                 | DisciplineRequestDto           | `List<Discipline>`     |
-| **PUT**    | /disciplines/{id}            | Updates an existing discipline by ID                     | DisciplineRequestDto           | `List<Discipline>`                      |
-| **DELETE** | /disciplines/{id}            | Deletes a discipline by ID                               | -                            | `List<Discipline>`                      |
-| **GET**    | /disciplines                 | Retrieves a discipline by name                           | - (Query Param: name)        | `Discipline`                            |
-| **GET**    | /disciplines/all             | Retrieves all disciplines                                | -                            | `List<Discipline>`                      |
-| **GET**    | /disciplines/{id}            | Retrieves a discipline by ID                             | -                            | `Discipline`                            |
-| **GET**    | /disciplines/categories/{category} | Retrieves all disciplines by category                    | -                            | `List<Discipline>`                      |
-| **GET**    | /disciplines/categories | Retrieves all disciplines category                    | -                            | `String[]`                      |
-| **GET**    | /disciplines/search          | Returns all disciplines that have the searched character | - (Query Param: name)        | `List<Discipline>`                      |
-| **GET**    | /disciplines/completed       | Retrieves all completed disciplines                      | -                            | `List<Discipline>`                      |
+### **POST** `/disciplines`
+- Create a new subject.
 
-#### Topic endpoints
+#### Request Body
+- `DisciplineRequestDto`:
 
-| Method  | Endpoint                      | Description                                | Request Body                   | Response Body                          |
-|---------|--------------------------------|-------------------------------------------------|--------------------------------|----------------------------------------|
-| **POST**   | /disciplines/topics          | Creates a new topic                             | `TopicRequestDto`                | `List<TopicResponseDto>`               |
-| **PUT**    | /disciplines/topics/{id}     | Updates an existing topic by ID                 | `TopicUpdateDto`                 | `List<TopicResponseDto>`               |
-| **DELETE** | /disciplines/topics/{id}     | Deletes a topic by ID                           | -                            | `List<TopicResponseDto>`               |
-| **GET**    | /disciplines/topics          | Retrieves a topic by name                       | Query Param: `name`        | `TopicResponseDto`                       |
-| **GET**    | /disciplines/topics/all      | Retrieves all topics                            | -                            | `List<TopicResponseDto>`               |
-| **GET**    | /disciplines/topics/{id}     | Retrieves a topic by ID                         | -                            | `TopicResponseDto`                       |
+```json
+{
+  "name": "Mathematics",
+  "category": "EXACT_SCIENCES",
+  "isCompleted": false
+}
+```
 
-### 3. STUDY-TRACKER-MS
+#### Success Response Body
+- Status: `201 Created`.
+- Returns `List<Discipline>`: 
+
+```json
+[
+    {
+        "id": "0ff67f43-11c2-458c-a88c-753f3c939a33",
+        "createdBy": "6a93f671-9406-42ea-8b0c-5d7ef65ea9b5",
+        "name": "Mathematics",
+        "category": "EXACT_SCIENCES",
+        "totalTime": "00:00:00",
+        "timeCompleted": "00:00:00",
+        "isCompleted": false,
+        "topics": []
+    }
+]
+```
+---
+### **PUT** `/disciplines/{id}`
+- Update the subject with the given ID.
+
+#### Request Body
+- `DisciplineRequestDto`
+
+#### Success Response Body
+- `List<Discipline>` updated. 
+
+---
+### **DELETE** `/disciplines/{id}`
+- Delete the subject with the given ID.
+
+#### Success Response Body
+- `List<Discipline>` updated. 
+
+---
+
+### **GET** `/disciplines/{id}`
+- Returns the subject with the given ID.
+
+#### Success Response Body
+- `Discipline`. 
+
+---
+
+### **GET** `/disciplines?name={name}`
+- Returns all of the user's subjects that contain the name provided in the query parameter.
+
+#### Success Response Body
+- `List<Discipline>` 
+
+---
+
+### **GET** `/disciplines/categories/{category}`
+- Returns all of the user's subjects with the specified category.
+
+#### Success Response Body
+- `List<Discipline>` 
+
+---
+
+### **GET** `/disciplines/category`
+- Returns a list of strings with all the categories available in the system.
+
+#### Success Response Body
+- `List<String>` 
+
+```json
+[
+  "EXACT_SCIENCES",
+  "HUMAN_SCIENCES",
+  "BIOLOGICAL_SCIENCES",
+  "SOCIAL_SCIENCES",
+  "HEALTH_SCIENCES",
+  "ARTS_AND_HUMANITIES"
+]
+```
+---
+
+### **GET** `/disciplines/completed`
+- Returns all of the user's subjects with `isCompleted` attribute marked as True.
+
+#### Success Response Body
+- `List<Discipline>` 
+
+</br>
+
+### TOPIC ENDPOINTS
+### **POST** `/disciplines/topics`
+- Create a new topic.
+
+#### Request Body
+- `TopicRequestDto`:
+
+```json
+{
+  "name": "New topic",
+  "time": "03:00",
+  "isCompleted": false,
+  "disciplineId": "uuid"
+}
+```
+
+#### Success Response Body
+- `List<TopicResponseDto>` updated.
+
+```json
+[
+  {
+    "id": "uuid",
+    "name": "Topic 1",
+    "time": "01:30",
+    "isCompleted": true,
+    "disciplineId": "uuid"
+  },
+  {
+    "id": "uuid",
+    "name": "New topic",
+    "time": "03:00",
+    "isCompleted": false,
+    "disciplineId": "uuid"
+  }
+  //...
+]
+```
+
+---
+
+### **PUT** `/disciplines/topics/{id}`
+- Update the topic with the given ID.
+
+### Request Body
+- `TopicUpdateDto`:
+
+```json
+{
+  "name": "New topic updated",
+  "time": "03:00",
+  "isCompleted": false,
+}
+```
+
+#### Success Response Body
+- `List<TopicResponseDto>` updated.
+
+---
+
+### **DELETE** `/disciplines/topics/{id}`
+- Delete the topic with the given ID.
+
+#### Success Response Body
+- `List<TopicResponseDto>` updated.
+
+---
+
+### **GET** `/disciplines/topics/all`
+- Returns all of the user's subjects
+
+#### Success Response Body
+- `List<TopicResponseDto>`
+
+---
+
+### **GET** `/disciplines/topics/{id}`
+-  Returns the topic with the given ID.
+
+- #### Success Response Body
+- `TopicResponseDto`
+
+</br>
+
+## 3. STUDY-TRACKER-MS
 - This microservice is responsible for managing study sessions. It allows users to create, update, retrieve, and delete study records.
 - Additionally, it provides analytical insights into study habits based on different time periods.
 
-| **Method** | **Endpoint**                 | **Description**                                | **Request Body**                                | **Example**                                      |
-|-----------|------------------------------|------------------------------------------------|-------------------------------------------------|--------------------------------------------------|
-| **POST**  | `/studies`                    | Creates a new study record.                   | `StudyRequestDto`                               | -                                                |
-| **PUT**   | `/studies/{id}`               | Updates a study record by ID.                 | Path variable: `{id} (String)`, `StudyRequestDto` | -                                                |
-| **DELETE** | `/studies/{id}`              | Deletes a study record by ID.                 | Path variable: `{id} (String)`                  | -                                                |
-| **GET**   | `/studies/all`                | Retrieves all study records.                  | -                                            | -                                                |
-| **GET**   | `/studies/{id}`               | Retrieves a study by ID.                      | Path variable: `{id} (String)`                  | -                                                |
-| **GET**   | `/studies/completed`          | Retrieves completed study sessions.           | -                                            | -                                                |
-| **GET**   | `/studies/date`               | Retrieves studies by a specific date.         | Query param: `date (String, YYYY-MM-DD)`        | `GET /studies/date?date=2024-03-01`              |
-| **GET**   | `/studies/month`              | Retrieves studies for a specific month.       | Query param: `year (Integer), month (Integer)`  | `GET /studies/month?year=2024&month=3`           |
-| **GET**   | `/studies/month/info`         | Retrieves study statistics for a month.       | Query param: `year (Integer), month (Integer)`  | `GET /studies/month/info?year=2024&month=3`      |
-| **GET**   | `/studies/week`               | Retrieves studies for a specific week.        | Query param: `year (Integer), week (Integer)`   | `GET /studies/week?year=2024&week=10`            |
-| **GET**   | `/studies/week/info`          | Retrieves study statistics for a week.        | Query param: `year (Integer), week (Integer)`   | `GET /studies/week/info?year=2024&week=10`       |
-| **GET**   | `/studies/subject-category`   | Retrieves studies by subject category.        | Query param: `category (String)`               | `GET /studies/subject-category?category=HUMAN_SCIENCES`    |
+### **POST** `/studies`
+- Creates a new study.
 
-### 4. STUDY-GAMIFICATION-MS
+#### Request Body
+- `StudyRequestDto`:
+
+```json
+{
+  "disciplineName": "Mathematics",
+  "topicName": "Linear Algebra",
+  "time": "01:30:00",
+  "date": "2025-05-21",
+  "isCompleted": false
+}
+```
+
+#### Success Response Body
+- `List<Study>`
+
+```json
+[
+  {
+    "id": "abc123",
+    "createdBy": "userId123",
+    "disciplineName": "Mathematics",
+    "topicName": "Linear Algebra",
+    "disciplineCategory": "EXACT_SCIENCES",
+    "time": "01:30:00",
+    "date": "2025-05-21",
+    "isCompleted": false
+  }
+]
+```
+---
+
+### **PUT** `/studies/{id}`
+- Updates a study by ID.
+
+#### Request Body
+- `StudyRequestDto`
+
+#### Success Response Body
+- `List<Study>` updated
+
+---
+
+### **DELETE** `/studies/{id}`
+- Deletes a study by ID.
+
+#### Success Response Body
+- `List<Study>` updated
+---
+
+### **GET** `/studies/all`
+- Returns all studies.
+
+#### Success Response Body
+- `List<Study>`.
+
+---
+
+### **GET** `/studies/{id}`
+- Returns the user's study with the given ID.
+
+#### Success Response body
+- `Study`
+
+---
+
+### **GET** `/studies/completed`
+- Returns all the user's studies with the isCompleted field set to true.
+
+#### Success Response Body
+- `List<Study>`
+
+---
+
+### Get Studies by Date, Week or Month 
+- Returns all the user's studies on the specified date, week or month.
+
+  1. **GET** `/studies/date?date=2025-05-21`
+
+  2. **GET** `/studies/week?year=2025&week=21`
+
+  3. **GET** `/studies/month?year=2025&month=5`
+
+#### Success Response body
+- `List<Study>`
+
+---
+
+### Get Study Info by Date, Week or Month
+- Returns information about all the user's studies within the specified time:
+
+  1. **GET** `/studies/date/info?date=2025-04-05`
+
+  2. **GET** `/studies/week/info?year=2025&week=21`
+
+  3. **GET** `/studies/month/info?year=2025&month=5`
+
+#### Success Response body
+- `StudyInfoDto`
+
+```json
+{
+  "totalStudies": 6,
+  "totalCompletedStudies": 4,
+  "totalStudyTime": "10:00:00",
+  "completedStudyTime": "06:00:00",
+  "completedStudyTimeByDiscipline": [
+    {
+      "name": "Mathematics",
+      "completedTime": "03:00:00"
+    },
+    {
+      "name": "Biology",
+      "completedTime": "00:00:00"
+    },
+    {
+      "name": "Arts",
+      "completedTime": "03:00:00"
+    }
+  ],
+  "completedStudyTimeByDisciplineCategory": [
+    {
+      "name": "BIOLOGICAL_SCIENCES",
+      "completedTime": "00:00:00"
+    },
+    {
+      "name": "SOCIAL_SCIENCES",
+      "completedTime": "00:00:00"
+    },
+    //...
+  ]
+}
+```
+---
+
+### **GET** `/studies/subject-category?category=Humanities`
+- Returns all the user's studies that have the specified category.
+
+#### Success Response body
+- `List<Study>`
+
+---
+
+### **GET** `/studies/status?startDate=2025-05-01&endDate=2025-05-21`
+- Returns the studies status between two given dates.
+
+#### Success Response Body
+- `List<DailyStudyStatusDto>`
+
+```json
+[
+  {
+    "date": "2025-05-20",
+    "metGoal": true,
+    "dayStudied": true
+  },
+  {
+    "date": "2025-05-21",
+    "metGoal": false,
+    "dayStudied": true
+  }
+]
+```
+
+## 4. STUDY-GAMIFICATION-MS
 - Microservice that manages the creation of quizzes and flashcards to enhance user learning.
 
-#### Quiz Endpoints
+### QUIZ ENDPOINTS
+### **POST** `/games/quizzes`
+- Create a new quiz.
 
-| Method   | Endpoint                      | Description                                       | Request Body     | Response Body     |
-|----------|--------------------------------|---------------------------------------------------|------------------|-------------------|
-| **POST**  | `/games/quizzes`              | Creates a new quiz                                | `QuizRequestDto` | `List<Quiz>`      |
-| **PUT**   | `/games/quizzes/{id}`         | Updates a quiz by ID                              | `QuizRequestDto` | `List<Quiz>`      |
-| **PUT**   | `/games/quizzes/answer/{id}`  | Answers a quiz by ID and returns wrong answers | `QuizAnswerDto`  | `List<Question>`  |
-| **DELETE** | `/games/quizzes/{id}`        | Deletes a quiz by ID                              | -                | `List<Quiz>`      |
-| **GET**   | `/games/quizzes/all`          | Retrieves all quizzes                             | -                | `List<Quiz>`      |
-| **GET**   | `/games/quizzes/{id}`         | Retrieves a quiz by ID                            | -                | `Quiz`            |
-| **GET**   | `/games/quizzes/search?title={title}` | Retrieves a quiz by title                         | -                | `Optional<Quiz>`  |
+#### Request Body
+- `QuizRequestDto`:
 
-#### Flashcard Endpoints
+```json
+{
+  "title": "Java Quiz",
+  "questions": [
+    {
+      "question": "What is Spring Boot?",
+      "options": [
+        { "option": "A programming language", "isCorrect": false },
+        { "option": "A framework for Java applications", "isCorrect": true },
+        { "option": "A database", "isCorrect": false }
+      ]
+    },
+    {
+      "question": "What is a DTO?",
+      "answer": "Data Transfer Object",
+      "options": [
+        { "option": "Data Transfer Object", "isCorrect": true },
+        { "option": "An entity class", "isCorrect": false }
+      ]
+    },
+    // ...
+  ]
+}
+```
+#### Success Response Body
+- `List<Quiz>` updated.
 
-| Method   | Endpoint                          | Description                    | Request Body          | Response Body      |
-|----------|----------------------------------|--------------------------------|-----------------------|--------------------|
-| **POST**  | `/games/flashcards`              | Creates a new flashcard        | `FlashcardRequestDto` | `List<Flashcard>` |
-| **PUT**   | `/games/flashcards/{id}`         | Updates a flashcard by ID      | `FlashcardRequestDto` | `List<Flashcard>` |
-| **PUT**   | `/games/flashcards/answer/{id}`  | Answers a flashcard by ID and return cards marked as wrong     | `FlashcardAnswerDto`  | `List<Card>`      |
-| **DELETE** | `/games/flashcards/{id}`        | Deletes a flashcard by ID      | -                     | `List<Flashcard>` |
-| **GET**   | `/games/flashcards/all`         | Retrieves all flashcards       | -                     | `List<Flashcard>` |
-| **GET**   | `/games/flashcards/{id}`        | Retrieves a flashcard by ID    | -                     | `Flashcard`       |
-| **GET**   | `/games/flashcards/search?title={title}` | Retrieves a flashcard by title | -                     | `Optional<Flashcard>` |
+```json
+[
+  {
+    "title": "Java Quiz",
+    "questions": [
+      {
+        "question": "What is Spring Boot?",
+        "options": [
+          { "option": "A programming language", "isCorrect": false },
+          { "option": "A framework for Java applications", "isCorrect": true },
+          { "option": "A database", "isCorrect": false }
+        ]
+      },
+      {
+        "question": "What is a DTO?",
+        "answer": "Data Transfer Object",
+        "options": [
+          { "option": "Data Transfer Object", "isCorrect": true },
+          { "option": "An entity class", "isCorrect": false }
+        ]
+      },
+      // ...
+    ]
+  },
+  // ...
+]
+```
 
-### 5. STUDY-PLANNER-MS
+---
+
+### **PUT** `/games/quizzes/{id}`
+- Update the quiz with the given ID.
+
+#### Request Body
+- `QuizRequestDto`
+
+#### Success Response Body
+- `List<Quiz>` updated.
+
+---
+
+### **PUT** `/games/quizzes/answer/{id}`
+- Answer the quiz with the given ID.
+
+#### Request Body
+- `QuizAnswerDto`
+
+```json
+{
+  "title": "Java Quiz Up",
+  "questions": [
+    {
+      "question": "What is Spring Boot?",
+      "optionChosen": "A framework for Java applications",
+      "options": [
+        { "option": "A programming language", "isCorrect": false },
+        { "option": "A framework for Java applications", "isCorrect": true },
+        { "option": "A database", "isCorrect": false }
+      ]
+    },
+    {
+      "question": "What is a DTO?",
+      "optionChosen": "An entity class",
+      "answer": "Data Transfer Object",
+      "options": [
+        { "option": "Data Transfer Object", "isCorrect": true },
+        { "option": "An entity class", "isCorrect": false }
+      ]
+    },
+    // ...
+  ]
+}
+```
+
+#### Success Response Body
+- Returns a `List<Question>` of all incorrect questions (`correctAnswer` attribute marked as false).
+
+```json
+[
+  {
+    "id": "uuid",
+    "question": "What is Spring Boot?",
+    "createdBy": "uuid",
+    "optionChosen": "question_uuid",
+    "correctAnswer": false,
+    "options": [
+      {
+        "id": "uuid",
+        "option": "A framework for Java applications",
+        "createdBy": "uuid",
+        "isCorrect": true
+      },
+      {
+        "id": "uuid",
+        "option": "A programming language",
+        "createdBy": "uuid",
+        "isCorrect": false
+      },
+      {
+        "id": "uuid",
+        "option": "A database",
+        "createdBy": "uuid",
+        "isCorrect": false
+      }
+    ]
+  },
+  // ...
+]
+```
+---
+
+### **DELETE** `/games/quizzes/{id}`
+- Delete the quiz with the given ID.
+
+#### Success Response Body
+- `List<Quiz>` updated.
+
+---
+### **GET** `/games/quizzes/all`
+- Returns all of the user's quizzes.
+
+#### Success Response Body
+- `List<Quiz>`
+
+---
+
+### **GET** `/games/quizzes/{id}`
+- Returns the user's quiz with the given id.
+
+#### Success Response Body
+- `Quiz`
+
+---
+
+### **GET** `/games/quizzes/search?title={quizTitle}`
+- Returns the user's quiz that contains the title provided in the query parameter.
+
+#### Success Response Body
+- `Optional<Quiz>`
+
+</br>
+
+### FLASHCARD ENDPOINTS
+### **POST** `/games/flashcards`
+- Create a new flashcard.
+
+#### Request Body
+- `FlashcardRequestDto`:
+
+```json
+{
+  "title": "Programming Questions",
+  "cards": [
+    {
+      "question": "What does 'HTML' stand for?",
+      "answer": "HyperText Markup Language"
+    },
+    {
+      "question": "What is the main purpose of CSS?",
+      "answer": "To style and layout web pages"
+    },
+    {
+      "question": "Which programming language is known as the backbone of Android app development?",
+      "answer": "Java"
+    },
+    {
+      "question": "What does 'API' stand for?",
+      "answer": "Application Programming Interface"
+    },
+    {
+      "question": "In JavaScript, which keyword declares a constant variable?",
+      "answer": "const"
+    }
+  ]
+}
+```
+#### Success Response Body
+- `List<Flashcard>` updated.
+
+```json
+[
+  {
+    "id": "flashcard-uuid",
+    "createdBy": "user-uuid",
+    "title": "Programming Questions",
+    "cards": [
+      {
+        "id": "q1-uuid-0001",
+        "question": "What does 'HTML' stand for?",
+        "answer": "HyperText Markup Language",
+        "isHit": false
+      },
+      {
+        "id": "q2-uuid-0002",
+        "question": "What is the main purpose of CSS?",
+        "answer": "To style and layout web pages",
+        "isHit": false
+      },
+      {
+        "id": "q3-uuid-0003",
+        "question": "Which programming language is known as the backbone of Android app development?",
+        "answer": "Java",
+        "isHit": false
+      },
+      {
+        "id": "q4-uuid-0004",
+        "question": "What does 'API' stand for?",
+        "answer": "Application Programming Interface",
+        "isHit": false
+      },
+      {
+        "id": "q5-uuid-0005",
+        "question": "In JavaScript, which keyword declares a constant variable?",
+        "answer": "const",
+        "isHit": false
+      },
+      // ...
+    ]
+  },
+  // ...
+]
+```
+
+---
+
+### **PUT** `/games/flashcards/{id}`
+- Update the quiz with the given ID.
+
+#### Request Body
+- `FlashcardRequestDto`
+
+#### Success Response Body
+- `List<Flashcard>` updated.
+
+---
+
+### **PUT** `/games/flashcards/answer/{id}`
+- Answer the quiz with the given ID.
+
+#### Request Body
+- `FlashcardAnswerDto`:
+
+```json
+{
+  "cardsAnswer": [
+     {
+      "id": "q1-uuid-0001", //card uuid
+      "isHit": false
+    },
+    {
+      "id": "q2-uuid-0002",
+      "isHit": false
+    },
+    {
+      "id": "q3-uuid-0003",
+      "isHit": true
+    },
+    {
+      "id": "q4-uuid-0004",
+      "isHit": true
+    },
+    {
+      "id": "q5-uuid-0005",
+      "isHit": false
+    }
+  ]
+}
+```
+
+#### Success Response Body
+- Returns a `List<Card>` of all incorrect questions (`isHit` attribute marked as false).
+
+```json
+[
+  {
+    "id": "q1-uuid-0001",
+    "question": "What does 'HTML' stand for?",
+    "answer": "HyperText Markup Language",
+    "isHit": false
+  },
+  {
+    "id": "q2-uuid-0002",
+    "question": "What is the main purpose of CSS?",
+    "answer": "To style and layout web pages",
+    "isHit": false
+  },
+  {
+    "id": "q5-uuid-0005",
+    "question": "In JavaScript, which keyword declares a constant variable?",
+    "answer": "const",
+    "isHit": false
+  },
+  // ...
+]
+```
+
+---
+
+### **DELETE** `/games/flashcards/{id}`
+- Delete the flashcard with the given ID.
+
+#### Success Response Body
+- `List<Flashcard>` updated.
+
+---
+
+### **GET** `/games/flashcards/all`
+- Returns all of the user's flashcards.
+
+#### Success Response Body
+- `List<Flashcard>`
+
+---
+
+### **GET** `/games/flashcards/{id}`
+- Returns the user's flashcard that contains the given id.
+
+#### Success Response Body
+- `Flashcard`
+
+---
+
+### **GET** `/games/flashcards/search?title={flashcardTitle}`
+- Returns the user's flashcard that contains the title provided in the query parameter.
+
+#### Success Response Body
+- `Optional<Flashcard>`.
+
+</br>
+
+## 5. STUDY-PLANNER-MS
 - Manages user reminders and schedules
 
-#### Reminder endpoints
-| Method | Endpoint                                              | Description                                                         | Request Body             | Response Body                 |
-|--------|-------------------------------------------------------|---------------------------------------------------------------------|--------------------------|-------------------------------|
-| GET    | `/planners/reminders?date=yyyy-MM-dd`                | Retrieves reminders for a specific date (e.g., 2025-05-02)          | -                        | `List<ReminderResponseDto>`   |
-| GET    | `/planners/reminders/all`                            | Retrieves all reminders                                             | -                        | `List<ReminderResponseDto>`   |
-| GET    | `/planners/reminders/{id}`                           | Retrieves a reminder by its ID                                      | -                        | `ReminderResponseDto`         |
-| GET    | `/planners/reminders/completed?isCompleted=true`     | Retrieves reminders by completion status (`true` or `false`)        | -                        | `List<ReminderResponseDto>`   |
-| POST   | `/planners/reminders`                                | Creates one or more reminders                                       | `ReminderRequestDto`     | `List<ReminderResponseDto>`   |
-| PUT    | `/planners/reminders/{id}`                           | Updates a reminder by its ID                                        | `ReminderRequestDto`     | `List<ReminderResponseDto>`   |
-| DELETE | `/planners/reminders/{id}`                           | Deletes a reminder by its ID                                        | -                        | `List<ReminderResponseDto>`   |
+### REMINDER ENDPOINTS
 
-#### Schedule endpoints
-| Method | Endpoint                                               | Description                                                              | Request Body               | Response Body                    |
-|--------|--------------------------------------------------------|--------------------------------------------------------------------------|----------------------------|----------------------------------|
-| GET    | `/planners/schedules?dayOfWeek=1`                      | Retrieves schedule items for a given day of the week (`1 = Monday`, etc) | -                          | `List<ScheduleItemResponseDto>` |
-| GET    | `/planners/schedules/all`                              | Retrieves all schedule items                                             | -                          | `List<ScheduleItemResponseDto>` |
-| GET    | `/planners/schedules/{id}`                             | Retrieves a schedule item by its ID                                      | -                          | `ScheduleItemResponseDto`       |
-| POST   | `/planners/schedules`                                  | Creates one or more schedule items                                       | `ScheduleItemRequestDto`   | `List<ScheduleItemResponseDto>` |
-| PUT    | `/planners/schedules/{id}`                             | Updates a schedule item by its ID                                        | `ScheduleItemRequestDto`   | `List<ScheduleItemResponseDto>` |
-| DELETE | `/planners/schedules/{id}`                             | Deletes a schedule item by its ID                                        | -                          | `List<ScheduleItemResponseDto>` |     |
+### **POST** `/planners/reminders`
+- Create a new reminder.
 
-### STATUS CODE MEANINGS
-- **`200 OK`** → Request was successful.
-- **`201 Created`** → A new resource was successfully created.
-- **`400 Bad Request`** → Invalid input parameters or a duplicate name exists.
-- **`401 Unauthorized`** → User must be authenticated to perform this action.
-- **`404 Not Found`** → The requested resource does not exist.
+#### Request Body
+- `ReminderRequestDto`:
+
+```json
+{
+  "task": "Study for the test",
+  "date": "2025-05-23",
+  "isCompleted": false
+}
+```
+
+#### Success Response Body
+- `List<Reminder>` updated.
+
+```json
+[
+  {
+    "id": "reminder-uuid-001",
+    "createdBy": "user-uuid",
+    "task": "Study for the test",
+    "date": "2025-05-23",
+    "isCompleted": false
+  },
+  // ...
+]
+```
+
+---
+
+### **PUT** `/planners/reminders/{id}`
+- Update the user's reminder with the given ID.
+
+#### Request Body
+- `ReminderRequestDto`
+
+#### Success Response Body
+- `List<Reminder>` updated.
+
+---
+
+### **DELETE** `/planners/reminders/{id}`
+- Delete the user's reminder with the given ID.
+
+#### Success Response Body
+- `List<Reminder>` updated.
+
+---
+
+### **GET** `/planners/reminders/all`
+- Returns all reminders created by the user.
+
+#### Success Response Body
+- `List<Reminder>`
+
+---
+
+### **GET** `/planners/reminders/{id}`
+- Returns the user's reminder with the given ID.
+
+#### Success Response Body
+- `Reminder`
+
+---
+
+### **GET** `/planners/reminders?date={date}`
+- Returns all reminders of the user filtered by the given date (format: `yyyy-MM-dd`).
+
+#### Success Response Body
+- `List<Reminder>`
+
+---
+
+### **GET** `/planners/reminders/completed?isCompleted={true|false}`
+- Returns all reminders of the user filtered by completion status.
+
+#### Success Response Body
+- `List<Reminder>`
+
+</br>
+
+### SCHEDULE ENDPOINTS
+
+### **POST** `/planners/schedules`
+- Create a new schedule item.
+
+#### Request Body
+- `ScheduleItemRequestDto`:
+
+```json
+{
+  "title": "Math Class",
+  "dayOfWeek": 1, // sunday: 0, monday: 1, tuesday: 2...
+  "startTime": "08:00",
+  "endTime": "09:30"
+}
+```
+
+#### Success Response Body
+- `List<ScheduleItem>` updated.
+
+```json
+[
+  {
+    "id": "schedule-uuid-001",
+    "createdBy": "user-uuid",
+    "title": "Math Class",
+    "dayOfWeek": 1,
+    "startTime": "08:00:00",
+    "endTime": "09:30:00"
+  },
+  {
+    "id": "schedule-uuid-002",
+    "createdBy": "user-uuid",
+    "title": "Physics Class",
+    "dayOfWeek": 1,
+    "startTime": "10:00:00",
+    "endTime": "11:00:00"
+  }
+]
+```
+
+---
+
+### **PUT** `/planners/schedules/{id}`
+- Update the schedule item with the given ID.
+
+#### Request Body
+- `ScheduleItemRequestDto`
+
+#### Success Response Body
+- `List<ScheduleItem>` updated.
+
+---
+
+### **DELETE** `/planners/schedules/{id}`
+- Delete the schedule item with the given ID.
+
+#### Success Response Body
+- `List<ScheduleItem>` updated.
+
+---
+
+### **GET** `/planners/schedules/all`
+- Returns all schedule items created by the user.
+
+#### Success Response Body
+- `List<ScheduleItem>`
+
+---
+
+### **GET** `/planners/schedules/{id}`
+- Returns the user's schedule item with the given ID.
+
+#### Success Response Body
+- `ScheduleItem`
+
+---
+
+### **GET** `/planners/schedules?dayOfWeek={number}`
+- Returns all schedule items created by the user filtered by day of the week.
+- Sunday = 0; Monday = 1; Tuesday = 3...
+
+#### Success Response Body
+- `List<ScheduleItem>` for the specified day.
 
 </br>
 
@@ -278,6 +1106,9 @@ As the project is still in progress and subject to changes, this is a brief summ
 
 ### Register page
 ![alt text](docs/images/sign-up-page.jpg) 
+
+### Home page
+![alt text](docs/images/home-page.png) 
 
 ### Subject page
 ![alt text](docs/images/subject-page.jpg)
@@ -299,6 +1130,9 @@ As the project is still in progress and subject to changes, this is a brief summ
 #### Studies page: Create study modal
 ![alt text](docs/images/create-study-page.jpg) 
 
+### Studies Statistical Information page
+[PHOTO]
+
 ### Reminders page
 ![alt text](docs/images/reminders-page.jpg) 
 
@@ -319,6 +1153,14 @@ As the project is still in progress and subject to changes, this is a brief summ
 ![alt text](docs/images/flashcard-game-page.jpg) 
 #### Games: Flashcard result game page
 ![alt text](docs/images/flashcard-game-result-page.jpg) 
+#### Games: Quiz page
+![alt text](docs/images/quiz-page.jpg) 
+#### Games: Quiz create modal
+![alt text](docs/images/create-quiz-modal.jpg) 
+#### Games: Quiz game page
+![alt text](docs/images/quiz-game-modal.png) 
+#### Games: Quiz result page
+![alt text](docs/images/quiz-game-result-modal.jpg) 
 
 ### Time tracker
 #### Time tracker: Timer page
