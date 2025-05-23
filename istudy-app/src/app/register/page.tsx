@@ -17,6 +17,7 @@ import { useFormik } from "formik";
 import { User } from '@/resources/services/auth-user/user.resource';
 import { ToastContainer } from 'react-toastify';
 import { useRegister } from '@/hooks/auth-user/useRegister';
+import { PATH } from '@/constants/path';
 
 export default function Register() {
   const useUserRegister = useRegister();
@@ -143,7 +144,7 @@ export default function Register() {
             </Grid>
             <Button label='Create account' type='submit'/>
             <Grid container justifyContent="center">
-                <CustomLink href='/login'>
+                <CustomLink href={PATH.LOGIN}>
                     Already have an account? Login
                 </CustomLink>
             </Grid>

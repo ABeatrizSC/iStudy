@@ -10,6 +10,7 @@ import { Subject } from "@/resources/services/subject/subject.resource";
 import { useRouter } from "next/navigation";
 import { Column } from "@/components/Table";
 import { formatCategory, formatStatus, formatTime, formatTimeToNumber } from "@/utils/formatters";
+import { PATH } from "@/constants/path";
 
 const columns: Column[] = [
     { 
@@ -60,7 +61,7 @@ export default function Subjects() {
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
     const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState<boolean>(false);
-    const router = useRouter()
+    const { push, prefetch } = useRouter()
 
     const handleCloseConfirmDeleteModal = () => {
         setOpenConfirmDeleteModal(false);
@@ -197,7 +198,7 @@ export default function Subjects() {
                                 <CustomTableCell>{formatTime(subject.totalTime)}</CustomTableCell>
                                 <CustomTableCell>{formatTime(subject.timeCompleted)}</CustomTableCell>
                                 <CustomTableCell sx={{ display: 'flex', gap: '5px', alignItems: 'center', justifyContent: 'center', flexDirection: 'row' }}>
-                                    <Button onClick={() => router.push(`/subjects/${subject.name}`)}>
+                                    <Button onClick={() => push(`${PATH.SUBJECTS}/${subject.name}`)}>
                                         <Visibility />
                                     </Button>
                                     <Button color="green" onClick={() => {

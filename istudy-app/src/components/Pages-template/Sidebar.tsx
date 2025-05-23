@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import theme from '@/resources/assets/styles/Theme';
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -9,11 +9,12 @@ import istudyLogo from '../../resources/assets/images/iStudyLogo.png';
 import { Button } from '@/components';
 import Link from "next/link";
 import { useAuthService } from "@/resources/services/auth-user/authentication.service";
+import { PATH } from "@/constants/path";
 
 export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [isSidebarOpened, setIsSidebarOpened] = useState(true);
     const [openedDropdownIndex, setOpenedDropdownIndex] = useState<number | null>(null);
-    const router = useRouter();
+    const { prefetch, push } = useRouter();
     const authService = useAuthService();
     
     const toggleSidebar = () => setIsSidebarOpened(!isSidebarOpened);
@@ -21,36 +22,42 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
     
     const handleLogout = () => {
         authService.logoutSession();
-        router.push("/login");
+        push(PATH.HOME);
     }
 
     const menuItems = [
-        { path: "/", name: "Home", icon: <Home /> },
+        { path: PATH.HOME, name: "Home", icon: <Home /> },
         {
-            path: "/subjects", name: "Subjects", icon: <ClipboardList />},
+            path: PATH.SUBJECTS, name: "Subjects", icon: <ClipboardList />},
         {
             path: "#", name: "Studies", icon: <BookCheckIcon />, dropdown: [
-                { path: "/studies", name: "Management" },
-                { path: "/studies/statistical-information", name: "Statistical Information" },
+                { path: PATH.STUDIES, name: "Management" },
+                { path: PATH.STUDIES_STATS, name: "Statistical Information" },
             ]
         },
-        { path: "/schedules", name: "Schedule", icon: <SquareGanttChart /> },
-        { path: "/reminders", name: "Reminders", icon: <StickyNote /> },
-        { path: "/calendars", name: "Calendar", icon: <Calendar /> },
+        { path: PATH.SCHEDULES, name: "Schedule", icon: <SquareGanttChart /> },
+        { path:  PATH.REMINDERS, name: "Reminders", icon: <StickyNote /> },
+        { path:  PATH.CALENDAR, name: "Calendar", icon: <Calendar /> },
         {
             path: "#", name: "Games", icon: <Gamepad2 />, dropdown: [
-                { path: "/games/flashcards", name: "Flashcards" },
-                { path: "/games/quizzes", name: "Quizzes" },
+                { path: PATH.FLASHCARDS, name: "Flashcards" },
+                { path:  PATH.QUIZZES, name: "Quizzes" },
             ]
         },
         {
             path: "#", name: "Time tracker", icon: <Timer />, dropdown: [
-                { path: "/time-tracker/timer", name: "Timer" },
-                { path: "/time-tracker/pomodoro", name: "Pomodoro" },
+                { path: PATH.TIMER, name: "Timer" },
+                { path: PATH.POMODORO, name: "Pomodoro" },
             ]
         }
     ];
     
+    useEffect(() => {
+        Object.values(PATH).forEach(path => {
+            prefetch(path);
+        });
+    }, []);
+
     return (
         <div className="flex" style={{ height: '100%'}}>
             <aside className={`text-white h-screen min-w-fit transition-all duration-300 ${isSidebarOpened ? 'w-64' : 'w-16'} flex flex-col p-4`} style={{ backgroundColor: theme.palette.primary.main }}> 
@@ -62,7 +69,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
                     <ul>
                         {menuItems.map((item, index) => (
                         <li key={index} className="relative">
-                            <div className={`flex items-center gap-3 py-3 rounded-lg cursor-pointer hover:{ theme.palette.primary.main }`} onClick={() => item.dropdown ? toggleDropdown(index) : router.push(item.path)}>
+                            <div className={`flex items-center gap-3 py-3 rounded-lg cursor-pointer hover:{ theme.palette.primary.main }`} onClick={() => item.dropdown ? toggleDropdown(index) : push(item.path)}>
                                 {item.icon}
                                 {isSidebarOpened && <span>{item.name}</span>}
                                 {item.dropdown && isSidebarOpened && <ChevronDown className="ml-auto" />}

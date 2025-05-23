@@ -160,7 +160,7 @@ export default function Home() {
           <SubjectInfoList subjects={subjects ?? []} />
         </Container>
 
-        <Container style="min-w-[300px] flex-1 text-center h-[350px]">
+        <Container style="min-w-[300px] flex-1 text-center h-[400px]">
           <Subtitle>
             Daily study time
           </Subtitle>

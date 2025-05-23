@@ -18,6 +18,7 @@ import { useFormik } from "formik";
 import { UserCredentials } from '@/resources/services/auth-user/user.resource';
 import { ToastContainer } from 'react-toastify';
 import { useLogin } from '@/hooks/auth-user/useLogin';
+import { PATH } from '@/constants/path';
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
@@ -121,7 +122,7 @@ export default function Login() {
             </FormControl>
             <Button label="Login" type="submit" />
             <Grid container justifyContent="center">
-                <CustomLink href='/register'>
+                <CustomLink href={PATH.REGISTER}>
                   Don't have an account yet? Sign Up
                 </CustomLink>
             </Grid>

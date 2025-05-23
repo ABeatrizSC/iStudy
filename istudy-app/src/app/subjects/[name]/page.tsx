@@ -11,9 +11,10 @@ import { useEffect, useState } from "react";
 import { Topic, TopicUpdate } from "@/resources/services/topic/topic.resource";
 import { useCreateTopic, useDeleteTopic, useUpdateTopic } from "@/hooks/topic";
 import NotFoundPage from "@/app/not-found";
+import { PATH } from "@/constants/path";
 
 export default function SubjectDetail() {
-    const router = useRouter();
+    const { push, prefetch } = useRouter();
     const { name: subjectName } = useParams<{ name: string }>(); 
     const [progressValue, setProgressValue] = useState<number>(0);
     const { data: subject, isLoading } = useSubjectByName(subjectName);
@@ -73,10 +74,14 @@ export default function SubjectDetail() {
     
     if (!subject && !isLoading) return <NotFoundPage />
 
+    useEffect(() => {
+        prefetch(PATH.SUBJECTS);
+    }, []);
+
     return (
         <Template loading={isLoading}>
             <div className="flex gap-3">
-                <Button onClick={() => router.push("/subjects")} style="!bg-transparent !p-0">
+                <Button onClick={() => push(PATH.SUBJECTS)} style="!bg-transparent !p-0">
                     <ArrowBack 
                         sx={{ fill: theme.palette.primary.main }}
                         fontSize="large"

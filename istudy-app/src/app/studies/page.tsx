@@ -131,7 +131,7 @@ export default function Studies() {
                         ))}
                     </Select>
                 </span>
-                <span className="flex items-center">
+                <span>
                     <label className="mr-2">Date:</label>
                     <DateInput 
                         value={dateFilter}

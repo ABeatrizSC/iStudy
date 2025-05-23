@@ -36,7 +36,7 @@ export const PercentageStudyTimeChart: React.FC<Props> = ({ totalHours, complete
 
   return (
     <ChartContainer config={{}} className="w-full">
-      <div className='w-full h-[250px] flex flex-col items-center'>
+      <div className='w-full h-[300px] flex flex-col items-center'>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Tooltip content={<CustomPieTooltip />} />
