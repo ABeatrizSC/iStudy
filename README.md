@@ -1,6 +1,6 @@
 ![iStudy-logo-banner.jpg](docs%2Fimages%2FiStudy-logo-banner.jpg)
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-In%20Progress-yellow?style=for-the-badge&logo=headspace&logoColor=orange&color=yellow" alt="istudy-repo-status" />
+  <img src="https://img.shields.io/badge/Status-Completed-blue?style=for-the-badge&logo=headspace&logoColor=blue&color=blue" alt="istudy-repo-status" />
   <img src="https://img.shields.io/github/license/Luk4x/apple-store?style=for-the-badge&logo=unlicense&logoColor=lightgrey" alt="istudy-repo-license" />
 </p>
 
@@ -36,14 +36,15 @@ iStudy is a web platform designed to help students efficiently organize, manage,
 - `istudy-app`: This folder contains the front-end code of the application, built with TypeScript, React.Js and NextJS.
 - `istudy-services`: This folder contains the system's back-end (Java/Spring Boot), which follows a microservices architecture using Spring Cloud API Gateway as a request interceptor and Spring Cloud Netflix (Eureka) for service registration and discovery.
 
-![istudy_architecture.png](docs%2Fimages%2Fistudy_architecture.png)
-(Preliminary draft of the system architecture. Some inaccuracies may be present as I am still in the learning and understanding phase.)
+## System Architecture
+![alt text](docs/images/istudy_architecture.png)
+
+## Database EER Diagram
+![alt text](docs/images/istudy-database-diagram.png)
 
 </br>
 
 # Technologies Used
-
-At the moment, these are the technologies used:
 
 ## Back-End
 * **Java**: A high-level, object-oriented programming language widely used for building server-side applications, web services, and Android applications.
@@ -102,9 +103,9 @@ At the moment, these are the technologies used:
 * **React calendar**: A lightweight and easily configurable calendar component.
 
 ## Databases and other technologies
-* **Docker**: A platform that allows developers to automate the deployment of applications inside lightweight containers, ensuring consistency across different environments and simplifying the setup process.
-
 * **MySQL**: A relational database management system used for reliable data storage and management.
+
+* **Docker**: A platform that allows developers to automate the deployment of applications inside lightweight containers, ensuring consistency across different environments and simplifying the setup process.
 
 </br>
 
@@ -151,7 +152,7 @@ docker-compose up --build
 ## 1. AUTH-MS
 - Authentication and user management microservice.
 ### **POST** `/auth/register`
-- Creates a new user.
+- Create a new user.
 
 #### Request Body
 
@@ -173,7 +174,7 @@ docker-compose up --build
 ---
 
 ### **POST** `/auth/login`
-- Authenticates the user.
+- Authenticate an user.
 
 #### Request Body
 
@@ -389,7 +390,7 @@ docker-compose up --build
 - Additionally, it provides analytical insights into study habits based on different time periods.
 
 ### **POST** `/studies`
-- Creates a new study.
+- Create a new study.
 
 #### Request Body
 - `StudyRequestDto`:
@@ -424,7 +425,7 @@ docker-compose up --build
 ---
 
 ### **PUT** `/studies/{id}`
-- Updates a study by ID.
+- Update a study by ID.
 
 #### Request Body
 - `StudyRequestDto`
@@ -435,14 +436,14 @@ docker-compose up --build
 ---
 
 ### **DELETE** `/studies/{id}`
-- Deletes a study by ID.
+- Delete a study by ID.
 
 #### Success Response Body
 - `List<Study>` updated
 ---
 
 ### **GET** `/studies/all`
-- Returns all studies.
+- Returns all of the user's studies.
 
 #### Success Response Body
 - `List<Study>`.
@@ -458,7 +459,7 @@ docker-compose up --build
 ---
 
 ### **GET** `/studies/completed`
-- Returns all the user's studies with the isCompleted field set to true.
+- Returns all the user's studies with the `isCompleted` field set to true.
 
 #### Success Response Body
 - `List<Study>`
@@ -1112,34 +1113,37 @@ docker-compose up --build
 
 ### Subject page
 ![alt text](docs/images/subject-page.jpg)
-#### Subject page: Create subject modal
+#### Subject page: Create/update subject modal
 ![alt text](docs/images/create-subject-page.jpg) 
+#### Subject page: Delete subject modal
+![alt text](docs/images/delete-subject-modal.jpg) 
 
 ### Subject Management page
 ![alt text](docs/images/subject-management-page.jpg)
-
-#### Subject Management page: Create topic modal
+#### Subject Management page: Create/Update topic modal
 ![alt text](docs/images/create-topic-page.jpg) 
-
 #### Subject Management page: Delete topic modal
 ![alt text](docs/images/delete-topic-page.jpg) 
 
 ### Studies page
 ![alt text](docs/images/studies-page.jpg) 
-
-#### Studies page: Create study modal
+#### Studies page: Create/update study modal
 ![alt text](docs/images/create-study-page.jpg) 
+#### Studies page: Delete study modal
+![alt text](docs/images/delete-study-modal.jpg) 
 
 ### Studies Statistical Information page
-[PHOTO]
+![alt text](docs/images/studies-statistical-information-page.png) 
 
 ### Reminders page
 ![alt text](docs/images/reminders-page.jpg) 
 
 ### Schedules page
 ![alt text](docs/images/schedule-page.jpg) 
-#### Schedules page: Create schedule modal
+#### Schedules page: Create/update schedule item  modal
 ![alt text](docs/images/create-schedule-page.jpg) 
+#### Schedules page: Delete schedule item modal
+![alt text](docs/images/delete-schedule-item-modal.jpg) 
 
 ### Calendar page
 ![alt text](docs/images/calendar-page.jpg) 
@@ -1147,16 +1151,20 @@ docker-compose up --build
 ### Games
 #### Games: Flashcards page
 ![alt text](docs/images/flashcard-page.jpg) 
-#### Games: Flashcards create modal
+#### Games: Create/update Flashcards modal
 ![alt text](docs/images/create-flashcard-page.jpg) 
+#### Games: Delete Flashcards modal
+![alt text](docs/images/delete-flashcard-modal.jpg) 
 #### Games: Flashcard game page
 ![alt text](docs/images/flashcard-game-page.jpg) 
 #### Games: Flashcard result game page
 ![alt text](docs/images/flashcard-game-result-page.jpg) 
 #### Games: Quiz page
 ![alt text](docs/images/quiz-page.jpg) 
-#### Games: Quiz create modal
+#### Games: Create/update Quiz modal
 ![alt text](docs/images/create-quiz-modal.jpg) 
+#### Games: Delete Quiz modal
+![alt text](docs/images/delete-quiz-modal.jpg) 
 #### Games: Quiz game page
 ![alt text](docs/images/quiz-game-modal.png) 
 #### Games: Quiz result page
@@ -1167,7 +1175,7 @@ docker-compose up --build
 ![alt text](docs/images/timer-page.jpg) 
 #### Time tracker: Pomodoro page
 ![alt text](docs/images/pomodoro-page.jpg) 
-#### Time tracker: Pomodoro settings modal
+##### Time tracker: Pomodoro settings modal
 ![alt text](docs/images/pomodoro-settings-modal.jpg) 
 
 # Contact
