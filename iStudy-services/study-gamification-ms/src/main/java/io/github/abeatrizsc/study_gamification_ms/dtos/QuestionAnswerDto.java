@@ -4,7 +4,7 @@ import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 
 @Data
-public class QuestionAnswerDto {
+public class    QuestionAnswerDto {
     @NotBlank(message = "Question id is required.")
     private String id;
 

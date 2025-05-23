@@ -18,6 +18,8 @@ export interface StudyRequest {
 }
 
 export interface StudyInfo {
+    totalStudies: number;
+    totalCompletedStudies: number;
     totalStudyTime: string,
     completedStudyTime: string,
     completedStudyTimeByDiscipline: StudyTime[];
@@ -27,4 +29,10 @@ export interface StudyInfo {
 export interface StudyTime {
     name: string,
     completedTime: string,
+}
+
+export interface DailyStudyStatus {
+    date: string,
+    metGoal: boolean,
+    dayStudied: boolean
 }

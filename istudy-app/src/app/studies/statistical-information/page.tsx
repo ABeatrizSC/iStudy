@@ -9,7 +9,7 @@ import {  MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import dynamic from "next/dynamic"
 
 const CompletedStudyTimeChart = dynamic(
-  () => import('@/components/charts/CompletedStudyTimeChart').then(mod => mod.CompletedStudyTimeChart),
+  () => import('@/components/Charts/CompletedStudyTimeChart').then(mod => mod.CompletedStudyTimeChart),
   { ssr: false }
 );
 

@@ -8,5 +8,7 @@ import { PomoConfigModal } from "./PomoConfigModal";
 import { FlashcardModal } from "./FlashcardModal";
 import { FlashcardGameModal } from "./FlashcardGameModal";
 import { StartGameOptionsModal } from "./StartGameOptionsModal";
+import { QuizModal } from "./QuizModal";
+import { QuizGameModal } from "./QuizGameModal";
 
-export { ConfirmationModal, SubjectModal, CreateTopicModal, UpdateTopicModal, StudyModal, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal }
+export { ConfirmationModal, SubjectModal, CreateTopicModal, UpdateTopicModal, StudyModal, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, QuizModal, QuizGameModal }

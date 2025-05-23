@@ -1,10 +1,10 @@
 package com.io.github.abeatrizsc.study_tracker_ms.controllers;
 
 import com.io.github.abeatrizsc.study_tracker_ms.domain.Study;
+import com.io.github.abeatrizsc.study_tracker_ms.dtos.DailyStudyStatusDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyInfoDto;
 import com.io.github.abeatrizsc.study_tracker_ms.dtos.StudyRequestDto;
 import com.io.github.abeatrizsc.study_tracker_ms.exceptions.ConflictException;
-import com.io.github.abeatrizsc.study_tracker_ms.mapper.StudyMapper;
 import com.io.github.abeatrizsc.study_tracker_ms.services.StudyService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,6 @@ import java.util.List;
 @AllArgsConstructor
 public class StudyController {
     private StudyService service;
-    private StudyMapper studyMapper;
 
     @GetMapping("/all")
     public ResponseEntity<List<Study>> getAll() {
@@ -81,6 +80,13 @@ public class StudyController {
         List<Study> studiesPerCategory = service.findByDisciplineCategory(category);
 
         return studiesPerCategory.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(studiesPerCategory);
+    }
+
+    @GetMapping("/status")
+    public ResponseEntity<List<DailyStudyStatusDto>> getStudyStatusBetweenDates(@RequestParam String startDate, @RequestParam String endDate) {
+        List<DailyStudyStatusDto> result = service.getStudyStatusBetweenDates(LocalDate.parse(startDate), LocalDate.parse(endDate));
+
+        return result.isEmpty() ? ResponseEntity.notFound().build() : ResponseEntity.ok(result);
     }
 
     @PostMapping

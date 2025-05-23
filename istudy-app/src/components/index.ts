@@ -1,25 +1,17 @@
 import { Button } from "./Button";
-import { CategoryBox } from "./CategoryBox";
+import { CategoryBox, CategoryBorder } from "./Category";
 import { Container } from "./Container";
 import { FieldError } from "./FieldError";
 import { CustomLink } from "./Link";
-import { Loader } from "./Loader";
-import { Sidebar } from "./Sidebar";
-import { Template } from "./Template";
+import { Loader, Sidebar, Template, AuthenticatedPage } from "./Pages-template";
 import { TimeInput, DateInput } from "./Input";
 import { Title } from "./Title";
 import { CustomTable, CustomTableCell, CustomTableHead } from "./Table";
-import { StudyModal, ScheduleItemModal, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal } from "./Modal";
-import { AuthenticatedPage } from "./AuthenticatedPage";
+import { StudyModal, ScheduleItemModal, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, QuizModal, QuizGameModal } from "./Modal";
 import { StudyBox, StudyInfo } from "./Study";
-import { CategoryBorder } from "./CategoryBorder";
-import { CompletedStudyTimeChart } from "./charts/CompletedStudyTimeChart";
-import { PercentageStudyTimeChart } from "./charts/PercentageStudyTimeChart";
-import { CustomPieTooltip } from "./charts/CustomPieToolTip";
-import { WeeklyStudyChart } from "./charts/WeeklyStudyChart";
-import { ChartsHeader } from "./charts/ChartsHeader";
+import { CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader } from "./Charts";
 import { CountdownTimer } from "./CountdownTimer";
-import { FlashcardBox } from "./flashcards/FlashcardBox";
-import { CardBox } from "./flashcards/CardBox";
+import { FlashcardBox, CardBox } from "./Flashcards";
+import { QuizBox } from "./Quiz/QuizBox";
 
-export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder, StudyModal, DateInput, CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader, CountdownTimer, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, FlashcardBox, CardBox }
+export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder, StudyModal, DateInput, CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader, CountdownTimer, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, FlashcardBox, CardBox, QuizModal, QuizBox, QuizGameModal }

@@ -2,7 +2,7 @@
 
 import { Pie, PieChart, Tooltip, Cell, LabelList, ResponsiveContainer } from 'recharts';
 import { ChartContainer } from '@/components/ui/chart';
-import { CustomPieTooltip } from '../../components';
+import { CustomPieTooltip } from '..';
 import theme from '@/resources/assets/styles/Theme';
 
 type Props = {
@@ -36,7 +36,7 @@ export const PercentageStudyTimeChart: React.FC<Props> = ({ totalHours, complete
 
   return (
     <ChartContainer config={{}} className="w-full">
-      <div className='w-full h-[250px] flex flex-col items-center'>
+      <div className='w-full h-[300px] flex flex-col items-center'>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Tooltip content={<CustomPieTooltip />} />

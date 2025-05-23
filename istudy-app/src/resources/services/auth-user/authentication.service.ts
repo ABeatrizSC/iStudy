@@ -1,5 +1,29 @@
 import { ApiService } from "../utils/api.service";
 import { UserCredentials, AccessToken, User } from "./user.resource";
+import { jwtDecode } from "jwt-decode";
+
+type JwtPayload = {
+  sub: string;
+  name?: string;
+  exp?: number;
+  iss?: string;
+  [key: string]: any;
+};
+
+export const getUsernameFromToken = (): JwtPayload | null => {
+  const token = localStorage.getItem('_auth');
+  
+  if (!token) return null;
+
+  try {
+    const cleanedToken = token.replace(/"/g, '');
+    const decoded = jwtDecode<JwtPayload>(cleanedToken);
+    return decoded;
+  } catch (error) {
+    console.error("Invalid token", error);
+    return null;
+  }
+};
 
 export const getAuthHeaders = () => {
     const authToken = localStorage.getItem('_auth');

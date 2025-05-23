@@ -166,5 +166,10 @@ public class DisciplineService {
                 .reduce(completedTime, (total, time) -> total.plusHours(time.getHour()).plusMinutes(time.getMinute()));
 
         discipline.setTimeCompleted(completedTime);
+        if (!discipline.getTotalTime().equals(LocalTime.MIDNIGHT) && discipline.getTotalTime() == discipline.getTimeCompleted()) {
+            discipline.setIsCompleted(true);
+        } else {
+            discipline.setIsCompleted(false);
+        }
     }
 }

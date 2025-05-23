@@ -2,7 +2,7 @@
 
 import { Checkbox, Typography } from "@mui/material"
 import ReactCardFlip from "react-card-flip"
-import { Button } from "../"
+import { Button } from ".."
 import ThreeSixtyIcon from '@mui/icons-material/ThreeSixty';
 import { Card } from "@/resources/services/flashcard/flashcard.resource";
 
