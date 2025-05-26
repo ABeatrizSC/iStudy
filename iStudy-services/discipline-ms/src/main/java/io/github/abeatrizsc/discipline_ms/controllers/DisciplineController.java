@@ -3,7 +3,7 @@ package io.github.abeatrizsc.discipline_ms.controllers;
 import io.github.abeatrizsc.discipline_ms.dtos.DisciplineRequestDto;
 import io.github.abeatrizsc.discipline_ms.domain.Discipline;
 import io.github.abeatrizsc.discipline_ms.enums.DisciplineCategoryEnum;
-import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
+import io.github.abeatrizsc.discipline_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.discipline_ms.services.DisciplineService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -20,12 +20,12 @@ public class DisciplineController {
     private DisciplineService service;
 
     @PostMapping
-    public ResponseEntity<List<Discipline>> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws NameConflictException {
+    public ResponseEntity<List<Discipline>> insert(@RequestBody @Valid DisciplineRequestDto requestDto) throws ConflictException {
         return ResponseEntity.status(HttpStatus.CREATED).body(service.save(requestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<List<Discipline>> updateById(@PathVariable String id, @RequestBody @Valid  DisciplineRequestDto requestDto) throws NameConflictException {
+    public ResponseEntity<List<Discipline>> updateById(@PathVariable String id, @RequestBody @Valid  DisciplineRequestDto requestDto) throws ConflictException {
         return ResponseEntity.ok(service.update(id, requestDto));
     }
 

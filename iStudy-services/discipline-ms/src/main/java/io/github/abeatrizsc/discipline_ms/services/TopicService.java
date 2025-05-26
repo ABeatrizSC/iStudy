@@ -2,7 +2,7 @@ package io.github.abeatrizsc.discipline_ms.services;
 
 import io.github.abeatrizsc.discipline_ms.domain.Topic;
 import io.github.abeatrizsc.discipline_ms.dtos.*;
-import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
+import io.github.abeatrizsc.discipline_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.discipline_ms.exceptions.NotFoundException;
 import io.github.abeatrizsc.discipline_ms.mapper.TopicMapper;
 import io.github.abeatrizsc.discipline_ms.producer.DisciplineEventPublisher;
@@ -25,11 +25,11 @@ public class TopicService {
     private DisciplineEventPublisher disciplineEventPublisher;
 
     @Transactional
-    public List<TopicResponseDto> save(TopicRequestDto requestDto) throws NameConflictException {
+    public List<TopicResponseDto> save(TopicRequestDto requestDto) throws ConflictException {
         Topic topic = topicMapper.convertRequestDtoToEntity(requestDto);
 
         if (disciplineService.topicAlreadyExistsInDiscipline(null, topic.getDiscipline().getCreatedBy(), requestDto.getName())) {
-            throw new NameConflictException("topic");
+            throw new ConflictException("topic");
         }
 
         repository.save(topic);
@@ -41,11 +41,11 @@ public class TopicService {
     }
 
     @Transactional
-    public List<TopicResponseDto> update(String id, TopicUpdateDto updateDto) throws NameConflictException {
+    public List<TopicResponseDto> update(String id, TopicUpdateDto updateDto) throws ConflictException {
         Topic topic = topicMapper.convertResponseDtoToEntity(findById(id));
 
         if (disciplineService.topicAlreadyExistsInDiscipline(topic.getDiscipline().getId(), topic.getDiscipline().getCreatedBy(), updateDto.getName())) {
-            throw new NameConflictException("topic");
+            throw new ConflictException("topic");
         }
 
         TopicUpdateEventDto topicEventDto = new TopicUpdateEventDto(topic.getDiscipline().getName(), topic.getName(), updateDto.getName());

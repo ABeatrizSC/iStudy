@@ -32,7 +32,7 @@ public class RestControlAdvice {
 
     @ExceptionHandler(InvalidPasswordException.class)
     public ResponseEntity<RestErrorMessage> handleInvalidPasswordException(InvalidPasswordException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.NOT_FOUND.value(), HttpStatus.NOT_FOUND, e.getMessage()));
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
     }
 
     @ExceptionHandler(JWTCreationException.class)

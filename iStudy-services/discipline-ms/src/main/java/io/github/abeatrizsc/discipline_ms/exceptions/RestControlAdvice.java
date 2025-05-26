@@ -20,10 +20,10 @@ public class RestControlAdvice {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, errors.get(0)));
     }
 
-    @ExceptionHandler(NameConflictException.class)
-    public ResponseEntity<RestErrorMessage> handleNameConflictException(NameConflictException e) {
+    @ExceptionHandler(ConflictException.class)
+    public ResponseEntity<RestErrorMessage> handleConflictException(ConflictException e) {
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new RestErrorMessage(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT, e.getMessage()));
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -41,6 +41,6 @@ public class RestControlAdvice {
     @ExceptionHandler(UserIdUnavailableException.class)
     public ResponseEntity<RestErrorMessage> handleUserIdUnavailableException(UserIdUnavailableException e) {
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RestErrorMessage(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 }
