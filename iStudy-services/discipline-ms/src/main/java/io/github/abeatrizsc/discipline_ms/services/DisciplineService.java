@@ -6,7 +6,7 @@ import io.github.abeatrizsc.discipline_ms.dtos.DisciplineRequestDto;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicResponseDto;
 import io.github.abeatrizsc.discipline_ms.dtos.UpdateDisciplineEventDto;
 import io.github.abeatrizsc.discipline_ms.enums.DisciplineCategoryEnum;
-import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
+import io.github.abeatrizsc.discipline_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.discipline_ms.exceptions.NotFoundException;
 import io.github.abeatrizsc.discipline_ms.mapper.DisciplineMapper;
 import io.github.abeatrizsc.discipline_ms.producer.DisciplineEventPublisher;
@@ -32,7 +32,7 @@ public class DisciplineService {
     private DisciplineEventPublisher disciplineEventPublisher;
 
     @Transactional
-    public List<Discipline> save(DisciplineRequestDto requestDto) throws NameConflictException {
+    public List<Discipline> save(DisciplineRequestDto requestDto) throws ConflictException {
         Discipline discipline = DisciplineMapper.INSTANCE.convertDtoToEntity(requestDto);
 
         String userCreator = authRequestUtils.getUserId();
@@ -40,7 +40,7 @@ public class DisciplineService {
         discipline.setCreatedBy(userCreator);
 
         if (disciplineNameAlreadyExists(null, discipline.getName(), discipline.getCreatedBy())) {
-            throw new NameConflictException("subject");
+            throw new ConflictException("subject");
         }
 
         repository.save(discipline);
@@ -49,11 +49,11 @@ public class DisciplineService {
     }
 
     @Transactional
-    public List<Discipline> update(String id, DisciplineRequestDto requestDto) throws NameConflictException {
+    public List<Discipline> update(String id, DisciplineRequestDto requestDto) throws ConflictException {
         Discipline discipline = findById(id);
 
         if (disciplineNameAlreadyExists(discipline.getId(), requestDto.getName(), discipline.getCreatedBy())) {
-            throw new NameConflictException("subject");
+            throw new ConflictException("subject");
         }
 
         UpdateDisciplineEventDto disciplineEventDto = new UpdateDisciplineEventDto(discipline.getName(), requestDto.getName(), requestDto.getCategory().toString());

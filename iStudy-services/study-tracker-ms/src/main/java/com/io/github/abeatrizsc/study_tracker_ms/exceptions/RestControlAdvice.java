@@ -26,7 +26,7 @@ public class RestControlAdvice {
     @ExceptionHandler(ConflictException.class)
     public ResponseEntity<ErrorMessageDto> handleConflictException(ConflictException e) {
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(new ErrorMessageDto(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT, e.getMessage()));
     }
 
     @ExceptionHandler(NotFoundException.class)
@@ -56,6 +56,6 @@ public class RestControlAdvice {
     @ExceptionHandler(UserIdUnavailableException.class)
     public ResponseEntity<ErrorMessageDto> handleUserIdUnavailableException(UserIdUnavailableException e) {
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new ErrorMessageDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 }

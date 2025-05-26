@@ -3,7 +3,7 @@ package io.github.abeatrizsc.discipline_ms.controllers;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicRequestDto;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicResponseDto;
 import io.github.abeatrizsc.discipline_ms.dtos.TopicUpdateDto;
-import io.github.abeatrizsc.discipline_ms.exceptions.NameConflictException;
+import io.github.abeatrizsc.discipline_ms.exceptions.ConflictException;
 import io.github.abeatrizsc.discipline_ms.services.TopicService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -35,12 +35,12 @@ public class TopicController {
     }
 
     @PostMapping
-    public ResponseEntity<List<TopicResponseDto>> insert(@RequestBody @Valid TopicRequestDto requestDto) throws NameConflictException {
+    public ResponseEntity<List<TopicResponseDto>> insert(@RequestBody @Valid TopicRequestDto requestDto) throws ConflictException {
         return ResponseEntity.status(HttpStatus.CREATED).body(topicService.save(requestDto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<List<TopicResponseDto>> updateById(@PathVariable @Valid String id, @RequestBody TopicUpdateDto updateDto) throws NameConflictException {
+    public ResponseEntity<List<TopicResponseDto>> updateById(@PathVariable @Valid String id, @RequestBody TopicUpdateDto updateDto) throws ConflictException {
         return ResponseEntity.ok(topicService.update(id, updateDto));
     }
 

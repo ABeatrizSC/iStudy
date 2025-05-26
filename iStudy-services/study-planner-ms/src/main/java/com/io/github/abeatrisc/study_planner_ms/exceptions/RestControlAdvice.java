@@ -31,6 +31,6 @@ public class RestControlAdvice {
     @ExceptionHandler(UserIdUnavailableException.class)
     public ResponseEntity<RestErrorMessageDto> handleUserIdUnavailableException(UserIdUnavailableException e) {
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessageDto(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new RestErrorMessageDto(HttpStatus.INTERNAL_SERVER_ERROR.value(), HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage()));
     }
 }

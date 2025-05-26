@@ -2,8 +2,8 @@ package io.github.abeatrizsc.discipline_ms.exceptions;
 
 import java.sql.SQLIntegrityConstraintViolationException;
 
-public class NameConflictException extends SQLIntegrityConstraintViolationException {
-    public NameConflictException(String resource) {
+public class ConflictException extends SQLIntegrityConstraintViolationException {
+    public ConflictException(String resource) {
         super("This " + resource + " already exists.");
     }
 }
