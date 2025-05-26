@@ -1,12 +1,12 @@
 ![iStudy-logo-banner.jpg](docs%2Fimages%2FiStudy-logo-banner.jpg)
 <p align="center">
-  <img src="https://img.shields.io/badge/Status-Completed-blue?style=for-the-badge&logo=headspace&logoColor=blue&color=blue" alt="istudy-repo-status" />
+  <img src="https://img.shields.io/badge/Status-Completo-blue?style=for-the-badge&logo=headspace&logoColor=blue&color=blue" alt="istudy-repo-status" />
   <img src="https://img.shields.io/github/license/Luk4x/apple-store?style=for-the-badge&logo=unlicense&logoColor=lightgrey" alt="istudy-repo-license" />
-  <a href="/README-pt-br.md">
-    <img src="https://img.shields.io/badge/README-PT--BR-009C3B?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjZmZmIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxNjAiIGhlaWdodD0iMTAwIiB2aWV3Qm94PSIwIDAgMzIgMjAiPjxwYXRoIGZpbGw9IiMwMDljM2IiIGQ9Ik0wIDBoMzJ2MjBIMHoiLz48cGF0aCBkPSJNMTYgM0wzMCAxMCAxNiAxNyAyIDEwem0wIDVhNSA1IDAgMCAxIDAtMTAgNSA1IDAgMCAxIDAgMTB6IiBmaWxsPSIjZGRkIi8+PHBhdGggZD0iTTE2IDZhNCA0IDAgMCAxIDQgNCA0IDQgMCAwIDEtOCAwIDQgNCAwIDAgMSA0LTR6bS0yLjI1IDQuNjZhNS41IDUuNSAwIDAgMSA0LjUtMi4yOCA1LjUgNS41IDAgMCAxLTQuNSAyLjI4WiIgZmlsbD0iIzAwMCIvPjwvc3ZnPg==" alt="istudy readme portuguese" />
-  </a>
-</p>
+ <a href="/README.md">
+  <img src="https://img.shields.io/badge/README-English-ff0000?style=for-the-badge" alt="🇺🇸 iStudy README in English" />
+</a>
 
+</p>
 
 <p align="center">
   <img src="https://img.shields.io/badge/java-%23ED8B00.svg?style=for-the-badge&logo=openjdk&logoColor=white" alt="Java" />
@@ -23,104 +23,104 @@
 
 </br>
 
-# What is iStudy?
-iStudy is a web platform designed to help students efficiently organize, manage, and track their study habits. Among its many features are:
+# O que é o iStudy?
+O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, gerenciar e acompanhar seus hábitos de estudo de forma eficiente. Entre seus diversos recursos estão:
 
-- User registration and login;
-- Management of subjects and their topics;
-- Study tracking, based on registered subjects and topics;
-- Study games, such as flashcards and quizzes to reinforce learning;
-- Time management tools (Stopwatch and Pomodoro timer);
-- Schedule and reminder management;
-- Dashboards with metrics of study hours per subject, topic, and category (daily, weekly, and monthly).
-
-</br>
-
-# Project Structure
-- `istudy-app`: This folder contains the front-end code of the application, built with TypeScript, React.Js and NextJS.
-- `istudy-services`: This folder contains the system's back-end (Java/Spring Boot), which follows a microservices architecture using Spring Cloud API Gateway as a request interceptor and Spring Cloud Netflix (Eureka) for service registration and discovery.
-
-## System Architecture
-![alt text](docs/images/istudy_architecture.png)
-
-## Database EER Diagram
-![alt text](docs/images/istudy-database-diagram.png)
+- Cadastro e login de usuários;
+- Gerenciamento de disciplinas e seus tópicos;
+- Acompanhamento dos estudos, com base nas disciplinas e tópicos cadastrados;
+- Jogos de estudo, como flashcards e quizzes para reforçar o aprendizado;
+- Ferramentas de gerenciamento de tempo (cronômetro e timer Pomodoro);
+- Gerenciamento de cronograma e lembretes;
+- Gráficos com métricas de horas de estudo por disciplina, tópico e categoria (diárias, semanais e mensais).
 
 </br>
 
-# Technologies Used
+# Estrutura do Projeto
+- `istudy-app`: Esta pasta contém o código do front-end da aplicação, desenvolvido com TypeScript, React.js e NextJS.
+- `istudy-services`: Esta pasta contém o back-end do sistema (Java/Spring Boot), que segue uma arquitetura de microsserviços utilizando o Spring Cloud API Gateway como interceptador de requisições e Spring Cloud Netflix (Eureka) para registro e descoberta de serviços.
+
+## Arquitetura do Sistema
+![texto alternativo](docs/images/istudy_architecture.png)
+
+## Diagrama EER do Banco de Dados
+![texto alternativo](docs/images/istudy-database-diagram.png)
+
+</br>
+
+# Tecnologias Utilizadas
 ## Back-End
-* **Java**: A high-level, object-oriented programming language widely used for building server-side applications, web services, and Android applications.
+* **Java**: Uma linguagem de programação de alto nível, orientada a objetos, amplamente utilizada para desenvolvimento de aplicações server-side, serviços web e aplicações Android.
 
-* **Spring Boot**: A framework that simplifies the development of Java applications by providing built-in features for dependency injection, configuration, and microservices support.
+* **Spring Boot**: Um framework que simplifica o desenvolvimento de aplicações Java, oferecendo funcionalidades integradas para injeção de dependências, configuração e suporte a microsserviços.
 
-* **Spring Security**: A powerful and customizable authentication and access control framework for Java applications.
+* **Spring Security**: Um framework poderoso e personalizável para autenticação e controle de acesso em aplicações Java.
 
-* **JWT (JSON Web Token)**: Open standard that allows secure transmission of authentication information.
+* **JWT (JSON Web Token)**: Padrão aberto que permite a transmissão segura de informações de autenticação.
 
-* **Spring Cloud API Gateway**: Serves as the central entry point, handling request routing, authentication, and traffic control between microservices.
+* **Spring Cloud API Gateway**: Serve como ponto central de entrada, lidando com roteamento de requisições, autenticação e controle de tráfego entre os microsserviços.
 
-* **Spring Cloud Netflix Eureka**: Enables automatic registration and discovery of microservices, facilitating dynamic scaling and seamless communication.
+* **Spring Cloud Netflix Eureka**: Permite o registro e descoberta automática dos microsserviços, facilitando o escalonamento dinâmico e a comunicação transparente.
 
-* **RabbitMQ**: An open-source software that acts as a message broker, or middleman, between producers and consumers of messages.
+* **RabbitMQ**: Um software de código aberto que atua como intermediário de mensagens entre produtores e consumidores.
 
-* **Jakarta Bean Validation**: A standard framework for declaring and validating constraints on Java objects using annotations, commonly used to enforce business rules and input validation in a clean and declarative way.
+* **Jakarta Bean Validation**: Um framework padrão para declarar e validar restrições em objetos Java usando anotações, amplamente utilizado para aplicar regras de negócio e validações de entrada de forma limpa e declarativa.
 
-* **JPA**: The Java Persistence API, a specification that provides object-relational mapping (ORM) to manage relational data in Java applications.
+* **JPA**: A Java Persistence API, uma especificação que fornece mapeamento objeto-relacional (ORM) para gerenciar dados relacionais em aplicações Java.
 
-* **MapStruct**: A Java mapping framework that simplifies object-to-object mapping, reducing boilerplate code and improving maintainability.
+* **MapStruct**: Um framework de mapeamento em Java que simplifica a conversão de objetos, reduzindo código repetitivo e melhorando a manutenção.
 
-* **Flyway**: A database migration tool that ensures version control and consistency across database schema changes.
+* **Flyway**: Uma ferramenta de migração de banco de dados que garante controle de versão e consistência nas alterações do esquema.
 
-* **Lombok**: A Java library that reduces boilerplate code by generating common methods like getters, setters, constructors, and more through annotations.
+* **Lombok**: Uma biblioteca Java que reduz código repetitivo ao gerar automaticamente métodos comuns como getters, setters, construtores, entre outros, por meio de anotações.
 
-* **Postman**: A tool used for API testing and development, enabling users to send HTTP requests, inspect responses, and automate API tests.
+* **Postman**: Ferramenta usada para testes e desenvolvimento de APIs, permitindo o envio de requisições HTTP, análise de respostas e automação de testes.
 
 ## Front-End
-* **TypeScript**: A superset of JavaScript that adds static typing, making code easier to read, debug, and maintain.
+* **TypeScript**: Um superset do JavaScript que adiciona tipagem estática, tornando o código mais fácil de ler, depurar e manter.
 
-* **React.js**: A JavaScript library for building user interfaces, focusing on creating reusable UI components and managing the view layer in web applications.
+* **React.js**: Uma biblioteca JavaScript para construção de interfaces de usuário, com foco na criação de componentes reutilizáveis e gerenciamento da camada de visualização de aplicações web.
 
-* **NextJS**: Next. js is a React framework that enables several extra features, including server-side rendering and static rendering.
+* **NextJS**: Um framework React que oferece funcionalidades adicionais, como renderização no lado do servidor e renderização estática.
 
-* **TailwindCSS**: A utility-first CSS framework that allows rapid UI development using predefined classes.
+* **TailwindCSS**: Um framework CSS utilitário que permite o desenvolvimento rápido de interfaces usando classes pré-definidas.
 
-* **Material UI (MUI)**: MUI is a massive library of UI components designers and developers can use to build React applications.
+* **Material UI (MUI)**: Uma vasta biblioteca de componentes de UI que designers e desenvolvedores podem usar para construir aplicações em React.
 
-* **Tanstack/React Query**: A powerful data-fetching and state management library for React, ideal for managing server state with features like caching, background updates, and retries.
+* **Tanstack/React Query**: Biblioteca de gerenciamento de estado e busca de dados no React, ideal para gerenciar estado do servidor com recursos como cache, atualizações em segundo plano e tentativas automáticas.
 
-* **JWT Decode**: A small library that decodes JSON Web Tokens (JWT) without verifying their signature.
+* **JWT Decode**: Biblioteca que decodifica tokens JWT sem verificar sua assinatura.
 
-* **Lucide React**: A React library that provides access to Lucide’s beautiful and consistent set of SVG icons.
+* **Lucide React**: Biblioteca React que fornece acesso ao conjunto consistente e elegante de ícones SVG do Lucide.
 
-* **React Toastify**: A React library for showing toast notifications in a simple and customizable way.
+* **React Toastify**: Biblioteca React para exibir notificações tipo toast de forma simples e customizável.
 
-* **Formik**: A form management library for React that simplifies form handling, validation, and submission.
+* **Formik**: Biblioteca para gerenciamento de formulários no React, que simplifica manipulação, validação e envio de formulários.
 
-* **Yup**:  A JavaScript schema builder for value parsing and validation, often used with Formik for form validation.
+* **Yup**: Construtor de esquemas em JavaScript para análise e validação de valores, frequentemente usado com Formik.
 
-* **DayJs**: A lightweight JavaScript library for parsing, validating, manipulating, and formatting dates.
+* **DayJs**: Biblioteca JavaScript leve para análise, validação, manipulação e formatação de datas.
 
-* **Swiper js**: A powerful, free, and open-source JavaScript library for creating modern, touch-friendly sliders and carousels.
+* **Swiper js**: Biblioteca JavaScript gratuita e poderosa para criação de sliders e carrosséis modernos e responsivos.
 
-* **React card flip**: A specific library or component that allows you to create a card that animates to reveal content on its back when clicked or interacted withxt.
+* **React card flip**: Componente que permite criar cartões que giram e revelam conteúdo ao interagir.
 
-* **React calendar**: A lightweight and easily configurable calendar component.
+* **React calendar**: Componente de calendário leve e de fácil configuração.
 
-## Databases and other technologies
-* **MySQL**: A relational database management system used for reliable data storage and management.
+## Banco de Dados e Outras Tecnologias
+* **MySQL**: Sistema de gerenciamento de banco de dados relacional utilizado para armazenamento e gerenciamento confiável de dados.
 
-* **Docker**: A platform that allows developers to automate the deployment of applications inside lightweight containers, ensuring consistency across different environments and simplifying the setup process.
+* **Docker**: Plataforma que permite aos desenvolvedores automatizar a implantação de aplicações em contêineres leves, garantindo consistência entre ambientes e simplificando o processo de configuração.
 
 </br>
 
-# Requirements
-To run the project on your machine, the following tools must be installed and configured beforehand:
+# Requisitos
+Para executar o projeto em sua máquina, as seguintes ferramentas devem estar instaladas e configuradas previamente:
 
 - Docker
 - Git
 
-Optional for local development or testing:
+Opcionais para desenvolvimento ou testes locais:
 
 - Java Development Kit (JDK) 17
 - Node.js
@@ -131,115 +131,114 @@ Optional for local development or testing:
 
 </br>
 
-# Installation guide
-Follow the steps below to download, configure, and run the project in your environment:
+# Guia de Instalação
+Siga os passos abaixo para baixar, configurar e executar o projeto no seu ambiente:
 
-1. **Clone the repository**
+1. **Clone o repositório**
 ```bash
 git clone https://github.com/ABeatrizSC/istudy.git
- ```
+```
 
-2. **Navigate to the project directory**
-
+2. **Navegue até o diretório do projeto**
 ```bash
 cd istudy
- ```
+```
 
-3. **Build and initialize the docker container**
-
- ```bash
+3. **Construa e inicialize o container docker**
+```bash
 docker-compose up --build
- ```
+```
 
 </br>
 
 # iStudy-app - Front-End
-## Pages preview
-### Login page
+## Pré-visualização das Páginas
+### Página de Login
 ![alt text](docs/images/login-page.jpg) 
 
-### Register page
+### Página de Registro
 ![alt text](docs/images/sign-up-page.jpg) 
 
-### Home page
+### Página Inicial
 ![alt text](docs/images/home-page.png) 
 
-### Subject page
+### Página de Matérias
 ![alt text](docs/images/subject-page.jpg)
-#### Subject page: Create/update subject modal
+#### Modal de Criar/Atualizar Matéria
 ![alt text](docs/images/create-subject-page.jpg) 
-#### Subject page: Delete subject modal
+#### Modal de Deletar Matéria
 ![alt text](docs/images/delete-subject-modal.jpg) 
 
-### Subject Management page
+### Página de Gerenciamento de Matérias
 ![alt text](docs/images/subject-management-page.jpg)
-#### Subject Management page: Create/Update topic modal
+#### Modal de Criar/Atualizar Tópico
 ![alt text](docs/images/create-topic-page.jpg) 
-#### Subject Management page: Delete topic modal
+#### Modal de Deletar Tópico
 ![alt text](docs/images/delete-topic-page.jpg) 
 
-### Studies page
+### Página de Estudos
 ![alt text](docs/images/studies-page.jpg) 
-#### Studies page: Create/update study modal
+#### Modal de Criar/Atualizar Estudo
 ![alt text](docs/images/create-study-page.jpg) 
-#### Studies page: Delete study modal
+#### Modal de Deletar Estudo
 ![alt text](docs/images/delete-study-modal.jpg) 
 
-### Studies Statistical Information page
+### Página de Informações Estatísticas dos Estudos
 ![alt text](docs/images/studies-statistical-information-page.png) 
 
-### Reminders page
+### Página de Lembretes
 ![alt text](docs/images/reminders-page.jpg) 
 
-### Schedules page
+### Página de Cronogramas
 ![alt text](docs/images/schedule-page.jpg) 
-#### Schedules page: Create/update schedule item  modal
+#### Modal de Criar/Atualizar Item do Cronograma
 ![alt text](docs/images/create-schedule-page.jpg) 
-#### Schedules page: Delete schedule item modal
+#### Modal de Deletar Item do Cronograma
 ![alt text](docs/images/delete-schedule-item-modal.jpg) 
 
-### Calendar page
+### Página de Calendário
 ![alt text](docs/images/calendar-page.jpg) 
 
-### Games
-#### Games: Flashcards page
+### Jogos
+#### Página de Flashcards
 ![alt text](docs/images/flashcard-page.jpg) 
-#### Games: Create/update Flashcards modal
+#### Modal de Criar/Atualizar Flashcard
 ![alt text](docs/images/create-flashcard-page.jpg) 
-#### Games: Delete Flashcards modal
+#### Modal de Deletar Flashcard
 ![alt text](docs/images/delete-flashcard-modal.jpg) 
-#### Games: Flashcard game page
+#### Página do Jogo de Flashcard
 ![alt text](docs/images/flashcard-game-page.jpg) 
-#### Games: Flashcard result game page
+#### Página de Resultado do Jogo de Flashcard
 ![alt text](docs/images/flashcard-game-result-page.jpg) 
-#### Games: Quiz page
+#### Página de Quiz
 ![alt text](docs/images/quiz-page.jpg) 
-#### Games: Create/update Quiz modal
+#### Modal de Criar/Atualizar Quiz
 ![alt text](docs/images/create-quiz-modal.jpg) 
-#### Games: Delete Quiz modal
+#### Modal de Deletar Quiz
 ![alt text](docs/images/delete-quiz-modal.jpg) 
-#### Games: Quiz game page
+#### Página do Jogo de Quiz
 ![alt text](docs/images/quiz-game-modal.png) 
-#### Games: Quiz result page
+#### Página de Resultado do Jogo de Quiz
 ![alt text](docs/images/quiz-game-result-modal.jpg) 
 
-### Time tracker
-#### Time tracker: Timer page
+### Monitorador de Tempo
+#### Página do Cronômetro
 ![alt text](docs/images/timer-page.jpg) 
-#### Time tracker: Pomodoro page
+#### Página do Pomodoro
 ![alt text](docs/images/pomodoro-page.jpg) 
-##### Time tracker: Pomodoro settings modal
+##### Modal de Configurações do Pomodoro
 ![alt text](docs/images/pomodoro-settings-modal.jpg) 
 
 </br>
 
 # iStudy-services - Back-End
 ## 1. AUTH-MS
-- Authentication and user management microservice.
-### **POST** `/auth/register`
-- Create a new user.
+- Microsserviço de autenticação e gerenciamento de usuários.
 
-#### Request Body
+### **POST** `/auth/register`
+- Cria um novo usuário.
+
+#### Corpo da requisição
 
 ```json
 {
@@ -249,7 +248,7 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 
 ```json
 {
@@ -259,9 +258,9 @@ docker-compose up --build
 ---
 
 ### **POST** `/auth/login`
-- Authenticate an user.
+- Autentica um usuário, retornando um Bearer token.
 
-#### Request Body
+#### Corpo da requisição
 
 ```json
 {
@@ -270,7 +269,7 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 
 ```json
 {
@@ -281,14 +280,14 @@ docker-compose up --build
 </br>
 
 ## 2. DISCIPLINE-MS
-- Microservice responsible for creating, updating, deleting, and generating information about disciplines and their topics.
+- Microsserviço responsável por gerenciar matérias e seus tópicos.
 
 ### DISCIPLINE ENDPOINTS
 
 ### **POST** `/disciplines`
-- Create a new subject.
+- Cria uma nova matéria.
 
-#### Request Body
+#### Corpo da requisição
 - `DisciplineRequestDto`:
 
 ```json
@@ -299,9 +298,9 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - Status: `201 Created`.
-- Returns `List<Discipline>`: 
+- Retorna um `List<Discipline>`: 
 
 ```json
 [
@@ -310,8 +309,8 @@ docker-compose up --build
         "createdBy": "6a93f671-9406-42ea-8b0c-5d7ef65ea9b5",
         "name": "Mathematics",
         "category": "EXACT_SCIENCES",
-        "totalTime": "00:00:00",
-        "timeCompleted": "00:00:00",
+        "totalTime": "00:00",
+        "timeCompleted": "00:00",
         "isCompleted": false,
         "topics": []
     }
@@ -319,51 +318,51 @@ docker-compose up --build
 ```
 ---
 ### **PUT** `/disciplines/{id}`
-- Update the subject with the given ID.
+- Atualiza a matéria do id passado.
 
-#### Request Body
+#### Corpo da requisição
 - `DisciplineRequestDto`
 
-#### Success Response Body
-- `List<Discipline>` updated. 
+#### Corpo de resposta de sucesso
+- `List<Discipline>` atualizado. 
 
 ---
 ### **DELETE** `/disciplines/{id}`
-- Delete the subject with the given ID.
+- Deleta, se existir, a matéria que contém o id passado.
 
-#### Success Response Body
-- `List<Discipline>` updated. 
+#### Corpo de resposta de sucesso
+- `List<Discipline>` atualizado. 
 
 ---
 
 ### **GET** `/disciplines/{id}`
-- Returns the subject with the given ID.
+- Retorna, se encontrado, a matéria que contém o id informado.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `Discipline`. 
 
 ---
 
 ### **GET** `/disciplines?name={name}`
-- Returns all of the user's subjects that contain the name provided in the query parameter.
+- Retorna todas as matérias de um usuário que contêm em seu nome a sequência de caracteres fornecido no parâmentro.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Discipline>` 
 
 ---
 
 ### **GET** `/disciplines/categories/{category}`
-- Returns all of the user's subjects with the specified category.
+- Retorna todas as matérias do usuário que contêm a categoria informada.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Discipline>` 
 
 ---
 
 ### **GET** `/disciplines/category`
-- Returns a list of strings with all the categories available in the system.
+- Retorna uma lista de Strings com todas as categorias de matérias disponíveis na API.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<String>` 
 
 ```json
@@ -379,18 +378,18 @@ docker-compose up --build
 ---
 
 ### **GET** `/disciplines/completed`
-- Returns all of the user's subjects with `isCompleted` attribute marked as True.
+- Retorna todas as matérias do usuário que têm o atributo `isCompleted` definido como `true`.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Discipline>` 
 
 </br>
 
 ### TOPIC ENDPOINTS
 ### **POST** `/disciplines/topics`
-- Create a new topic.
+- Cria um novo tópico.
 
-#### Request Body
+#### Corpo da requisição
 - `TopicRequestDto`:
 
 ```json
@@ -402,8 +401,8 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
-- `List<TopicResponseDto>` updated.
+#### Corpo de resposta de sucesso
+- `List<TopicResponseDto>` atualizado.
 
 ```json
 [
@@ -428,9 +427,9 @@ docker-compose up --build
 ---
 
 ### **PUT** `/disciplines/topics/{id}`
-- Update the topic with the given ID.
+- Atualiza o tópico do id passado.
 
-### Request Body
+### Corpo da requisição
 - `TopicUpdateDto`:
 
 ```json
@@ -441,43 +440,43 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
-- `List<TopicResponseDto>` updated.
+#### Corpo de resposta de sucesso
+- `List<TopicResponseDto>` atualizado.
 
 ---
 
 ### **DELETE** `/disciplines/topics/{id}`
-- Delete the topic with the given ID.
+- Deleta, se existir, o tópico que contém o id passado.
 
-#### Success Response Body
-- `List<TopicResponseDto>` updated.
+#### Corpo de resposta de sucesso
+- `List<TopicResponseDto>` atualizado.
 
 ---
 
 ### **GET** `/disciplines/topics/all`
-- Returns all of the user's subjects
+- Retorna todas os tópicos do usuário.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<TopicResponseDto>`
 
 ---
 
 ### **GET** `/disciplines/topics/{id}`
--  Returns the topic with the given ID.
+- Retorna, se encontrado, o tópico do id informado.
 
-- #### Success Response Body
+- #### Corpo de resposta de sucesso
 - `TopicResponseDto`
 
 </br>
 
 ## 3. STUDY-TRACKER-MS
-- This microservice is responsible for managing study sessions. It allows users to create, update, retrieve, and delete study records.
-- Additionally, it provides analytical insights into study habits based on different time periods.
+- Microsseviço responsável por gerenciar sessões de estudo. Ele permite ao usuário acessar, criar, atualizar e deletar estudos.
+- Além disso, é possível obter informações mais detalhadas, como métricas sobre os estudos baseados em diferentes períodos de tempo.
 
 ### **POST** `/studies`
-- Create a new study.
+- Cria um novo estudo.
 
-#### Request Body
+#### Corpo da requisição
 - `StudyRequestDto`:
 
 ```json
@@ -490,7 +489,7 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Study>`
 
 ```json
@@ -510,49 +509,49 @@ docker-compose up --build
 ---
 
 ### **PUT** `/studies/{id}`
-- Update a study by ID.
+-  Atualiza o estudo do id passado.
 
-#### Request Body
+#### Corpo da requisição
 - `StudyRequestDto`
 
-#### Success Response Body
-- `List<Study>` updated
+#### Corpo de resposta de sucesso
+- `List<Study>` atualizado.
 
 ---
 
 ### **DELETE** `/studies/{id}`
-- Delete a study by ID.
+- Deleta, se existir, o estudo que contém o id passado.
 
-#### Success Response Body
-- `List<Study>` updated
+#### Corpo de resposta de sucesso
+- `List<Study>` atualizado.
 ---
 
 ### **GET** `/studies/all`
-- Returns all of the user's studies.
+- Retorna todos os estudos registrados do usuário.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Study>`.
 
 ---
 
 ### **GET** `/studies/{id}`
-- Returns the user's study with the given ID.
+- Retorna, se encontrado, o estudo que contém o id informado.
 
-#### Success Response body
+#### Corpo de resposta de sucesso
 - `Study`
 
 ---
 
 ### **GET** `/studies/completed`
-- Returns all the user's studies with the `isCompleted` field set to true.
+- Retorna todos os estudos de um usuário com o atributo `isCompleted` definido como `true`.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Study>`
 
 ---
 
 ### Get Studies by Date, Week or Month 
-- Returns all the user's studies on the specified date, week or month.
+- Retorna todos os estudos de um usuário em uma data específica, semana ou mês.
 
   1. **GET** `/studies/date?date=2025-05-21`
 
@@ -560,13 +559,13 @@ docker-compose up --build
 
   3. **GET** `/studies/month?year=2025&month=5`
 
-#### Success Response body
+#### Corpo de resposta de sucesso
 - `List<Study>`
 
 ---
 
 ### Get Study Info by Date, Week or Month
-- Returns information about all the user's studies within the specified time:
+- Retorna informações de estudo do usuário dentro do tempo especificado:
 
   1. **GET** `/studies/date/info?date=2025-04-05`
 
@@ -574,37 +573,37 @@ docker-compose up --build
 
   3. **GET** `/studies/month/info?year=2025&month=5`
 
-#### Success Response body
+#### Corpo de resposta de sucesso
 - `StudyInfoDto`
 
 ```json
 {
   "totalStudies": 6,
   "totalCompletedStudies": 4,
-  "totalStudyTime": "10:00:00",
-  "completedStudyTime": "06:00:00",
+  "totalStudyTime": "10:00",
+  "completedStudyTime": "06:00",
   "completedStudyTimeByDiscipline": [
     {
       "name": "Mathematics",
-      "completedTime": "03:00:00"
+      "completedTime": "03:00"
     },
     {
       "name": "Biology",
-      "completedTime": "00:00:00"
+      "completedTime": "00:00"
     },
     {
       "name": "Arts",
-      "completedTime": "03:00:00"
+      "completedTime": "03:00"
     }
   ],
   "completedStudyTimeByDisciplineCategory": [
     {
       "name": "BIOLOGICAL_SCIENCES",
-      "completedTime": "00:00:00"
+      "completedTime": "00:00"
     },
     {
       "name": "SOCIAL_SCIENCES",
-      "completedTime": "00:00:00"
+      "completedTime": "00:00"
     },
     //...
   ]
@@ -613,17 +612,17 @@ docker-compose up --build
 ---
 
 ### **GET** `/studies/subject-category?category=Humanities`
-- Returns all the user's studies that have the specified category.
+- Retorna todos os estudos do usuário que possuem a categoria passada.
 
-#### Success Response body
+#### Corpo de resposta de sucesso
 - `List<Study>`
 
 ---
 
 ### **GET** `/studies/status?startDate=2025-05-01&endDate=2025-05-21`
-- Returns the studies status between two given dates.
+- Retorna uma lista com o status de estudo entre as datas passadas.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<DailyStudyStatusDto>`
 
 ```json
@@ -642,13 +641,13 @@ docker-compose up --build
 ```
 
 ## 4. STUDY-GAMIFICATION-MS
-- Microservice that manages the creation of quizzes and flashcards to enhance user learning.
+- Microsserviço responsável por gerenciar quizzes e flashcards.
 
 ### QUIZ ENDPOINTS
 ### **POST** `/games/quizzes`
-- Create a new quiz.
+- Cria um novo quiz.
 
-#### Request Body
+#### Corpo da requisição
 - `QuizRequestDto`:
 
 ```json
@@ -675,8 +674,8 @@ docker-compose up --build
   ]
 }
 ```
-#### Success Response Body
-- `List<Quiz>` updated.
+#### Corpo de resposta de sucesso
+- `List<Quiz>` atualizado.
 
 ```json
 [
@@ -709,20 +708,20 @@ docker-compose up --build
 ---
 
 ### **PUT** `/games/quizzes/{id}`
-- Update the quiz with the given ID.
+-  Atualiza o quiz do id passado.
 
-#### Request Body
+#### Corpo da requisição
 - `QuizRequestDto`
 
-#### Success Response Body
-- `List<Quiz>` updated.
+#### Corpo de resposta de sucesso
+- `List<Quiz>` atualizado.
 
 ---
 
 ### **PUT** `/games/quizzes/answer/{id}`
-- Answer the quiz with the given ID.
+- Envia uma resposta ao quiz que contém o id informado.
 
-#### Request Body
+#### Corpo da requisição
 - `QuizAnswerDto`
 
 ```json
@@ -752,8 +751,8 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
-- Returns a `List<Question>` of all incorrect questions (`correctAnswer` attribute marked as false).
+#### Corpo de resposta de sucesso
+- Retorna um a `List<Question>` com todas as respostas erradas (atributo `correctAnswer` definido como `false`).
 
 ```json
 [
@@ -790,41 +789,41 @@ docker-compose up --build
 ---
 
 ### **DELETE** `/games/quizzes/{id}`
-- Delete the quiz with the given ID.
+- Deleta, se existir, o quiz que contém o id passado.
 
-#### Success Response Body
-- `List<Quiz>` updated.
+#### Corpo de resposta de sucesso
+- `List<Quiz>` atualizado.
 
 ---
 ### **GET** `/games/quizzes/all`
-- Returns all of the user's quizzes.
+- Retorna todos os quizzes registrados pelo usuário.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Quiz>`
 
 ---
 
 ### **GET** `/games/quizzes/{id}`
-- Returns the user's quiz with the given id.
+- Retorna, se encontrado, o quiz que contém o id informado
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `Quiz`
 
 ---
 
 ### **GET** `/games/quizzes/search?title={quizTitle}`
-- Returns the user's quiz that contains the title provided in the query parameter.
+- Retorna, se existir, o quiz que contém o título fornecido no parâmetro.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `Optional<Quiz>`
 
 </br>
 
 ### FLASHCARD ENDPOINTS
 ### **POST** `/games/flashcards`
-- Create a new flashcard.
+- Cria um novo flashcard.
 
-#### Request Body
+#### Corpo da requisição
 - `FlashcardRequestDto`:
 
 ```json
@@ -854,8 +853,8 @@ docker-compose up --build
   ]
 }
 ```
-#### Success Response Body
-- `List<Flashcard>` updated.
+#### Corpo de resposta de sucesso
+- `List<Flashcard>` atualizado.
 
 ```json
 [
@@ -904,20 +903,20 @@ docker-compose up --build
 ---
 
 ### **PUT** `/games/flashcards/{id}`
-- Update the flashcard with the given ID.
+- Atualiza o flashcard do id passado.
 
-#### Request Body
+#### Corpo da requisição
 - `FlashcardRequestDto`
 
-#### Success Response Body
-- `List<Flashcard>` updated.
+#### Corpo de resposta de sucesso
+- `List<Flashcard>` atualizado.
 
 ---
 
 ### **PUT** `/games/flashcards/answer/{id}`
-- Answer the flashcard with the given ID.
+- Envia uma resposta ao flashcard que contém o id informado.
 
-#### Request Body
+#### Corpo da requisição
 - `FlashcardAnswerDto`:
 
 ```json
@@ -947,8 +946,8 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
-- Returns a `List<Card>` of all incorrect questions (`isHit` attribute marked as false).
+#### Corpo de resposta de sucesso
+- Retorna um `List<Card>` com todas as respostas incorretas (atributo `isHit` definido como `false`).
 
 ```json
 [
@@ -977,46 +976,46 @@ docker-compose up --build
 ---
 
 ### **DELETE** `/games/flashcards/{id}`
-- Delete the flashcard with the given ID.
+- Deleta, se existir, o flashcard que contém o id passado.
 
-#### Success Response Body
-- `List<Flashcard>` updated.
+#### Corpo de resposta de sucesso
+- `List<Flashcard>` atualizado.
 
 ---
 
 ### **GET** `/games/flashcards/all`
-- Returns all of the user's flashcards.
+- Retorna todos os flashcards do usuário.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Flashcard>`
 
 ---
 
 ### **GET** `/games/flashcards/{id}`
-- Returns the user's flashcard that contains the given id.
+-  Retorna, se encontrado, o flashcard que contém o id informado.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `Flashcard`
 
 ---
 
 ### **GET** `/games/flashcards/search?title={flashcardTitle}`
-- Returns the user's flashcard that contains the title provided in the query parameter.
+- Retorna, se existir, o flashacard que contém o título fornecido no parâmetro.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `Optional<Flashcard>`.
 
 </br>
 
 ## 5. STUDY-PLANNER-MS
-- Manages user reminders and schedules
+- Microsserviço responsável por gerenciar lembretes e cronogramas.
 
 ### REMINDER ENDPOINTS
 
 ### **POST** `/planners/reminders`
-- Create a new reminder.
+- Cria um novo lembrete.
 
-#### Request Body
+#### Corpo da requisição
 - `ReminderRequestDto`:
 
 ```json
@@ -1027,8 +1026,8 @@ docker-compose up --build
 }
 ```
 
-#### Success Response Body
-- `List<Reminder>` updated.
+#### Corpo de resposta de sucesso
+- `List<Reminder>` atualizado.
 
 ```json
 [
@@ -1046,52 +1045,52 @@ docker-compose up --build
 ---
 
 ### **PUT** `/planners/reminders/{id}`
-- Update the user's reminder with the given ID.
+- Atualiza o lembrete do id passado.
 
-#### Request Body
+#### Corpo da requisição
 - `ReminderRequestDto`
 
-#### Success Response Body
-- `List<Reminder>` updated.
+#### Corpo de resposta de sucesso
+- `List<Reminder>` atualizado.
 
 ---
 
 ### **DELETE** `/planners/reminders/{id}`
-- Delete the user's reminder with the given ID.
+- Deleta, se existir, o lembrete que contém o id passado.
 
-#### Success Response Body
-- `List<Reminder>` updated.
+#### Corpo de resposta de sucesso
+- `List<Reminder>` atualizado.
 
 ---
 
 ### **GET** `/planners/reminders/all`
-- Returns all reminders created by the user.
+- Retorna todos os lembretes existentes do usuário.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Reminder>`
 
 ---
 
 ### **GET** `/planners/reminders/{id}`
-- Returns the user's reminder with the given ID.
+-  Retorna, se encontrado, o lembrete que contém o id informado
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `Reminder`
 
 ---
 
 ### **GET** `/planners/reminders?date={date}`
-- Returns all reminders of the user filtered by the given date (format: `yyyy-MM-dd`).
+- Retorna um todos os lembretes, filtrados pela data passada (formato: `yyyy-MM-dd`).
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Reminder>`
 
 ---
 
 ### **GET** `/planners/reminders/completed?isCompleted={true|false}`
-- Returns all reminders of the user filtered by completion status.
+- Retorna todos os lembretes do usuário, filtrados pelo estado do atributo `isCompleted`.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<Reminder>`
 
 </br>
@@ -1099,22 +1098,22 @@ docker-compose up --build
 ### SCHEDULE ENDPOINTS
 
 ### **POST** `/planners/schedules`
-- Create a new schedule item.
+- Cria um novo item do cronograma.
 
-#### Request Body
+#### Corpo da requisição
 - `ScheduleItemRequestDto`:
 
 ```json
 {
   "title": "Math Class",
-  "dayOfWeek": 1, // sunday: 0, monday: 1, tuesday: 2...
+  "dayOfWeek": 1, // domingo: 0, segunda-feira: 1, terça-feira: 2...
   "startTime": "08:00",
   "endTime": "09:30"
 }
 ```
 
-#### Success Response Body
-- `List<ScheduleItem>` updated.
+#### Corpo de resposta de sucesso
+- `List<ScheduleItem>` atualizado.
 
 ```json
 [
@@ -1123,16 +1122,16 @@ docker-compose up --build
     "createdBy": "user-uuid",
     "title": "Math Class",
     "dayOfWeek": 1,
-    "startTime": "08:00:00",
-    "endTime": "09:30:00"
+    "startTime": "08:00",
+    "endTime": "09:30"
   },
   {
     "id": "schedule-uuid-002",
     "createdBy": "user-uuid",
     "title": "Physics Class",
     "dayOfWeek": 1,
-    "startTime": "10:00:00",
-    "endTime": "11:00:00"
+    "startTime": "10:00",
+    "endTime": "11:00"
   }
 ]
 ```
@@ -1140,72 +1139,71 @@ docker-compose up --build
 ---
 
 ### **PUT** `/planners/schedules/{id}`
-- Update the schedule item with the given ID.
+- Atualiza o item do cronograma do id passado.
 
-#### Request Body
+#### Corpo da requisição
 - `ScheduleItemRequestDto`
 
-#### Success Response Body
-- `List<ScheduleItem>` updated.
+#### Corpo de resposta de sucesso
+- `List<ScheduleItem>` atualizado.
 
 ---
 
 ### **DELETE** `/planners/schedules/{id}`
-- Delete the schedule item with the given ID.
+- Deleta, se existir, o item do cronograma que contém o id passado.
 
-#### Success Response Body
-- `List<ScheduleItem>` updated.
+#### Corpo de resposta de sucesso
+- `List<ScheduleItem>` atualizado.
 
 ---
 
 ### **GET** `/planners/schedules/all`
-- Returns all schedule items created by the user.
+- Retorna todos os itens do cronograma criados pelo usuário.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `List<ScheduleItem>`
 
 ---
 
 ### **GET** `/planners/schedules/{id}`
-- Returns the user's schedule item with the given ID.
+-  Retorna, se encontrado, um item do cronograma que contém o id informado.
 
-#### Success Response Body
+#### Corpo de resposta de sucesso
 - `ScheduleItem`
 
 ---
 
 ### **GET** `/planners/schedules?dayOfWeek={number}`
-- Returns all schedule items created by the user filtered by day of the week.
+- Retorna todos os itens de um cronograma do usuário, filtrado pelo dia da semana informado.
 - Sunday = 0; Monday = 1; Tuesday = 3...
 
-#### Success Response Body
-- `List<ScheduleItem>` for the specified day.
+#### Corpo de resposta de sucesso
+- `List<ScheduleItem>` do dia especificado.
 
 </br>
 
-## Error Messages
-
-All error responses follow the format below:
+## Mensagens de erro
+- Todas as respostas de erro seguem o seguinte formato:
 
 ```json
 {
   "status": 400,
   "error": "BAD_REQUEST",
-  "message": "Message explaining the error that occurred."
+  "message": "Mensagem explicando o erro ocorrido."
 }
 ```
 
-| Field     | Type     | Description                                                              |
-|-----------|----------|--------------------------------------------------------------------------|
-| `status`  | Integer  | HTTP status code of the error.                                           |
-| `error`   | String   | Corresponding `HttpStatus` constant name.                                |
-| `message` | String   | Descriptive error message, possibly coming from a custom exception.      |
+| Campo     | Tipo     | Descrição                                                                 |
+|-----------|----------|---------------------------------------------------------------------------|
+| `status`  | Integer  | Código HTTP do erro.                                                      |
+| `error`   | String   | Nome da constante `HttpStatus` correspondente.                            |
+| `message` | String   | Mensagem descritiva do erro, podendo vir de uma exceção personalizada.    |
 
 ---
 
-### Errors Handled by the Services
+### Erros tratados pelos serviços
 
-#### Field validation error (`MethodArgumentNotValidException`)
+#### Erro de validação de campos (`MethodArgumentNotValidException`)
 
 ```json
 {
@@ -1217,7 +1215,7 @@ All error responses follow the format below:
 
 ---
 
-#### Invalid password (`InvalidPasswordException`)
+#### Senha inválida (`InvalidPasswordException`)
 
 ```json
 {
@@ -1226,9 +1224,22 @@ All error responses follow the format below:
   "message": "Invalid password."
 }
 ```
+
 ---
 
-#### Access denied (`SecurityException`)
+#### ID do usuário indisponível  (`UserIdUnavailableException`)
+
+```json
+{
+  "status": 400,
+  "error": "BAD_REQUEST",
+  "message": "User ID is missing from header request."
+}
+```
+
+---
+
+#### Acesso negado (`SecurityException`)
 
 ```json
 {
@@ -1240,7 +1251,7 @@ All error responses follow the format below:
 
 ---
 
-#### Invalid, expired, or missing token (`InvalidTokenException`)
+#### Token inválido, expirado ou não presente (`InvalidTokenException`)
 
 ```json
 {
@@ -1260,7 +1271,7 @@ All error responses follow the format below:
 
 ---
 
-#### Resource not found (`NotFoundException`)
+#### Recurso não encontrado (`NotFoundException`)
 
 ```json
 {
@@ -1272,7 +1283,7 @@ All error responses follow the format below:
 
 ---
 
-#### User not found (`UserNotFoundException`)
+#### Usuário não encontrado (`UserNotFoundException`)
 
 ```json
 {
@@ -1284,7 +1295,7 @@ All error responses follow the format below:
 
 ---
 
-#### Data conflict (`ConflictException`)
+#### Conflito de dados (`ConflictException`)
 
 ```json
 {
@@ -1296,7 +1307,7 @@ All error responses follow the format below:
 
 ---
 
-#### Email already in use (`EmailAlreadyInUseException`)
+#### Email já em uso (`EmailAlreadyInUseException`)
 
 ```json
 {
@@ -1308,19 +1319,7 @@ All error responses follow the format below:
 
 ---
 
-#### Missing or unavailable user ID (`UserIdUnavailableException`)
-
-```json
-{
-  "status": 500,
-  "error": "INTERNAL_SERVER_ERROR",
-  "message": "User ID is missing from header request."
-}
-```
-
----
-
-#### Error generating Bearer Token (`JWTCreationException`)
+#### Erro ao gerar o Bearer Token (`JWTCreationException`)
 
 ```json
 {
@@ -1332,8 +1331,8 @@ All error responses follow the format below:
 
 ---
 
-#### Error communicating with external service (`FeignConnectionException`)
-- Occurs when a REST call using OpenFeign between the `study-tracker-ms` and `discipline-ms` microservices fails.
+#### Erro de comunicação com outro serviço (`FeignConnectionException`)
+  - Quando há erro na chamada REST via openFeign entre os microsserviços `study-tracker-ms` e `discipline-ms`.
 
 ```json
 {
@@ -1345,7 +1344,7 @@ All error responses follow the format below:
 
 </br>
 
-# Contact
+# Contato
 * GitHub: [ABeatrizSC](https://github.com/ABeatrizSC)
 * Linkedin: [Ana Beatriz Santucci Carmoni](www.linkedin.com/in/ana-carmoni)
 * Email: [anabeatrizscarmoni@gmail.com](mailto:anabeatrizscarmoni@gmail.com)
