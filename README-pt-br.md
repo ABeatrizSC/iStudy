@@ -41,6 +41,8 @@ O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, ger
 - `istudy-app`: Esta pasta contém o código do front-end da aplicação, desenvolvido com TypeScript, React.js e NextJS.
 - `istudy-services`: Esta pasta contém o back-end do sistema (Java/Spring Boot), que segue uma arquitetura de microsserviços utilizando o Spring Cloud API Gateway como interceptador de requisições, Spring Cloud Netflix (Eureka) para registro e descoberta de serviços e RabbitMQ como broker de mensagens para comunicação assíncrona entre os microsserviços.
 
+</br>
+
 ## Arquitetura do Sistema
 ![texto alternativo](docs/images/istudy_architecture.png)
 
@@ -161,7 +163,7 @@ docker-compose up --build
 ![alt text](docs/images/sign-up-page.jpg) 
 
 ### Página Inicial
-![alt text](docs/images/home-page.jpeg) 
+![alt text](docs/images/home-page.JPEG) 
 #### Página Inicial: Modal de configurações da conta do usuário
 ![alt text](docs/images/account-settings-modal.jpg)
 
@@ -324,6 +326,21 @@ Account updated successfully!
 
 ```json
 Account deleted successfully!
+```
+
+---
+
+### **GET** `/users/details`
+- Retorna informações do usuário autenticado.
+
+#### Success Response Body
+- `AccountDetailsDto`:
+
+```json
+{
+  "name": "user",
+  "email": "user@email.com"
+}
 ```
 
 ---

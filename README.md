@@ -163,7 +163,7 @@ docker-compose up --build
 ![alt text](docs/images/sign-up-page.jpg) 
 
 ### Home page
-![alt text](docs/images/home-page.jpeg)
+![alt text](docs/images/home-page.JPEG)
 #### Home page: User account settings modal
 ![alt text](docs/images/account-settings-modal.jpg)
 
@@ -265,7 +265,7 @@ docker-compose up --build
 ---
 
 ### **POST** `/auth/login`
-- Authenticate an user.
+- Authenticate a user.
 
 #### Request Body
 
@@ -324,6 +324,21 @@ Account updated successfully!
 
 ```json
 Account deleted successfully!
+```
+
+---
+
+### **GET** `/users/details`
+- Returns the authenticated user information.
+
+#### Success Response Body
+- `AccountDetailsDto`:
+
+```json
+{
+  "name": "user",
+  "email": "user@email.com"
+}
 ```
 
 ---
