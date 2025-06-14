@@ -10,5 +10,6 @@ import { FlashcardGameModal } from "./FlashcardGameModal";
 import { StartGameOptionsModal } from "./StartGameOptionsModal";
 import { QuizModal } from "./QuizModal";
 import { QuizGameModal } from "./QuizGameModal";
+import { UserAccountSettingsModal } from "./UserAccountSettingsModal";
 
-export { ConfirmationModal, SubjectModal, CreateTopicModal, UpdateTopicModal, StudyModal, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, QuizModal, QuizGameModal }
+export { ConfirmationModal, SubjectModal, CreateTopicModal, UpdateTopicModal, StudyModal, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, QuizModal, QuizGameModal, UserAccountSettingsModal }

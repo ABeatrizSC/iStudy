@@ -10,4 +10,5 @@ import java.util.Optional;
 public interface QuizRepository extends JpaRepository<Quiz, String> {
     Optional<Quiz> findByTitle(String title);
     Optional<Quiz> findByTitleAndCreatedBy(String title, String createdBy);
+    void deleteAllByCreatedBy(String userId);
 }

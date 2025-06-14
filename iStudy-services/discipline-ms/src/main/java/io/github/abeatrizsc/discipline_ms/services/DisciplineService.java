@@ -78,6 +78,11 @@ public class DisciplineService {
         return findAll();
     }
 
+    @Transactional
+    public void deleteUserData(String userId) {
+        repository.deleteAllByCreatedBy(userId);
+    }
+
     public List<Discipline> findAll() {
         return repository
                 .findAll()

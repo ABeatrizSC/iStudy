@@ -24,17 +24,16 @@ spring:
     host: rabbitmq
 
 rabbitmq:
+  exchange:
+    user-deleted-events: user.deleted.fanout
+
   queue:
-    discipline:
-      update:
-        name: discipline.update
-      delete:
-        name: discipline.delete
-    topic:
-      update:
-        name: topic.update
-      delete:
-        name: topic.delete
+    user-deleted: deleted.studies.data
+    discipline-updated: discipline.update
+    topic-updated: topic.update
+    discipline-deleted: discipline.delete
+    topic-deleted: topic.delete
+
 
 eureka:
   client:

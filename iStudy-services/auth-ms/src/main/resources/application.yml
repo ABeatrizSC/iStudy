@@ -23,6 +23,10 @@ spring:
       ddl-auto: update
     show-sql: true
 
+rabbitmq:
+  exchange:
+    name: user.deleted.fanout
+
 eureka:
   client:
     service-url:

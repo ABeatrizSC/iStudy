@@ -25,7 +25,15 @@ spring:
 
 rabbitmq:
   exchange:
-    name: discipline.events
+    discipline-events: discipline.events.topic
+    user-deleted-events: user.deleted.fanout
+
+  queue:
+    user-deleted: deleted.discipline.data
+    discipline-updated: discipline.update
+    topic-updated: topic.update
+    discipline-deleted: discipline.delete
+    topic-deleted: topic.delete
 
 eureka:
   client:

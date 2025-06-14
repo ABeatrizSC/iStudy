@@ -85,6 +85,11 @@ public class FlashcardService {
     }
 
     @Transactional
+    public void deleteUserData(String userId) {
+        repository.deleteAllByCreatedBy(userId);
+    }
+
+    @Transactional
     public List<Card> answer(String id, FlashcardAnswerDto answerDto) {
         Flashcard flashcard = findById(id);
 

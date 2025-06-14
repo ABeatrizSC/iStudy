@@ -1,5 +1,5 @@
 import { ApiService } from "../utils/api.service";
-import { UserCredentials, AccessToken, User } from "./user.resource";
+import { UserCredentials, AccessToken, User, DeleteAccount, AccountDetails, UpdateAccount } from "./user.resource";
 import { jwtDecode } from "jwt-decode";
 
 type JwtPayload = {
@@ -10,20 +10,14 @@ type JwtPayload = {
   [key: string]: any;
 };
 
-export const getUsernameFromToken = (): JwtPayload | null => {
-  const token = localStorage.getItem('_auth');
-  
-  if (!token) return null;
+export const getTokenPayload= () => {
+    const token = localStorage.getItem('_auth');
 
-  try {
+    if (!token) return null;
+
     const cleanedToken = token.replace(/"/g, '');
-    const decoded = jwtDecode<JwtPayload>(cleanedToken);
-    return decoded;
-  } catch (error) {
-    console.error("Invalid token", error);
-    return null;
-  }
-};
+    return jwtDecode<JwtPayload>(cleanedToken);
+}
 
 export const getAuthHeaders = () => {
     const authToken = localStorage.getItem('_auth');
@@ -31,6 +25,15 @@ export const getAuthHeaders = () => {
     return {
         "Content-Type": "application/json",
         ...(authToken ? { "Authorization": `Bearer ${authToken.replace(/"/g, '')}` } : {}),
+    };
+};
+
+export const getUserIdHeader = () => {
+    const payload = getTokenPayload();
+
+    return {
+        "Content-Type": "application/json",
+        ...(payload?.sub ? { "X-User-Id": payload.sub } : {})
     };
 };
 
@@ -48,6 +51,24 @@ class AuthService {
 
     async save(user: User) : Promise<string> {
         const responseData: any = await this.apiService.request('/auth/register', 'POST', user);
+
+        return responseData.message;
+    }
+
+    async getAccountDetails(): Promise<AccountDetails> {
+        return this.apiService.request<AccountDetails>(`/users/details`, "GET");
+    }
+
+    async updateUserAccount(updateAccount: UpdateAccount): Promise<string> {
+        const responseData: any = await this.apiService.request('/users', 'PUT', updateAccount);
+
+        return responseData.message;
+    }
+
+    async deleteUserAccount(deleteAccount: DeleteAccount): Promise<string> {
+        const responseData: any = await this.apiService.request('/users', 'DELETE', deleteAccount);
+
+        this.logoutSession();
 
         return responseData.message;
     }

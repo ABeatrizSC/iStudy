@@ -15,4 +15,5 @@ public interface DisciplineRepository extends JpaRepository<Discipline, String> 
     List<Discipline> findAllByCategory(DisciplineCategoryEnum category);
     List<Discipline> findByNameContaining(String query);
     List<Discipline> findByIsCompletedTrue();
+    void deleteAllByCreatedBy(String userId);
 }

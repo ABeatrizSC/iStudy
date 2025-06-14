@@ -8,6 +8,7 @@ import com.io.github.abeatrisc.study_planner_ms.repositories.ScheduleItemReposit
 import com.io.github.abeatrisc.study_planner_ms.utils.AuthRequestUtils;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -45,6 +46,11 @@ public class ScheduleItemService {
         repository.deleteById(id);
 
         return findAll();
+    }
+
+    @Transactional
+    public void deleteUserData(String userId) {
+        repository.deleteAllByCreatedBy(userId);
     }
 
     public ScheduleItem findById(String id) throws NotFoundException {

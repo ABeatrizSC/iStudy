@@ -11,4 +11,5 @@ import java.util.List;
 public interface ReminderRepository extends JpaRepository<Reminder, String> {
     List<Reminder> findByDateAndCreatedBy(LocalDate date, String createdBy);
     List<Reminder> findByIsCompletedAndCreatedBy(boolean isCompleted, String createdBy);
+    void deleteAllByCreatedBy(String userId);
 }

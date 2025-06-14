@@ -24,21 +24,22 @@
 </br>
 
 # What is iStudy?
-iStudy is a web platform designed to help students efficiently organize, manage, and track their study habits. Among its many features are:
+iStudy is a web platform designed to help students organize, manage, and track their studies and academic routine more efficiently. Among its various features are:
 
 - User registration and login;
 - Management of subjects and their topics;
-- Study tracking, based on registered subjects and topics;
-- Study games, such as flashcards and quizzes to reinforce learning;
-- Time management tools (Stopwatch and Pomodoro timer);
-- Schedule and reminder management;
-- Dashboards with metrics of study hours per subject, topic, and category (daily, weekly, and monthly).
+- Management of study sessions based on the registered subjects and topics;
+- Performance charts (daily, weekly, and monthly), allowing students to better visualize their study progress over time;
+- Gamification, with flashcard and quiz games to reinforce learning;
+- Time management tools (stopwatch and Pomodoro timer);
+- Weekly schedule and reminder management;
+- Calendar.
 
 </br>
 
 # Project Structure
 - `istudy-app`: This folder contains the front-end code of the application, built with TypeScript, React.Js and NextJS.
-- `istudy-services`: This folder contains the system's back-end (Java/Spring Boot), which follows a microservices architecture using Spring Cloud API Gateway as a request interceptor and Spring Cloud Netflix (Eureka) for service registration and discovery.
+- `istudy-services`: This directory contains the back-end of the system, built with Java and Spring Boot, following a microservices architecture. It leverages Spring Cloud API Gateway to handle and route incoming requests, uses Spring Cloud Netflix (Eureka) for service registration and discovery, and integrates RabbitMQ as a message broker for asynchronous communication between the microservices.
 
 ## System Architecture
 ![alt text](docs/images/istudy_architecture.png)
@@ -103,7 +104,7 @@ iStudy is a web platform designed to help students efficiently organize, manage,
 
 * **Swiper js**: A powerful, free, and open-source JavaScript library for creating modern, touch-friendly sliders and carousels.
 
-* **React card flip**: A specific library or component that allows you to create a card that animates to reveal content on its back when clicked or interacted withxt.
+* **Reactjs flip card**: A specific library or component that allows you to create a card that animates to reveal content on its back when clicked or interacted withxt.
 
 * **React calendar**: A lightweight and easily configurable calendar component.
 
@@ -162,7 +163,9 @@ docker-compose up --build
 ![alt text](docs/images/sign-up-page.jpg) 
 
 ### Home page
-![alt text](docs/images/home-page.png) 
+![alt text](docs/images/home-page.jpeg)
+#### Home page: User account settings modal
+![alt text](docs/images/account-settings-modal.jpg)
 
 ### Subject page
 ![alt text](docs/images/subject-page.jpg)
@@ -231,6 +234,9 @@ docker-compose up --build
 ##### Time tracker: Pomodoro settings modal
 ![alt text](docs/images/pomodoro-settings-modal.jpg) 
 
+### Not found Page
+![alt text](docs/images/not-found-page.png) 
+
 </br>
 
 # iStudy-services - Back-End
@@ -277,6 +283,66 @@ docker-compose up --build
     "token": "ey..."
 }
 ```
+---
+
+### **PUT** `/users`
+- Updates a user's account information.
+
+#### Request Body
+- `UpdateAccountDto`:
+
+```json
+{
+  "name": "username updated",
+  "email": "user@email.com",
+  "currentPassword": "pass1234",
+  "newPassword": "newPass" //Optional. Only fill in if you are going to update the password.
+}
+```
+
+#### Success Response Body
+
+```json
+Account updated successfully!
+```
+
+---
+
+### **DELETE** `/users`
+- Deletes the user account and all information related to it.
+
+#### Request Body
+- `DeleteAccountDto`:
+
+```json
+{
+  "password": "pass1234"
+}
+```
+
+#### Success Response Body
+
+```json
+Account deleted successfully!
+```
+
+---
+
+### **GET** `/users/{id}`
+- Returns the information of the user with the given ID, if it matches the authenticated user.
+
+#### Success Response Body
+- `User`:
+
+```json
+{
+  "id": "c7019a95-90f1...",
+  "name": "user",
+  "email": "user@email.com"
+}
+```
+
+---
 
 </br>
 

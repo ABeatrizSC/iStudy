@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface ScheduleItemRepository extends JpaRepository<ScheduleItem, String> {
     List<ScheduleItem> findByDayOfWeekAndCreatedBy(Integer dayOfWeek, String createdBy);
+    void deleteAllByCreatedBy(String userId);
 }

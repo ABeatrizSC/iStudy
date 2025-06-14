@@ -14,62 +14,85 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    @Value("${rabbitmq.exchange.name}")
-    private String EXCHANGE_NAME;
+    @Value("${rabbitmq.exchange.discipline-events}")
+    private String TOPIC_DISCIPLINE_EVENTS_EXCHANGE;
+
+    @Value("${rabbitmq.exchange.user-deleted-events}")
+    private String FANOUT_USER_EVENTS_DELETED_EXCHANGE;
+
+    @Value("${rabbitmq.queue.user-deleted}")
+    private String USER_EVENTS_DELETED_QUEUE;
+
+    @Value("${rabbitmq.queue.discipline-deleted}")
+    private String DISCIPLINE_EVENTS_DISCIPLINE_DELETED_QUEUE;
+
+    @Value("${rabbitmq.queue.discipline-updated}")
+    private String DISCIPLINE_EVENTS_DISCIPLINE_UPDATED_QUEUE;
+
+    @Value("${rabbitmq.queue.topic-deleted}")
+    private String DISCIPLINE_EVENTS_TOPIC_DELETED_QUEUE;
+
+    @Value("${rabbitmq.queue.topic-updated}")
+    private String DISCIPLINE_EVENTS_TOPIC_UPDATED_QUEUE;
 
     @Bean
-    public RabbitAdmin createRabbitAdmin(ConnectionFactory connectionFactory){
-        return new RabbitAdmin(connectionFactory);
+    public TopicExchange topicExchange() {
+        return new TopicExchange(TOPIC_DISCIPLINE_EVENTS_EXCHANGE);
     }
 
     @Bean
-    public ApplicationListener<ApplicationReadyEvent> initializeAdmin(RabbitAdmin rabbitAdmin){
-        return event -> rabbitAdmin.initialize();
-    }
-
-    @Bean
-    public TopicExchange exchange() {
-        return new TopicExchange(EXCHANGE_NAME);
+    public FanoutExchange fanoutUserDeletedExchange() {
+        return new FanoutExchange(FANOUT_USER_EVENTS_DELETED_EXCHANGE);
     }
 
     @Bean
     public Queue disciplineUpdateQueue() {
-        return new Queue("discipline.update");
+        return new Queue(DISCIPLINE_EVENTS_DISCIPLINE_UPDATED_QUEUE);
     }
 
     @Bean
     public Queue disciplineDeleteQueue() {
-        return new Queue("discipline.delete");
+        return new Queue(DISCIPLINE_EVENTS_DISCIPLINE_DELETED_QUEUE);
     }
 
     @Bean
     public Queue topicUpdateQueue() {
-        return new Queue("topic.update");
+        return new Queue(DISCIPLINE_EVENTS_TOPIC_UPDATED_QUEUE);
     }
 
     @Bean
     public Queue topicDeleteQueue() {
-        return new Queue("topic.delete");
+        return new Queue(DISCIPLINE_EVENTS_TOPIC_DELETED_QUEUE);
     }
 
     @Bean
-    public Binding bindingDisciplineUpdate(Queue disciplineUpdateQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(disciplineUpdateQueue).to(exchange).with("discipline.update");
+    public Binding bindingDisciplineUpdate(Queue disciplineUpdateQueue, TopicExchange topicExchange) {
+        return BindingBuilder.bind(disciplineUpdateQueue).to(topicExchange).with(DISCIPLINE_EVENTS_DISCIPLINE_UPDATED_QUEUE);
     }
 
     @Bean
-    public Binding bindingDisciplineDelete(Queue disciplineDeleteQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(disciplineDeleteQueue).to(exchange).with("discipline.delete");
+    public Binding bindingDisciplineDelete(Queue disciplineDeleteQueue, TopicExchange topicExchange) {
+        return BindingBuilder.bind(disciplineDeleteQueue).to(topicExchange).with(DISCIPLINE_EVENTS_DISCIPLINE_DELETED_QUEUE);
     }
 
     @Bean
-    public Binding bindingTopicUpdate(Queue topicUpdateQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(topicUpdateQueue).to(exchange).with("topic.update");
+    public Binding bindingTopicUpdate(Queue topicUpdateQueue, TopicExchange topicExchange) {
+        return BindingBuilder.bind(topicUpdateQueue).to(topicExchange).with(DISCIPLINE_EVENTS_TOPIC_UPDATED_QUEUE);
     }
 
     @Bean
-    public Binding bindingTopicDelete(Queue topicDeleteQueue, TopicExchange exchange) {
-        return BindingBuilder.bind(topicDeleteQueue).to(exchange).with("topic.delete");
+    public Binding bindingTopicDelete(Queue topicDeleteQueue, TopicExchange topicExchange) {
+        return BindingBuilder.bind(topicDeleteQueue).to(topicExchange).with(DISCIPLINE_EVENTS_TOPIC_DELETED_QUEUE);
+    }
+
+    @Bean
+    public Queue userDeleteQueue() {
+        return new Queue(USER_EVENTS_DELETED_QUEUE);
+    }
+
+    @Bean
+    public Binding bindingDeleteDisciplines(Queue userDeleteQueue, FanoutExchange fanoutUserDeletedExchange) {
+        return BindingBuilder.bind(userDeleteQueue).to(fanoutUserDeletedExchange);
     }
 
     @Bean
@@ -82,6 +105,16 @@ public class RabbitMQConfig {
         RabbitTemplate rabbitTemplate = new RabbitTemplate(connectionFactory);
         rabbitTemplate.setMessageConverter(jackson2JsonMessageConverter());
         return rabbitTemplate;
+    }
+
+    @Bean
+    public RabbitAdmin createRabbitAdmin(ConnectionFactory connectionFactory){
+        return new RabbitAdmin(connectionFactory);
+    }
+
+    @Bean
+    public ApplicationListener<ApplicationReadyEvent> initializeAdmin(RabbitAdmin rabbitAdmin){
+        return event -> rabbitAdmin.initialize();
     }
 }
 
