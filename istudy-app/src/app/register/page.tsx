@@ -32,6 +32,14 @@ export default function Register() {
     const newUser: User = { name: values.name, email: values.email, password: values.password }
 
     useUserRegister.mutate(newUser);
+    resetForm(values);
+  }
+
+  const resetForm = (values: RegisterForm) => {
+    values.name = '';
+    values.email = '';
+    values.password = '';
+    values.passwordMatch = '';
   }
 
   return (

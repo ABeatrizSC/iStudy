@@ -2,8 +2,7 @@
 
 import { useState } from "react";
 import dayjs from "dayjs";
-import { useRouter } from "next/navigation";
-import { Container, Template, Title, PercentageStudyTimeChart } from "@/components";
+import { Container, Template, Title, PercentageStudyTimeChart, UserAccountSettingsModal, Button } from "@/components";
 import { useReminderByDate } from "@/hooks/reminder/useReminderByDate";
 import { useUpdateReminder } from "@/hooks/reminder/useUpdateReminder";
 import { useDeleteReminder } from "@/hooks/reminder/useDeleteReminder";
@@ -12,11 +11,12 @@ import { useStudyInfo } from "@/hooks/study";
 import { useSubjectData } from "@/hooks/subject";
 import { useDailyStudyStatus } from "@/hooks/study/useDailyStudyStatus";
 import { formatSavedDate, formatTimeToNumber, formatTime } from "@/utils/formatters";
-import { getUsernameFromToken } from "@/resources/services/auth-user/authentication.service";
 import theme from "@/resources/assets/styles/Theme";
 import { ReminderRequest } from "@/resources/services/reminder/reminder.resource";
 import { Subtitle } from "@/components/Home/Subtitle";
 import { ReminderList, ScheduleTable, StudyStatusBox, SubjectInfoList } from "@/components/Home";
+import SettingsIcon from '@mui/icons-material/Settings';
+import { useAccountData } from "@/hooks/auth-user/useAccountData";
 
 export default function Home() {
   const today = dayjs();
@@ -32,6 +32,8 @@ export default function Home() {
 
   const [date, setDate] = useState<string>(todayFormatted);
 
+  const [openAccountSettingsModal, setOpenAccountSettingsModal] = useState<boolean>(false);
+
   const { data: remindersByDate, isLoading: isRemindersByDateLoading } = useReminderByDate(date);
   const { data: allSchedulesItems } = useScheduleData();
   const { data: studyInfo, isLoading: isStudyInfoLoading } = useStudyInfo({ time: currentMonth, year: currentYear, includeWeek: false });
@@ -39,21 +41,18 @@ export default function Home() {
   const { data: subjects, isLoading: isSubjectsLoading } = useSubjectData();
   const { data: studiesStatus, isLoading: isStudiesStatusLoading} = useDailyStudyStatus(startDate, endDate)
 
+  const { data: loggedUserData, isLoading: isLoggedUserDataLoading } = useAccountData();
+
   const studiesCompletedQtt = studyInfo?.totalCompletedStudies || 0;
   const totalStudiesQtt = studyInfo?.totalStudies || 0;
   const studiesIncompletedQtt = totalStudiesQtt - studiesCompletedQtt;
 
   const studiesCompletedPercentage = (studiesCompletedQtt/totalStudiesQtt)*100;
 
-  const router = useRouter();
   const updateReminder = useUpdateReminder();
   const deleteReminder = useDeleteReminder();
 
-  const isLoading = isRemindersByDateLoading || isStudyInfoLoading || isSubjectsLoading || dailyStudyInfoLoading || isStudiesStatusLoading;
-
-  const getProgressValue = (value: number, totalValue: number) => {
-    return (value * 100) / totalValue
-  }
+  const isLoading = isRemindersByDateLoading || isStudyInfoLoading || isSubjectsLoading || dailyStudyInfoLoading || isStudiesStatusLoading || isLoggedUserDataLoading;
 
   const handleReminderCompleted = (reminder: any) => {
     const updatedReminder: ReminderRequest = {
@@ -75,9 +74,17 @@ export default function Home() {
 
   return (
     <Template loading={isLoading}>
-      <Title>
-        Hello, {getUsernameFromToken()?.name}!
-      </Title>
+      <div className="flex justify-between items-center">
+        <Title>
+          Hello, {loggedUserData?.name}!
+        </Title>
+        <Button onClick={() => setOpenAccountSettingsModal(true)} style="!bg-transparent">
+          <SettingsIcon 
+            sx={{ fill: theme.palette.gray.main, cursor: 'pointer' }}
+            fontSize={'large'}
+          />
+        </Button>
+      </div>
       <div className="flex flex-wrap gap-3">
         <Container style="w-full sm:min-w-[200px] w-full md:w-[calc(50%-0.375rem)]">
           <Subtitle>
@@ -108,7 +115,7 @@ export default function Home() {
               style={{ color: theme.palette.gray.main }}
               className="bold text-2xl sm:text-3xl lg:text-4xl mt-auto"
             >
-              {studiesCompletedPercentage.toFixed(2)}%
+              {!isNaN(studiesCompletedPercentage) ? studiesCompletedPercentage.toFixed(2) : 0}%
             </span>
           </div>
         </Container>
@@ -170,6 +177,11 @@ export default function Home() {
           />
         </Container>
       </div>
+      <UserAccountSettingsModal 
+        handleClose={() => setOpenAccountSettingsModal(false)}
+        open={openAccountSettingsModal}
+        userData={loggedUserData}
+      />
     </Template>
   );
 }
