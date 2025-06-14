@@ -59,12 +59,18 @@ services:
       - DB_URL=jdbc:mysql://mysql-db:3306/auth_ms_db
       - DB_USER=root
       - DB_PASSWORD=root
+      - SPRING.RABBITMQ.HOST=rabbitmq
+      - SPRING.RABBITMQ.PORT=5672
+      - SPRING.RABBITMQ.USERNAME=guest
+      - SPRING.RABBITMQ.PASSWORD=guest
     depends_on:
       mysql-db:
         condition: service_healthy
       eureka-server:
         condition: service_started
       api-gateway:
+        condition: service_started
+      rabbitmq:
         condition: service_started
     networks:
       - istudy-network
@@ -86,9 +92,13 @@ services:
     depends_on:
       mysql-db:
         condition: service_healthy
+      auth-ms:
+        condition: service_started
       eureka-server:
         condition: service_started
       api-gateway:
+        condition: service_started
+      rabbitmq:
         condition: service_started
     networks:
       - istudy-network
@@ -110,6 +120,8 @@ services:
     depends_on:
       mysql-db:
         condition: service_healthy
+      auth-ms:
+        condition: service_started
       rabbitmq:
         condition: service_healthy
       eureka-server:
@@ -129,9 +141,15 @@ services:
       - DB_URL=jdbc:mysql://mysql-db:3306/study_gamification_ms_db
       - DB_USER=root
       - DB_PASSWORD=root
+      - SPRING.RABBITMQ.HOST=rabbitmq
+      - SPRING.RABBITMQ.PORT=5672
+      - SPRING.RABBITMQ.USERNAME=guest
+      - SPRING.RABBITMQ.PASSWORD=guest
     depends_on:
       mysql-db:
         condition: service_healthy
+      auth-ms:
+        condition: service_started
       eureka-server:
         condition: service_started
       api-gateway:
@@ -149,9 +167,15 @@ services:
       - DB_URL=jdbc:mysql://mysql-db:3306/study_planner_ms_db
       - DB_USER=root
       - DB_PASSWORD=root
+      - SPRING.RABBITMQ.HOST=rabbitmq
+      - SPRING.RABBITMQ.PORT=5672
+      - SPRING.RABBITMQ.USERNAME=guest
+      - SPRING.RABBITMQ.PASSWORD=guest
     depends_on:
       mysql-db:
         condition: service_healthy
+      auth-ms:
+        condition: service_started
       eureka-server:
         condition: service_started
       api-gateway:

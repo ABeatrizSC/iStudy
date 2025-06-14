@@ -49,4 +49,9 @@ public class RestControlAdvice {
     public ResponseEntity<RestErrorMessage> handleEmailAlreadyInUseException(EmailAlreadyInUseException e) {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(new RestErrorMessage(HttpStatus.CONFLICT.value(), HttpStatus.CONFLICT, e.getMessage()));
     }
+
+    @ExceptionHandler(UpdatePasswordException.class)
+    public ResponseEntity<RestErrorMessage> handleUpdatePasswordException(UpdatePasswordException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(new RestErrorMessage(HttpStatus.BAD_REQUEST.value(), HttpStatus.BAD_REQUEST, e.getMessage()));
+    }
 }

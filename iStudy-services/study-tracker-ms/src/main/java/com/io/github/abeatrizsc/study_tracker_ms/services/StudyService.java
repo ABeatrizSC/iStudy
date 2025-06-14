@@ -103,6 +103,11 @@ public class StudyService {
         return findAll();
     }
 
+    @Transactional
+    public void deleteUserData(String userId) {
+        repository.deleteAllByCreatedBy(userId);
+    }
+
     public List<Study> findAll() {
         return repository
                 .findAll()

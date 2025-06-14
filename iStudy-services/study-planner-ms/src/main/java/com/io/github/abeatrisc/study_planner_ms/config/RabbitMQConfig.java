@@ -1,4 +1,4 @@
-package com.io.github.abeatrizsc.study_tracker_ms.config;
+package com.io.github.abeatrisc.study_planner_ms.config;
 
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.BindingBuilder;
@@ -21,7 +21,7 @@ public class RabbitMQConfig {
     private String USER_EVENTS_DELETED_QUEUE_NAME;
 
     @Bean
-    public Queue deleteStudiesDataQueue() {
+    public Queue deletePlannersDataQueue() {
         return new Queue(USER_EVENTS_DELETED_QUEUE_NAME);
     }
 
@@ -31,8 +31,8 @@ public class RabbitMQConfig {
     }
 
     @Bean
-    public Binding bindingDeleteStudiesData(Queue deleteStudiesDataQueue, FanoutExchange fanoutUserDeletedExchange) {
-        return BindingBuilder.bind(deleteStudiesDataQueue).to(fanoutUserDeletedExchange);
+    public Binding bindingDeletePlannersData(Queue deletePlannersDataQueue, FanoutExchange fanoutUserDeletedExchange) {
+        return BindingBuilder.bind(deletePlannersDataQueue).to(fanoutUserDeletedExchange);
     }
 
     @Bean
@@ -47,3 +47,4 @@ public class RabbitMQConfig {
         return rabbitTemplate;
     }
 }
+

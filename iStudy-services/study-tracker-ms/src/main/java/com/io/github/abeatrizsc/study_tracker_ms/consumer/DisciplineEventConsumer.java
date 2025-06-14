@@ -17,7 +17,7 @@ import java.util.List;
 public class DisciplineEventConsumer {
     private StudyRepository studyRepository;
 
-    @RabbitListener(queues = {"${rabbitmq.queue.discipline.update.name}"})
+    @RabbitListener(queues = {"${rabbitmq.queue.discipline-updated}"})
     public void consumeDisciplineUpdate(@Payload UpdateDisciplineEventDto updateEventDto) {
         List<Study> studies = studyRepository.findByDisciplineName(updateEventDto.getOldName());
 
@@ -30,7 +30,7 @@ public class DisciplineEventConsumer {
         }
     }
 
-    @RabbitListener(queues = {"${rabbitmq.queue.discipline.delete.name}"})
+    @RabbitListener(queues = {"${rabbitmq.queue.discipline-deleted}"})
     public void consumeDisciplineDelete(@Payload String name) {
         List<Study> studies = studyRepository.findByDisciplineName(name);
 
@@ -41,7 +41,7 @@ public class DisciplineEventConsumer {
         }
     }
 
-    @RabbitListener(queues = {"${rabbitmq.queue.topic.update.name}"})
+    @RabbitListener(queues = {"${rabbitmq.queue.topic-updated}"})
     public void consumeTopicUpdate(@Payload TopicUpdateEventDto topicEventDto) {
         List<Study> studies = studyRepository.findByDisciplineNameAndTopicName(topicEventDto.getDisciplineName(), topicEventDto.getTopicName());
 
@@ -53,7 +53,7 @@ public class DisciplineEventConsumer {
         }
     }
 
-    @RabbitListener(queues = {"${rabbitmq.queue.topic.delete.name}"})
+    @RabbitListener(queues = {"${rabbitmq.queue.topic-deleted}"})
     public void consumeTopicDelete(@Payload TopicDeleteEventDto topicEventDto) {
         List<Study> studies = studyRepository.findByDisciplineNameAndTopicName(topicEventDto.getDisciplineName(), topicEventDto.getTopicName());
 

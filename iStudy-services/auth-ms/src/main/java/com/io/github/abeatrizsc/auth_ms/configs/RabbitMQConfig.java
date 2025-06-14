@@ -1,38 +1,36 @@
-package com.io.github.abeatrizsc.study_tracker_ms.config;
+package com.io.github.abeatrizsc.auth_ms.configs;
 
-import org.springframework.amqp.core.Binding;
-import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.FanoutExchange;
-import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitAdmin;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.amqp.support.converter.MessageConverter;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.ApplicationListener;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RabbitMQConfig {
-    @Value("${rabbitmq.exchange.user-deleted-events}")
-    private String FANOUT_USER_EVENTS_DELETED_EXCHANGE_NAME;
 
-    @Value("${rabbitmq.queue.user-deleted}")
-    private String USER_EVENTS_DELETED_QUEUE_NAME;
+    @Value("${rabbitmq.exchange.name}")
+    private String EXCHANGE_NAME;
 
     @Bean
-    public Queue deleteStudiesDataQueue() {
-        return new Queue(USER_EVENTS_DELETED_QUEUE_NAME);
+    public RabbitAdmin createRabbitAdmin(ConnectionFactory connectionFactory){
+        return new RabbitAdmin(connectionFactory);
     }
 
     @Bean
-    public FanoutExchange fanoutUserDeletedExchange() {
-        return new FanoutExchange(FANOUT_USER_EVENTS_DELETED_EXCHANGE_NAME);
+    public ApplicationListener<ApplicationReadyEvent> initializeAdmin(RabbitAdmin rabbitAdmin){
+        return event -> rabbitAdmin.initialize();
     }
 
     @Bean
-    public Binding bindingDeleteStudiesData(Queue deleteStudiesDataQueue, FanoutExchange fanoutUserDeletedExchange) {
-        return BindingBuilder.bind(deleteStudiesDataQueue).to(fanoutUserDeletedExchange);
+    public FanoutExchange exchange() {
+        return new FanoutExchange(EXCHANGE_NAME);
     }
 
     @Bean
