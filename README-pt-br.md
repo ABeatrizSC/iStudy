@@ -24,21 +24,22 @@
 </br>
 
 # O que é o iStudy?
-O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, gerenciar e acompanhar seus hábitos de estudo de forma eficiente. Entre seus diversos recursos estão:
+O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, gerenciar e acompanhar de forma mais eficiente seus estudos e rotina acadêmica. Entre seus diversos recursos estão:
 
 - Cadastro e login de usuários;
 - Gerenciamento de disciplinas e seus tópicos;
-- Acompanhamento dos estudos, com base nas disciplinas e tópicos cadastrados;
-- Jogos de estudo, como flashcards e quizzes para reforçar o aprendizado;
-- Ferramentas de gerenciamento de tempo (cronômetro e timer Pomodoro);
-- Gerenciamento de cronograma e lembretes;
-- Gráficos com métricas de horas de estudo por disciplina, tópico e categoria (diárias, semanais e mensais).
+- Gerenciamento de sessões de estudo, com base nas disciplinas e tópicos cadastrados;
+- Gráficos de desempenho (diário, semanal e mensal), permitindo ao estudante uma melhor visualização do seu progresso de estudo ao longo do tempo;
+- Gamificação, com jogos de flashcards e quizzes para reforçar o aprendizado;
+- Ferramentas de gerenciamento de tempo (cronômetro e pomodoro timer);
+- Gerenciamento de cronograma semanal e lembretes;
+- Calendário.
 
 </br>
 
 # Estrutura do Projeto
 - `istudy-app`: Esta pasta contém o código do front-end da aplicação, desenvolvido com TypeScript, React.js e NextJS.
-- `istudy-services`: Esta pasta contém o back-end do sistema (Java/Spring Boot), que segue uma arquitetura de microsserviços utilizando o Spring Cloud API Gateway como interceptador de requisições e Spring Cloud Netflix (Eureka) para registro e descoberta de serviços.
+- `istudy-services`: Esta pasta contém o back-end do sistema (Java/Spring Boot), que segue uma arquitetura de microsserviços utilizando o Spring Cloud API Gateway como interceptador de requisições, Spring Cloud Netflix (Eureka) para registro e descoberta de serviços e RabbitMQ como broker de mensagens para comunicação assíncrona entre os microsserviços.
 
 ## Arquitetura do Sistema
 ![texto alternativo](docs/images/istudy_architecture.png)
@@ -103,7 +104,7 @@ O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, ger
 
 * **Swiper js**: Biblioteca JavaScript gratuita e poderosa para criação de sliders e carrosséis modernos e responsivos.
 
-* **React card flip**: Componente que permite criar cartões que giram e revelam conteúdo ao interagir.
+* **Reactjs flip card**: Componente que permite criar cartões que giram e revelam conteúdo ao interagir.
 
 * **React calendar**: Componente de calendário leve e de fácil configuração.
 
@@ -160,7 +161,9 @@ docker-compose up --build
 ![alt text](docs/images/sign-up-page.jpg) 
 
 ### Página Inicial
-![alt text](docs/images/home-page.png) 
+![alt text](docs/images/home-page.jpeg) 
+#### Página Inicial: Modal de configurações da conta do usuário
+![alt text](docs/images/account-settings-modal.jpg)
 
 ### Página de Matérias
 ![alt text](docs/images/subject-page.jpg)
@@ -229,6 +232,9 @@ docker-compose up --build
 ##### Modal de Configurações do Pomodoro
 ![alt text](docs/images/pomodoro-settings-modal.jpg) 
 
+### Página não encontrada
+![alt text](docs/images/not-found-page.png) 
+
 </br>
 
 # iStudy-services - Back-End
@@ -276,6 +282,67 @@ docker-compose up --build
     "token": "ey..."
 }
 ```
+
+---
+
+### **PUT** `/users`
+- Atualiza as informações da conta de um usuário.
+
+#### Corpo da requisição
+- `UpdateAccountDto`:
+
+```json
+{
+  "name": "username updated",
+  "email": "user@email.com",
+  "currentPassword": "pass1234",
+  "newPassword": "newPass" //Opcional. Apenas preencha se for atualizar a senha.
+}
+```
+
+#### Corpo de resposta de sucesso
+
+```json
+Account updated successfully!
+```
+
+---
+
+### **DELETE** `/users`
+- Deleta a conta do usuário e todas as informações relacionadas a ela.
+
+#### Corpo da requisição
+- `DeleteAccountDto`:
+
+```json
+{
+  "password": "pass1234"
+}
+```
+
+#### Corpo de resposta de sucesso
+
+```json
+Account deleted successfully!
+```
+
+---
+
+### **GET** `/users/{id}`
+- Retorna as informações do usuário dado um id (se ele for o do usuário autenticado).
+
+#### Corpo de resposta de sucesso
+- `User`:
+
+```json
+{
+  "id": "c7019a95-90f1...",
+  "name": "user",
+  "email": "user@email.com"
+}
+```
+
+---
 
 </br>
 
