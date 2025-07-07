@@ -18,20 +18,24 @@ export const CardBox: React.FC<CardBoxProps> = ({ cardData, isFlipped, handleFli
         <div className="relative w-full h-full flex flex-col justify-center items-center text-center p-4 text-white">
             <ReactFlipCard
                 frontComponent={
-                    <div className='h-full w-full flex flex-col'>
-                        <Typography variant="h5">Question:</Typography>
-                        <Typography variant="h6" className='!mt-auto !mb-auto'>{cardData.question}</Typography>
-                    </div>
+                <div className="h-full w-full flex flex-col">
+                    <Typography variant="h5">Question:</Typography>
+                    <Typography className="font-md !mt-auto !mb-auto">
+                    {cardData.question}
+                    </Typography>
+                </div>
                 }
                 backComponent={
-                    <div className='h-full w-full flex flex-col items-center justify-center'>
-                        <Typography variant="h5">Answer:</Typography>
-                        <Typography variant="h6" className='!mt-auto !mb-auto'>{cardData.answer}</Typography>
-                    </div>
+                <div className="h-full w-full flex flex-col items-center justify-center">
+                    <Typography variant="h5">Answer:</Typography>
+                    <Typography className="font-md !mt-auto !mb-auto">{cardData.answer}</Typography>
+                </div>
                 }
                 flipByProp={isFlipped}
-                flipTrigger={'disabled'}
+                flipTrigger="disabled"
+                containerCss="w-full"
             />
+
 
             <span className="absolute bottom-0 left-3 flex flex-row gap-2 items-center font-normal" onClick={handleIsHitChange}>
                 <Checkbox 
