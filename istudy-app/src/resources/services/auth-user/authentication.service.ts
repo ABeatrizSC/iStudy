@@ -1,6 +1,8 @@
+import { useRouter } from "next/navigation";
 import { ApiService } from "../utils/api.service";
 import { UserCredentials, AccessToken, User, DeleteAccount, AccountDetails, UpdateAccount } from "./user.resource";
 import { jwtDecode } from "jwt-decode";
+import { PATH } from "@/constants/path";
 
 type JwtPayload = {
   sub: string;
@@ -40,6 +42,7 @@ export const getUserIdHeader = () => {
 class AuthService {
     static AUTH_PARAM: string = "_auth";
     private apiService = new ApiService();
+    private router = useRouter();
 
     async login(credentials: UserCredentials): Promise<void> {
         const data: any = await this.apiService.request('/auth/login', 'POST', credentials);
@@ -92,7 +95,8 @@ class AuthService {
     }
 
     logoutSession(): void {
-        localStorage.removeItem(AuthService.AUTH_PARAM)
+        localStorage.removeItem(AuthService.AUTH_PARAM);
+        this.router.push(PATH.LOGIN);
     }
 }
 

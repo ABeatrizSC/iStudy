@@ -7,5 +7,5 @@ export const mapStudyToRequest = (data?: Study): StudyRequest => ({
     topicName: data?.topicName ?? "",
     time: data?.time ?? "00:00",
     date: data?.date ?? formatSavedDate(dayjs().format("MM/DD/YY")),
-    isCompleted: false
+    isCompleted: data?.isCompleted ?? false
 });

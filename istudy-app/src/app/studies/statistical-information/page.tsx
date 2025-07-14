@@ -111,7 +111,7 @@ export default function StudyStatisticalInformation() {
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-5">
           <Container style="lg:w-[450px] w-full">
-            <ChartsHeader title="Studies completed x Remaining" />
+            <ChartsHeader title="Completed study hours x Remaining" />
             <PercentageStudyTimeChart 
               totalHours={formatTimeToNumber(studyInfo?.totalStudyTime)} 
               completedHours={formatTimeToNumber(studyInfo?.completedStudyTime)} 

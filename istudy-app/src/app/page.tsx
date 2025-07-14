@@ -28,14 +28,14 @@ export default function Home() {
 
   const currentMonth = today.month() + 1;
   const currentYear = today.year();
-  const todayWeekDay = today.isoWeekday(); 
+  const weekDay = today.day(); 
 
   const [date, setDate] = useState<string>(todayFormatted);
 
   const [openAccountSettingsModal, setOpenAccountSettingsModal] = useState<boolean>(false);
 
   const { data: remindersByDate, isLoading: isRemindersByDateLoading } = useReminderByDate(date);
-  const { data: allSchedulesItems } = useScheduleData();
+  const { data: allSchedulesItems, isLoading: isAllScheduleItemsLoading } = useScheduleData();
   const { data: studyInfo, isLoading: isStudyInfoLoading } = useStudyInfo({ time: currentMonth, year: currentYear, includeWeek: false });
   const { data: dailyStudyInfo, isLoading: dailyStudyInfoLoading } = useStudyInfo({ time: todayFormatted, year: currentYear, includeWeek: false });
   const { data: subjects, isLoading: isSubjectsLoading } = useSubjectData();
@@ -52,7 +52,7 @@ export default function Home() {
   const updateReminder = useUpdateReminder();
   const deleteReminder = useDeleteReminder();
 
-  const isLoading = isRemindersByDateLoading || isStudyInfoLoading || isSubjectsLoading || dailyStudyInfoLoading || isStudiesStatusLoading || isLoggedUserDataLoading;
+  const isLoading = isRemindersByDateLoading || isStudyInfoLoading || isSubjectsLoading || dailyStudyInfoLoading || isStudiesStatusLoading || isLoggedUserDataLoading || isAllScheduleItemsLoading;
 
   const handleReminderCompleted = (reminder: any) => {
     const updatedReminder: ReminderRequest = {
@@ -69,7 +69,7 @@ export default function Home() {
   };
 
   const todaySchedule = allSchedulesItems
-    ?.filter((item) => item.dayOfWeek === todayWeekDay)
+    ?.filter((item) => item.dayOfWeek === weekDay)
     ?.sort((a, b) => a.startTime.localeCompare(b.startTime));
 
   return (

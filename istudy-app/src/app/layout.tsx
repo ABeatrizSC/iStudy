@@ -7,7 +7,10 @@ const roboto = Roboto({ subsets: ['latin'], weight: '500' })
 
 export const metadata: Metadata = {
   title: 'iStudy',
-  description: 'Website for study management',
+  description: 'Platform designed to help students manage their studies and academic routine.',
+  icons: {
+    icon: "/icon.ico", 
+  },
 }
 
 export default function RootLayout({
@@ -16,7 +19,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="pt-br">
+    <html lang="en-US">
       <body className={`${roboto.className}`}>
         <QueryProvider>
           {children}

@@ -61,7 +61,7 @@ export default function Subjects() {
     const [openCreateModal, setOpenCreateModal] = useState<boolean>(false);
     const [openUpdateModal, setOpenUpdateModal] = useState<boolean>(false);
     const [openConfirmDeleteModal, setOpenConfirmDeleteModal] = useState<boolean>(false);
-    const { push, prefetch } = useRouter()
+    const { push } = useRouter()
 
     const handleCloseConfirmDeleteModal = () => {
         setOpenConfirmDeleteModal(false);
@@ -114,7 +114,7 @@ export default function Subjects() {
             : `${percentage.toFixed(2)}%`;
     };
 
-    let subjects = categorySelected ? allSubjects?.filter(s => s.category == categorySelected) : search ? allSubjects?.filter(s => s.name.toLowerCase().includes(search.toLowerCase())) : statusFilter != null ? allSubjects?.filter(s => s.isCompleted === statusFilter) : allSubjects;
+    let subjects = categorySelected ? allSubjects?.filter(s => s.category == categorySelected) : search ? allSubjects?.filter(s => s.name.toLowerCase().includes(search.toLowerCase())) : statusFilter !== null ? allSubjects?.filter(s => s.isCompleted === statusFilter) : allSubjects;
 
     subjects = subjects?.sort((a, b) => a.name.localeCompare(b.name));
 

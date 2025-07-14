@@ -23,11 +23,6 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
     };
 
     const toggleDropdown = (index: number) => setOpenedDropdownIndex(openedDropdownIndex === index ? null : index);
-    
-    const handleLogout = () => {
-        authService.logoutSession();
-        push(PATH.HOME);
-    }
 
     const menuItems = [
         { path: PATH.HOME, name: "Home", icon: <Home /> },
@@ -101,7 +96,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
                         ))}
                     </ul>
                 </nav>
-                <Button onClick={handleLogout} color='red' style="mt-auto p-3 flex items-center gap-2">
+                <Button onClick={() => authService.logoutSession()} color='red' style="mt-auto p-3 flex items-center gap-2">
                     <LogOut />
                     {isSidebarOpened && "Logout"}
                 </Button>
