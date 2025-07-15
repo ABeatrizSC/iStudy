@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import dayjs from "dayjs"
 import weekday from "dayjs/plugin/weekday"
 import isoWeek from "dayjs/plugin/isoWeek"

@@ -1,7 +1,7 @@
 import { Title } from "../Title";
-import { StudyStatusBox } from "./StudyStatusBox";
+import { Subtitle } from './Subtitle';
 import { ReminderList } from "./ReminderList";
 import { SubjectInfoList } from "./SubjectInfoList";
 import { ScheduleTable } from "./ScheduleTable";
 
-export { Title, StudyStatusBox, ReminderList, SubjectInfoList, ScheduleTable }
+export { Title, ReminderList, SubjectInfoList, ScheduleTable, Subtitle }
