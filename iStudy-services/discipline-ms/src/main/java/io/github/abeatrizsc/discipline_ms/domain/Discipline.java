@@ -48,7 +48,7 @@ public class Discipline {
     private LocalTime timeCompleted = LocalTime.of(0, 0);
 
     @Column(nullable = false,  name = "is_completed")
-    private Boolean isCompleted;
+    private Boolean isCompleted = false;
 
     @OneToMany(mappedBy = "discipline", cascade = CascadeType.ALL, orphanRemoval = true)
     @JsonManagedReference

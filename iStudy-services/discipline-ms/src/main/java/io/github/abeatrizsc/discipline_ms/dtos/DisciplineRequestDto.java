@@ -18,6 +18,4 @@ public class DisciplineRequestDto {
 
     @NotNull(message = "Subject category is required.")
     private DisciplineCategoryEnum category;
-
-    private Boolean isCompleted = false;
 }

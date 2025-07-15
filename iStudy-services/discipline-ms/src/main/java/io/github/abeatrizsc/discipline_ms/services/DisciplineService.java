@@ -61,7 +61,11 @@ public class DisciplineService {
 
         discipline.setName(requestDto.getName());
         discipline.setCategory(requestDto.getCategory());
-        discipline.setIsCompleted(requestDto.getIsCompleted());
+        if (!discipline.getTotalTime().equals(LocalTime.MIDNIGHT) && discipline.getTotalTime() == discipline.getTimeCompleted()) {
+            discipline.setIsCompleted(true);
+        } else {
+            discipline.setIsCompleted(false);
+        }
 
         repository.save(discipline);
 
