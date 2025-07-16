@@ -39,7 +39,8 @@ O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, ger
 
 # Estrutura do Projeto
 - `istudy-app`: Esta pasta contém o código do front-end da aplicação, desenvolvido com TypeScript, React.js e NextJS.
-- `istudy-services`: Esta pasta contém o back-end do sistema (Java/Spring Boot), que segue uma arquitetura de microsserviços utilizando o Spring Cloud API Gateway como interceptador de requisições, Spring Cloud Netflix (Eureka) para registro e descoberta de serviços e RabbitMQ como broker de mensagens para comunicação assíncrona entre os microsserviços.
+- `istudy-services`: Esta pasta contém o back-end do sistema (Java/Spring Boot), que segue uma arquitetura de microsserviços utilizando o Spring Cloud API Gateway como interceptador de requisições para aplicar filtros de autenticação, Spring Cloud Netflix (Eureka) para registro e descoberta de serviços e RabbitMQ como broker de mensagens para comunicação assíncrona entre os microsserviços.
+- Toda a aplicação se encontra containeirizada com o Docker.
 
 </br>
 
@@ -53,9 +54,9 @@ O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, ger
 
 # Tecnologias Utilizadas
 ## Back-End
-* **Java**: Uma linguagem de programação de alto nível, orientada a objetos, amplamente utilizada para desenvolvimento de aplicações server-side, serviços web e aplicações Android.
+* **Java 17**: Uma linguagem de programação de alto nível, orientada a objetos, amplamente utilizada para desenvolvimento de aplicações server-side, serviços web e aplicações Android.
 
-* **Spring Boot**: Um framework que simplifica o desenvolvimento de aplicações Java, oferecendo funcionalidades integradas para injeção de dependências, configuração e suporte a microsserviços.
+* **Spring Boot 3.4.2**: Um framework que simplifica o desenvolvimento de aplicações Java, oferecendo funcionalidades integradas para injeção de dependências, configuração e suporte a microsserviços.
 
 * **Spring Security**: Um framework poderoso e personalizável para autenticação e controle de acesso em aplicações Java.
 
@@ -71,20 +72,20 @@ O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, ger
 
 * **JPA**: A Java Persistence API, uma especificação que fornece mapeamento objeto-relacional (ORM) para gerenciar dados relacionais em aplicações Java.
 
-* **MapStruct**: Um framework de mapeamento em Java que simplifica a conversão de objetos, reduzindo código repetitivo e melhorando a manutenção.
+* **MapStruct 1.6.2**: Um framework de mapeamento em Java que simplifica a conversão de objetos, reduzindo código repetitivo e melhorando a manutenção.
 
 * **Flyway**: Uma ferramenta de migração de banco de dados que garante controle de versão e consistência nas alterações do esquema.
 
-* **Lombok**: Uma biblioteca Java que reduz código repetitivo ao gerar automaticamente métodos comuns como getters, setters, construtores, entre outros, por meio de anotações.
+* **Lombok 1.18.28**: Uma biblioteca Java que reduz código repetitivo ao gerar automaticamente métodos comuns como getters, setters, construtores, entre outros, por meio de anotações.
 
 * **Postman**: Ferramenta usada para testes e desenvolvimento de APIs, permitindo o envio de requisições HTTP, análise de respostas e automação de testes.
 
 ## Front-End
-* **TypeScript**: Um superset do JavaScript que adiciona tipagem estática, tornando o código mais fácil de ler, depurar e manter.
+* **TypeScript 5.7.2**: Um superset do JavaScript que adiciona tipagem estática, tornando o código mais fácil de ler, depurar e manter.
 
-* **React.js**: Uma biblioteca JavaScript para construção de interfaces de usuário, com foco na criação de componentes reutilizáveis e gerenciamento da camada de visualização de aplicações web.
+* **React.js 19.0.0**: Uma biblioteca JavaScript para construção de interfaces de usuário, com foco na criação de componentes reutilizáveis e gerenciamento da camada de visualização de aplicações web.
 
-* **NextJS**: Um framework React que oferece funcionalidades adicionais, como renderização no lado do servidor e renderização estática.
+* **NextJS 15.1.3**: Um framework React que oferece funcionalidades adicionais, como renderização no lado do servidor e renderização estática.
 
 * **TailwindCSS**: Um framework CSS utilitário que permite o desenvolvimento rápido de interfaces usando classes pré-definidas.
 

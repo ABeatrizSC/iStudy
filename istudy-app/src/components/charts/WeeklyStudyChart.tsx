@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react"
 import { LineChart, CartesianGrid, XAxis, YAxis, Tooltip, Line, ResponsiveContainer } from "recharts"
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
+import { Card, CardContent } from "@/components/ui/card"
 import dayjs from "dayjs"
 import weekday from "dayjs/plugin/weekday"
 import isoWeek from "dayjs/plugin/isoWeek"
@@ -35,10 +35,12 @@ export function WeeklyStudyChart() {
 
       for (const record of data) {
         const day = dayjs(record.date).format("ddd")
-        const [h, m, s] = record.time.split(":").map(Number)
-        const totalHours = h + m / 60 + s / 3600
-
-        grouped[day] = (grouped[day] || 0) + totalHours
+        if (record.isCompleted) {
+          const [h, m, s] = record.time.split(":").map(Number)
+          const totalHours = h + m / 60 + s / 3600
+  
+          grouped[day] = (grouped[day] || 0) + totalHours
+        }
       }
 
       const weekDays = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
@@ -56,7 +58,7 @@ export function WeeklyStudyChart() {
 
   return (
     <Container style="w-full items-center">
-      <ChartsHeader title="Weekly Completed Study Time Overview" description={`From ${formatDate(startOfWeek)} to ${formatDate(endOfWeek)}`} />
+      <ChartsHeader title="Weekly Completed Study Hours Overview" description={`From ${formatDate(startOfWeek)} to ${formatDate(endOfWeek)}`} />
       <Card className="w-full">
         <CardContent>
           <ResponsiveContainer width="100%" height={300}>

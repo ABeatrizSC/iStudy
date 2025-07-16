@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Template, Container, Button, Title, StudyBox, StudyModal, ConfirmationModal, DateInput } from "@/components";
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { Add } from "@mui/icons-material";
@@ -56,21 +56,21 @@ export default function Studies() {
 
     const handleCategoryChange = (event: SelectChangeEvent<string>) => {
         setDateFilter("");
-        setStatusFilter(formatStatus(""));
+        setStatusFilter(null);
         setTopicFilter("");
         setCategoryFilter(event.target.value as string);
     };
 
     const handleTopicChange = (event: SelectChangeEvent<string>) => {
         setDateFilter("");
-        setStatusFilter(formatStatus(""));
+        setStatusFilter(null);
         setCategoryFilter("");
         setTopicFilter(event.target.value);
     };
 
     const handleDateChange = (newValue: string | Date | dayjs.Dayjs | null) => {
         setCategoryFilter("");
-        setStatusFilter(formatStatus(""));
+        setStatusFilter(null);
         setTopicFilter("");
         setDateFilter(formatSavedDate(newValue));
     }
@@ -85,10 +85,10 @@ export default function Studies() {
         });
     }
 
-    let studies = categoryFilter ? allStudies?.filter(s => s.disciplineCategory == categoryFilter) : dateFilter ? allStudies?.filter(s => s.date == dateFilter) : statusFilter ? allStudies?.filter(s => s.isCompleted === statusFilter) : topicFilter ? allStudies?.filter(s => s.topicName === topicFilter) : allStudies;
+    let studies = categoryFilter ? allStudies?.filter(s => s.disciplineCategory == categoryFilter) : dateFilter ? allStudies?.filter(s => s.date == dateFilter) : statusFilter !== null ? allStudies?.filter(s => s.isCompleted === statusFilter) : topicFilter ? allStudies?.filter(s => s.topicName === topicFilter) : allStudies;
 
     studies = studies?.sort((a, b) => dayjs(b.date).valueOf() - dayjs(a.date).valueOf());
-
+    
     return (
         <Template loading={isLoading}>
             <Title>

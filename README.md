@@ -39,7 +39,8 @@ iStudy is a web platform designed to help students organize, manage, and track t
 
 # Project Structure
 - `istudy-app`: This folder contains the front-end code of the application, built with TypeScript, React.Js and NextJS.
-- `istudy-services`: This directory contains the back-end of the system, built with Java and Spring Boot, following a microservices architecture. It leverages Spring Cloud API Gateway to handle and route incoming requests, uses Spring Cloud Netflix (Eureka) for service registration and discovery, and integrates RabbitMQ as a message broker for asynchronous communication between the microservices.
+- `istudy-services`: This folder contains the back-end of the system (Java/Spring Boot), which follows a microservices architecture using Spring Cloud API Gateway as a request interceptor to apply authentication filters, Spring Cloud Netflix (Eureka) for service registration/discovery and RabbitMQ as a message broker for asynchronous communication between microservices.
+- The entire application is containerized with Docker.
 
 ## System Architecture
 ![alt text](docs/images/istudy_architecture.png)
@@ -51,9 +52,9 @@ iStudy is a web platform designed to help students organize, manage, and track t
 
 # Technologies Used
 ## Back-End
-* **Java**: A high-level, object-oriented programming language widely used for building server-side applications, web services, and Android applications.
+* **Java 17**: A high-level, object-oriented programming language widely used for building server-side applications, web services, and Android applications.
 
-* **Spring Boot**: A framework that simplifies the development of Java applications by providing built-in features for dependency injection, configuration, and microservices support.
+* **Spring Boot 3.4.2**: A framework that simplifies the development of Java applications by providing built-in features for dependency injection, configuration, and microservices support.
 
 * **Spring Security**: A powerful and customizable authentication and access control framework for Java applications.
 
@@ -69,20 +70,20 @@ iStudy is a web platform designed to help students organize, manage, and track t
 
 * **JPA**: The Java Persistence API, a specification that provides object-relational mapping (ORM) to manage relational data in Java applications.
 
-* **MapStruct**: A Java mapping framework that simplifies object-to-object mapping, reducing boilerplate code and improving maintainability.
+* **MapStruct 1.6.2**: A Java mapping framework that simplifies object-to-object mapping, reducing boilerplate code and improving maintainability.
 
 * **Flyway**: A database migration tool that ensures version control and consistency across database schema changes.
 
-* **Lombok**: A Java library that reduces boilerplate code by generating common methods like getters, setters, constructors, and more through annotations.
+* **Lombok 1.18.28**: A Java library that reduces boilerplate code by generating common methods like getters, setters, constructors, and more through annotations.
 
 * **Postman**: A tool used for API testing and development, enabling users to send HTTP requests, inspect responses, and automate API tests.
 
 ## Front-End
-* **TypeScript**: A superset of JavaScript that adds static typing, making code easier to read, debug, and maintain.
+* **TypeScript 5.7.2**: A superset of JavaScript that adds static typing, making code easier to read, debug, and maintain.
 
-* **React.js**: A JavaScript library for building user interfaces, focusing on creating reusable UI components and managing the view layer in web applications.
+* **React.js 19.0.0**: A JavaScript library for building user interfaces, focusing on creating reusable UI components and managing the view layer in web applications.
 
-* **NextJS**: Next. js is a React framework that enables several extra features, including server-side rendering and static rendering.
+* **NextJS 15.1.3**: Next. js is a React framework that enables several extra features, including server-side rendering and static rendering.
 
 * **TailwindCSS**: A utility-first CSS framework that allows rapid UI development using predefined classes.
 

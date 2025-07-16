@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { TimeType } from "@/app/types";
-import { ChartsHeader, ConfirmationModal, Container, DateInput, PercentageStudyTimeChart, Template, Title, WeeklyStudyChart } from "@/components";
+import { ChartsHeader, ConfirmationModal, Container, DateInput, MonthlyStudyTimeCard, PercentageStudyTimeChart, StudyCompletionStatsCard, StudyStatusCard, Template, Title, WeeklyStudyChart } from "@/components";
 import { useStudyInfo } from "@/hooks/study";
 import { formatDate, formatSavedDate, formatTimeToNumber } from "@/utils/formatters";
 import {  MenuItem, Select, SelectChangeEvent } from "@mui/material";
@@ -94,6 +94,14 @@ export default function StudyStatisticalInformation() {
             </Select>
           </span>
         </Container>
+        <div className="flex flex-wrap gap-3 w-full">
+          <MonthlyStudyTimeCard title="Total study time" data={studyInfo}/>
+  
+          <StudyCompletionStatsCard title="% of studies completed" data={studyInfo} />
+        </div>
+
+        <StudyStatusCard />
+
         <div className="w-full flex flex-wrap gap-5">
           <Container style="h-fit flex-1 w-full lg:w-[calc(50%-10px)]">
             <ChartsHeader title="Subjects x completed study hours" />
@@ -111,7 +119,7 @@ export default function StudyStatisticalInformation() {
         </div>
         <div className="w-full flex flex-col lg:flex-row gap-5">
           <Container style="lg:w-[450px] w-full">
-            <ChartsHeader title="Studies completed x Remaining" />
+            <ChartsHeader title="Completed study hours x Remaining" />
             <PercentageStudyTimeChart 
               totalHours={formatTimeToNumber(studyInfo?.totalStudyTime)} 
               completedHours={formatTimeToNumber(studyInfo?.completedStudyTime)} 

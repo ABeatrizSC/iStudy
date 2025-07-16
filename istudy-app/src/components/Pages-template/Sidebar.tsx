@@ -17,13 +17,12 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
     const { prefetch, push } = useRouter();
     const authService = useAuthService();
     
-    const toggleSidebar = () => setIsSidebarOpened(!isSidebarOpened);
+    const toggleSidebar = () => {
+        setIsSidebarOpened(!isSidebarOpened);
+        setOpenedDropdownIndex(null);
+    };
+
     const toggleDropdown = (index: number) => setOpenedDropdownIndex(openedDropdownIndex === index ? null : index);
-    
-    const handleLogout = () => {
-        authService.logoutSession();
-        push(PATH.HOME);
-    }
 
     const menuItems = [
         { path: PATH.HOME, name: "Home", icon: <Home /> },
@@ -60,7 +59,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
 
     return (
         <div className="flex" style={{ height: '100%'}}>
-            <aside className={`text-white h-screen min-w-fit transition-all duration-300 ${isSidebarOpened ? 'w-64' : 'w-16'} flex flex-col p-4`} style={{ backgroundColor: theme.palette.primary.main }}> 
+            <aside className={`text-white h-screen min-w-fit transition-all duration-300 ${isSidebarOpened ? 'w-64' : 'w-16  items-center'} flex flex-col p-4`} style={{ backgroundColor: theme.palette.primary.main }}> 
                 <div className="flex items-center justify-between mb-6">
                 {isSidebarOpened && <Image src={istudyLogo} alt="Logo" className="w-28" />}
                     <Menu className="cursor-pointer" onClick={toggleSidebar} />
@@ -69,7 +68,17 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
                     <ul>
                         {menuItems.map((item, index) => (
                         <li key={index} className="relative">
-                            <div className={`flex items-center gap-3 py-3 rounded-lg cursor-pointer hover:{ theme.palette.primary.main }`} onClick={() => item.dropdown ? toggleDropdown(index) : push(item.path)}>
+                            <div 
+                                className={`flex items-center gap-3 py-3 rounded-lg cursor-pointer hover:{ theme.palette.primary.main }`} 
+                                onClick={() => {
+                                    if (item.dropdown) {
+                                        toggleDropdown(index);
+                                        setIsSidebarOpened(true);
+                                    } else {
+                                        push(item.path);
+                                    }
+                                }}
+                            >
                                 {item.icon}
                                 {isSidebarOpened && <span>{item.name}</span>}
                                 {item.dropdown && isSidebarOpened && <ChevronDown className="ml-auto" />}
@@ -87,7 +96,7 @@ export const Sidebar: React.FC<{ children: React.ReactNode }> = ({ children }) =
                         ))}
                     </ul>
                 </nav>
-                <Button onClick={handleLogout} color='red' style="mt-auto p-3 flex items-center gap-2">
+                <Button onClick={() => authService.logoutSession()} color='red' style="mt-auto p-3 flex items-center gap-2">
                     <LogOut />
                     {isSidebarOpened && "Logout"}
                 </Button>
