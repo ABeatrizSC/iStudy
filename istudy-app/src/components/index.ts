@@ -9,9 +9,9 @@ import { Title } from "./Title";
 import { CustomTable, CustomTableCell, CustomTableHead } from "./Table";
 import { StudyModal, ScheduleItemModal, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, QuizModal, QuizGameModal, UserAccountSettingsModal } from "./Modal";
 import { StudyBox, StudyInfo, MonthlyStudyTimeCard, StudyCompletionStatsCard, StudyStatusBox, StudyStatusCard } from "./Study";
-import { CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader } from "./Charts";
+import { CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader } from "./charts";
 import { CountdownTimer } from "./CountdownTimer";
-import { FlashcardBox, CardBox } from "./Flashcards";
-import { QuizBox } from "./Quiz/QuizBox";
+import { FlashcardBox, CardBox } from "./flashcards";
+import { QuizBox } from "./quiz/QuizBox";
 
 export { Button, CategoryBox, Container, FieldError, CustomLink, Loader, Sidebar, Template, TimeInput, Title, CustomTable, CustomTableCell, CustomTableHead, ConfirmationModal, CreateTopicModal, SubjectModal, UpdateTopicModal, AuthenticatedPage, StudyBox, StudyInfo, CategoryBorder, StudyModal, DateInput, CompletedStudyTimeChart, PercentageStudyTimeChart, CustomPieTooltip, WeeklyStudyChart, ChartsHeader, CountdownTimer, ScheduleItemModal, PomoConfigModal, FlashcardModal, FlashcardGameModal, StartGameOptionsModal, FlashcardBox, CardBox, QuizModal, QuizBox, QuizGameModal, UserAccountSettingsModal, MonthlyStudyTimeCard, StudyCompletionStatsCard, StudyStatusBox, StudyStatusCard }

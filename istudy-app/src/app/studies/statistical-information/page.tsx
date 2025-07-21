@@ -2,16 +2,10 @@
 
 import { useState } from "react";
 import { TimeType } from "@/app/types";
-import { ChartsHeader, ConfirmationModal, Container, DateInput, MonthlyStudyTimeCard, PercentageStudyTimeChart, StudyCompletionStatsCard, StudyStatusCard, Template, Title, WeeklyStudyChart } from "@/components";
+import { ChartsHeader, CompletedStudyTimeChart, ConfirmationModal, Container, DateInput, MonthlyStudyTimeCard, PercentageStudyTimeChart, StudyCompletionStatsCard, StudyStatusCard, Template, Title, WeeklyStudyChart } from "@/components";
 import { useStudyInfo } from "@/hooks/study";
 import { formatDate, formatSavedDate, formatTimeToNumber } from "@/utils/formatters";
 import {  MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import dynamic from "next/dynamic"
-
-const CompletedStudyTimeChart = dynamic(
-  () => import('@/components/Charts/CompletedStudyTimeChart').then(mod => mod.CompletedStudyTimeChart),
-  { ssr: false }
-);
 
 export default function StudyStatisticalInformation() {
   const currentMonth = new Date().getMonth() + 1;
