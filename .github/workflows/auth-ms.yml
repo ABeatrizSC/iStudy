@@ -1,0 +1,28 @@
+name: Push auth-ms image to Docker Hub
+on:
+  push:
+    paths:
+      - 'iStudy-services/auth-ms/**'
+  workflow_dispatch:
+jobs:
+  push-docker-image:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Get repository
+        uses: actions/checkout@v4
+
+      - name: Docker hub login
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.ISTUDY_DOCKER_USERNAME }}
+          password: ${{ secrets.ISTUDY_DOCKER_PASSWORD }}
+
+      - name: Build and push docker images
+        uses: docker/build-push-action@v6
+        with:
+          context: ./iStudy-services/auth-ms
+          file: ./iStudy-services/auth-ms/Dockerfile
+          push: true
+          tags: |
+            istudyweb/auth-ms:latest
+            istudyweb/auth-ms:v${{ github.run_number }}
