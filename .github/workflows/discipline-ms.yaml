@@ -1,9 +1,9 @@
-name: Push auth-ms image to Docker Hub
+name: Push discipline-ms image to Docker Hub
 on:
   push:
     branches: ["main"]
     paths:
-      - 'iStudy-services/auth-ms/**'
+      - 'iStudy-services/discipline-ms/**'
   workflow_dispatch:
 jobs:
   push-docker-image:
@@ -21,9 +21,9 @@ jobs:
       - name: Build and push docker images
         uses: docker/build-push-action@v6
         with:
-          context: ./iStudy-services/auth-ms
-          file: ./iStudy-services/auth-ms/Dockerfile
+          context: ./iStudy-services/discipline-ms
+          file: ./iStudy-services/discipline-ms/Dockerfile
           push: true
           tags: |
-            istudyweb/auth-ms:latest
-            istudyweb/auth-ms:v${{ github.run_number }}
+            istudyweb/discipline-ms:latest
+            istudyweb/discipline-ms:v${{ github.run_number }}

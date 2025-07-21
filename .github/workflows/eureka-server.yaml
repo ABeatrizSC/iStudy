@@ -1,9 +1,9 @@
-name: Push auth-ms image to Docker Hub
+name: Push eureka-server image to Docker Hub
 on:
   push:
     branches: ["main"]
     paths:
-      - 'iStudy-services/auth-ms/**'
+      - 'iStudy-services/eureka-server/**'
   workflow_dispatch:
 jobs:
   push-docker-image:
@@ -21,9 +21,9 @@ jobs:
       - name: Build and push docker images
         uses: docker/build-push-action@v6
         with:
-          context: ./iStudy-services/auth-ms
-          file: ./iStudy-services/auth-ms/Dockerfile
+          context: ./iStudy-services/eureka-server
+          file: ./iStudy-services/eureka-server/Dockerfile
           push: true
           tags: |
-            istudyweb/auth-ms:latest
-            istudyweb/auth-ms:v${{ github.run_number }}
+            istudyweb/eureka-server:latest
+            istudyweb/eureka-server:v${{ github.run_number }}
