@@ -29,17 +29,15 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
 public class StudyService {
-    private StudyRepository repository;
-    private StudyMapper studyMapper;
-    private AuthRequestUtils authRequestUtils;
-    private DisciplineServiceClient disciplineServiceClient;
+    private final StudyRepository repository;
+    private final StudyMapper studyMapper;
+    private final AuthRequestUtils authRequestUtils;
+    private final DisciplineServiceClient disciplineServiceClient;
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("HH:mm");
 
     @Transactional
@@ -59,9 +57,9 @@ public class StudyService {
         }
 
 
-        if (studyAlreadyExists(study)) {
+/*        if (studyAlreadyExists(study)) {
             throw new ConflictException("study");
-        }
+        }*/
 
         repository.save(study);
         return findAll();
@@ -87,9 +85,11 @@ public class StudyService {
         study.setDate(studyUpdated.getDate());
         study.setIsCompleted(studyUpdated.getIsCompleted());
 
+/*
         if (studyAlreadyExists(study)) {
             throw new ConflictException("study");
         }
+*/
 
         repository.save(study);
         return findAll();
@@ -170,11 +170,11 @@ public class StudyService {
                 .toList();
     }
 
-    public Boolean studyAlreadyExists(Study study) {
+/*    public Boolean studyAlreadyExists(Study study) {
         Optional<Study> newStudy = repository.findByDisciplineNameAndTopicNameAndDateAndCreatedBy(study.getDisciplineName(), study.getTopicName(), study.getDate(), study.getCreatedBy());
 
         return newStudy.isPresent() && !Objects.equals(newStudy.get().getId(), study.getId());
-    }
+    }*/
 
     public String convertDurationToStringTime(Duration duration) {
         if (duration == null) return null;
@@ -194,75 +194,51 @@ public class StudyService {
         return Duration.ofHours(time.getHour()).plusMinutes(time.getMinute()).plusSeconds(time.getSecond());
     }
 
-    public String getTotalDailyStudyTime(LocalDate date) {
-        List<Study> dailyStudies = findByDate(date);
-
+    public String getTotalDailyStudyTime(List<Study> dailyStudies ) {
         return convertDurationToStringTime(calcTotalStudyTime(dailyStudies));
     }
 
-    public List<StudyTimeDto> getDailyCompletedStudyTimeByDiscipline(LocalDate date) {
-        List<Study> dailyStudies = findByDate(date);
-
+    public List<StudyTimeDto> getDailyCompletedStudyTimeByDiscipline(List<Study> dailyStudies ) {
         return calcCompletedStudyTimeByDiscipline(dailyStudies);
     }
 
-    public List<StudyTimeDto> getDailyCompletedStudyTimeByDisciplineCategory(LocalDate date) {
-        List<Study> dailyStudies = findByDate(date);
-
+    public List<StudyTimeDto> getDailyCompletedStudyTimeByDisciplineCategory(List<Study> dailyStudies ) {
         return calcCompletedStudyTimeByCategory(dailyStudies);
     }
 
-    public String getTotalMonthlyStudyTime(Integer year, Integer month) {
-        List<Study> monthlyStudies = findByMonth(year, month);
-
-        return convertDurationToStringTime(calcTotalStudyTime(monthlyStudies));
-    }
-
-    public String getMonthlyCompletedStudyTime(Integer year, Integer month) {
-        List<Study> monthlyStudies = findByMonth(year, month);
-
-        return convertDurationToStringTime(calcCompletedStudyTime(monthlyStudies));
-    }
-
-    public List<StudyTimeDto> getMonthlyCompletedStudyTimeByDiscipline(Integer year, Integer month) {
-        List<Study> monthlyStudies = findByMonth(year, month);
-
-        return calcCompletedStudyTimeByDiscipline(monthlyStudies);
-    }
-
-    public List<StudyTimeDto> getMonthlyCompletedStudyTimeByDisciplineCategory(Integer year, Integer month) {
-        List<Study> monthlyStudies = findByMonth(year, month);
-
-        return calcCompletedStudyTimeByCategory(monthlyStudies);
-    }
-
-    public String getTotalWeeklyStudyTime(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
-
-        return convertDurationToStringTime(calcTotalStudyTime(weeklyStudies));
-    }
-
-    public String getDailyCompletedStudyTime(LocalDate date) {
-        List<Study> dailyStudies = findByDate(date);
-
+    public String getDailyCompletedStudyTime(List<Study> dailyStudies ) {
         return convertDurationToStringTime(calcCompletedStudyTime(dailyStudies));
     }
 
-    public String getWeeklyCompletedStudyTime(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
+    public String getTotalMonthlyStudyTime(List<Study> monthlyStudies) {
+        return convertDurationToStringTime(calcTotalStudyTime(monthlyStudies));
+    }
 
+    public String getMonthlyCompletedStudyTime( List<Study> monthlyStudies) {
+        return convertDurationToStringTime(calcCompletedStudyTime(monthlyStudies));
+    }
+
+    public List<StudyTimeDto> getMonthlyCompletedStudyTimeByDiscipline(List<Study> monthlyStudies) {
+        return calcCompletedStudyTimeByDiscipline(monthlyStudies);
+    }
+
+    public List<StudyTimeDto> getMonthlyCompletedStudyTimeByDisciplineCategory(List<Study> monthlyStudies) {
+        return calcCompletedStudyTimeByCategory(monthlyStudies);
+    }
+
+    public String getTotalWeeklyStudyTime(List<Study> weeklyStudies) {
+        return convertDurationToStringTime(calcTotalStudyTime(weeklyStudies));
+    }
+
+    public String getWeeklyCompletedStudyTime(List<Study> weeklyStudies) {
         return convertDurationToStringTime(calcCompletedStudyTime(weeklyStudies));
     }
 
-    public List<StudyTimeDto> getWeeklyCompletedStudyTimeByDiscipline(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
-
+    public List<StudyTimeDto> getWeeklyCompletedStudyTimeByDiscipline(List<Study> weeklyStudies) {
         return calcCompletedStudyTimeByDiscipline(weeklyStudies);
     }
 
-    public List<StudyTimeDto> getWeeklyCompletedStudyTimeByDisciplineCategory(Integer year, Integer week) {
-        List<Study> weeklyStudies = findByWeek(year, week);
-
+    public List<StudyTimeDto> getWeeklyCompletedStudyTimeByDisciplineCategory(List<Study> weeklyStudies) {
         return calcCompletedStudyTimeByCategory(weeklyStudies);
     }
 
@@ -370,13 +346,14 @@ public class StudyService {
     public StudyInfoDto getDayInfo(LocalDate date) {
         StudyInfoDto studyInfoDto = new StudyInfoDto();
         List<Integer> stats = getDailyStudiesQuantity(date);
+        List<Study> dailyStudies = findByDate(date);
 
         studyInfoDto.setTotalStudies(stats.get(0));
         studyInfoDto.setTotalCompletedStudies(stats.get(1));
-        studyInfoDto.setTotalStudyTime(getTotalDailyStudyTime(date));
-        studyInfoDto.setCompletedStudyTime(getDailyCompletedStudyTime(date));
-        studyInfoDto.setCompletedStudyTimeByDiscipline(getDailyCompletedStudyTimeByDiscipline(date));
-        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getDailyCompletedStudyTimeByDisciplineCategory(date));
+        studyInfoDto.setTotalStudyTime(getTotalDailyStudyTime(dailyStudies));
+        studyInfoDto.setCompletedStudyTime(getDailyCompletedStudyTime(dailyStudies));
+        studyInfoDto.setCompletedStudyTimeByDiscipline(getDailyCompletedStudyTimeByDiscipline(dailyStudies));
+        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getDailyCompletedStudyTimeByDisciplineCategory(dailyStudies));
 
         return studyInfoDto;
     }
@@ -384,13 +361,14 @@ public class StudyService {
     public StudyInfoDto getWeekInfo(Integer year, Integer week) {
         StudyInfoDto studyInfoDto = new StudyInfoDto();
         List<Integer> stats = getWeeklyStudiesQuantity(year, week);
+        List<Study> weeklyStudies = findByWeek(year, week);
 
         studyInfoDto.setTotalStudies(stats.get(0));
         studyInfoDto.setTotalCompletedStudies(stats.get(1));
-        studyInfoDto.setTotalStudyTime(getTotalWeeklyStudyTime(year, week));
-        studyInfoDto.setCompletedStudyTime(getWeeklyCompletedStudyTime(year, week));
-        studyInfoDto.setCompletedStudyTimeByDiscipline(getWeeklyCompletedStudyTimeByDiscipline(year, week));
-        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getWeeklyCompletedStudyTimeByDisciplineCategory(year, week));
+        studyInfoDto.setTotalStudyTime(getTotalWeeklyStudyTime(weeklyStudies));
+        studyInfoDto.setCompletedStudyTime(getWeeklyCompletedStudyTime(weeklyStudies));
+        studyInfoDto.setCompletedStudyTimeByDiscipline(getWeeklyCompletedStudyTimeByDiscipline(weeklyStudies));
+        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getWeeklyCompletedStudyTimeByDisciplineCategory(weeklyStudies));
 
         return studyInfoDto;
     }
@@ -398,13 +376,14 @@ public class StudyService {
     public StudyInfoDto getMonthInfo(Integer year, Integer month) {
         StudyInfoDto studyInfoDto = new StudyInfoDto();
         List<Integer> stats = getMonthlyStudiesQuantity(year, month);
+        List<Study> monthlyStudies = findByMonth(year, month);
 
         studyInfoDto.setTotalStudies(stats.get(0));
         studyInfoDto.setTotalCompletedStudies(stats.get(1));
-        studyInfoDto.setTotalStudyTime(getTotalMonthlyStudyTime(year, month));
-        studyInfoDto.setCompletedStudyTime(getMonthlyCompletedStudyTime(year, month));
-        studyInfoDto.setCompletedStudyTimeByDiscipline(getMonthlyCompletedStudyTimeByDiscipline(year, month));
-        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getMonthlyCompletedStudyTimeByDisciplineCategory(year, month));
+        studyInfoDto.setTotalStudyTime(getTotalMonthlyStudyTime(monthlyStudies));
+        studyInfoDto.setCompletedStudyTime(getMonthlyCompletedStudyTime(monthlyStudies));
+        studyInfoDto.setCompletedStudyTimeByDiscipline(getMonthlyCompletedStudyTimeByDiscipline(monthlyStudies));
+        studyInfoDto.setCompletedStudyTimeByDisciplineCategory(getMonthlyCompletedStudyTimeByDisciplineCategory(monthlyStudies));
 
         return studyInfoDto;
     }

@@ -5,63 +5,40 @@ import com.io.github.abeatrizsc.auth_ms.dto.*;
 import com.io.github.abeatrizsc.auth_ms.exceptions.InvalidPasswordException;
 import com.io.github.abeatrizsc.auth_ms.exceptions.UserNotFoundException;
 import com.io.github.abeatrizsc.auth_ms.infra.security.TokenService;
+import com.io.github.abeatrizsc.auth_ms.services.AuthService;
 import com.io.github.abeatrizsc.auth_ms.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Optional;
-
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
 public class AuthController {
-    private final UserService userService;
-    private final PasswordEncoder passwordEncoder;
-    private final TokenService tokenService;
+    private final AuthService authService;
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDto> login(@Valid @RequestBody LoginRequestDto body){
-        User user = userService.findUserByEmail(body.getEmail()).orElseThrow(() -> new UserNotFoundException());
-
-        if(!passwordEncoder.matches(body.getPassword(), user.getPassword())) {
-            throw new InvalidPasswordException();
-        }
-
-        String token = tokenService.generateToken(user);
-        return ResponseEntity.ok(new LoginResponseDto(token));
+        LoginResponseDto loginResponseDto = authService.login(body);
+        return ResponseEntity.ok(loginResponseDto);
     }
-
 
     @PostMapping("/register")
     public ResponseEntity register(@Valid @RequestBody RegisterRequestDto body) {
-        Optional<User> user = userService.findUserByEmail(body.getEmail());
+        RegisterResponseDto registerResponseDto = authService.register(body);
 
-        if(user.isEmpty()) {
-            User newUser = new User();
-            newUser.setPassword(passwordEncoder.encode(body.getPassword()));
-            newUser.setEmail(body.getEmail());
-            newUser.setName(body.getName());
-            userService.create(newUser);
-
-            return ResponseEntity.status(HttpStatus.CREATED).body(new RegisterResponseDto("User created successfully!"));
-        }
-
-        throw new EmailAlreadyInUseException();
+        return ResponseEntity.status(HttpStatus.CREATED).body(registerResponseDto);
     }
 
     @GetMapping("/authenticated-user")
-    public String getAuthenticatedUser(HttpServletRequest request) {
-        var token = tokenService.recoverToken(request);
-
-        return tokenService.validateToken(token);
+    public String getAuthenticatedUserId(HttpServletRequest request) {
+        return authService.getAuthenticatedUserId(request);
     }
 }

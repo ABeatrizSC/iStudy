@@ -12,6 +12,7 @@ import com.io.github.abeatrizsc.auth_ms.publisher.UserEventsPublisher;
 import com.io.github.abeatrizsc.auth_ms.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -30,10 +31,12 @@ public class UserService {
         return repository.findByEmail(email);
     }
 
+    @Transactional
     public void create(User newUser) {
         repository.save(newUser);
     }
 
+    @Transactional
     public void updateAccount(String userId, UpdateAccountDto dto) {
         User user = findUserById(userId);
 
@@ -66,6 +69,7 @@ public class UserService {
         return !securityConfig.passwordEncoder().matches(newPassword, userPassword);
     }
 
+    @Transactional
     public void deleteAccount(String id, DeleteAccountDto dto) {
         User user = findUserById(id);
 

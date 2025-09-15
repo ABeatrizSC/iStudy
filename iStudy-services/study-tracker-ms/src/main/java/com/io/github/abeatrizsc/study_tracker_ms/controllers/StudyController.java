@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/studies")
 @AllArgsConstructor
 public class StudyController {
-    private StudyService service;
+    private final StudyService service;
 
     @GetMapping("/all")
     public ResponseEntity<List<Study>> getAll() {

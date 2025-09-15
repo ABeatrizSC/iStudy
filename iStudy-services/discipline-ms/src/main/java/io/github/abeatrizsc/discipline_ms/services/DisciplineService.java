@@ -26,10 +26,10 @@ import java.util.Optional;
 @Service
 @AllArgsConstructor
 public class DisciplineService {
-    private DisciplineRepository repository;
-    private TopicRepository topicRepository;
-    private AuthRequestUtils authRequestUtils;
-    private DisciplineEventPublisher disciplineEventPublisher;
+    private final DisciplineRepository repository;
+    private final TopicRepository topicRepository;
+    private final AuthRequestUtils authRequestUtils;
+    private final DisciplineEventPublisher disciplineEventPublisher;
 
     @Transactional
     public List<Discipline> save(DisciplineRequestDto requestDto) throws ConflictException {
@@ -49,8 +49,8 @@ public class DisciplineService {
     }
 
     @Transactional
-    public List<Discipline> update(String id, DisciplineRequestDto requestDto) throws ConflictException {
-        Discipline discipline = findById(id);
+    public List<Discipline> update(String disciplineId, DisciplineRequestDto requestDto) throws ConflictException {
+        Discipline discipline = findById(disciplineId);
 
         if (disciplineNameAlreadyExists(discipline.getId(), requestDto.getName(), discipline.getCreatedBy())) {
             throw new ConflictException("subject");
@@ -61,6 +61,7 @@ public class DisciplineService {
 
         discipline.setName(requestDto.getName());
         discipline.setCategory(requestDto.getCategory());
+
         if (!discipline.getTotalTime().equals(LocalTime.MIDNIGHT) && discipline.getTotalTime() == discipline.getTimeCompleted()) {
             discipline.setIsCompleted(true);
         } else {

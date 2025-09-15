@@ -18,11 +18,11 @@ import java.util.Objects;
 @Service
 @AllArgsConstructor
 public class TopicService {
-    private TopicRepository repository;
-    private DisciplineService disciplineService;
-    private TopicMapper topicMapper;
-    private AuthRequestUtils authRequestUtils;
-    private DisciplineEventPublisher disciplineEventPublisher;
+    private final TopicRepository repository;
+    private final DisciplineService disciplineService;
+    private final TopicMapper topicMapper;
+    private final AuthRequestUtils authRequestUtils;
+    private final DisciplineEventPublisher disciplineEventPublisher;
 
     @Transactional
     public List<TopicResponseDto> save(TopicRequestDto requestDto) throws ConflictException {
