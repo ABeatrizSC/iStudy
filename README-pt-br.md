@@ -41,6 +41,7 @@ O iStudy é uma plataforma web projetada para ajudar estudantes a organizar, ger
 - `istudy-app`: Esta pasta contém o código do front-end da aplicação, desenvolvido com TypeScript, React.js e NextJS.
 - `istudy-services`: Esta pasta contém o back-end do sistema (Java/Spring Boot), que segue uma arquitetura de microsserviços utilizando o Spring Cloud API Gateway como interceptador de requisições para aplicar filtros de autenticação, Spring Cloud Netflix (Eureka) para registro e descoberta de serviços e RabbitMQ como broker de mensagens para comunicação assíncrona entre os microsserviços.
 - Toda a aplicação se encontra containeirizada com o Docker.
+- Além disso, um pipeline de CI foi implementada para atualizar automaticamente as imagens dos containers e enviar para o Docker Hub sempre que ocorrer uma modificação no branch principal (main).
 
 </br>
 
@@ -148,7 +149,14 @@ git clone https://github.com/ABeatrizSC/istudy.git
 cd istudy
 ```
 
-3. **Construa e inicialize o container docker**
+3. **Adicione sua JWT KEY**
+- Crie um arquivo ```.env``` na raiz do projeto e adicione sua JWT KEY a ser utilizada na assinatura do token. Exemplo:
+
+```.env
+JWT_KEY=SUA_CHAVE_AQUI
+```
+
+4. **Construa e inicialize o container docker**
 ```bash
 docker-compose up --build
 ```
@@ -1432,4 +1440,4 @@ Account deleted successfully!
 # Contato
 * GitHub: [ABeatrizSC](https://github.com/ABeatrizSC)
 * Linkedin: [Ana Beatriz Santucci Carmoni](www.linkedin.com/in/ana-carmoni)
-* Email: [anabeatrizscarmoni@gmail.com](mailto:anabeatrizscarmoni@gmail.com)
+* Email: [anabscarmoni@gmail.com](mailto:anabscarmoni@gmail.com)
